@@ -18,7 +18,7 @@
             </li>
             <li>
                 <span>Demo:</span>
-                <a href="https://github.com/hyjiacan/vue-datepicker/blob/master/src/views/Main.vue">https://github.com/hyjiacan/vue-datepicker/blob/master/src/views/Main.vue</a>
+                <a href="https://github.com/hyjiacan/vue-datepicker/blob/master/src/Demo.vue">https://github.com/hyjiacan/vue-datepicker/blob/master/src/Demo.vue</a>
             </li>
         </ul>
     </div>

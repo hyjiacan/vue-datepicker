@@ -1,23 +1,54 @@
 {
-  "name": "vue-datepicker",
+  "name": "@hyjiacan/vue-datepicker",
   "version": "0.1.0",
-  "private": true,
+  "main": "lib/datepicker.common.js",
+  "unpkg": "lib/datepicker.umd.js",
+  "jsdelivr": "lib/datepicker.umd.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "npx vue-cli-service serve",
+    "build": "npx vue-cli-service build --target lib --dest=dist --name datepicker src/components/index.js",
+    "build:docs": "npx vue-cli-service build --dest=docs",
+    "release": "yarn run lint & yarn run build & yarn run build:docs & node version.js",
+    "lint": "npx vue-cli-service lint",
+    "test": "npx vue-cli-service lint & npx vue-cli-service build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyjiacan/vue-datepicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hyjiacan/vue-datepicker/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://hyjiacan.github.io/vue-datepicker/",
+  "keywords": [
+    "vue",
+    "datepicker"
+  ],
+  "author": "hyjiacan",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src/components",
+    "LICENSE",
+    "README.md"
+  ],
   "dependencies": {
-    "core-js": "^3.6.4",
-    "vue": "^2.6.11"
+    "vue-popperjs": "^2.3.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.2.0",
     "@vue/cli-plugin-eslint": "^4.2.0",
     "@vue/cli-service": "^4.2.0",
     "babel-eslint": "^10.0.3",
+    "core-js": "^3.6.4",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

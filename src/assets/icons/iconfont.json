@@ -1,0 +1,23 @@
+{
+  "id": "1648256",
+  "name": "date-picker",
+  "font_family": "datepicker-iconfont",
+  "css_prefix_text": "datepicker--icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "505806",
+      "name": "right",
+      "font_class": "right-d",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "11349318",
+      "name": "right",
+      "font_class": "right",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    }
+  ]
+}

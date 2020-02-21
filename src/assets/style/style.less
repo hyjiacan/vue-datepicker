@@ -1,0 +1,382 @@
+.datepicker-iconfont {
+  color: #888888;
+
+  &:before {
+    display: inline-block;
+    font-size: 22px;
+    vertical-align: middle;
+  }
+
+  &:hover:before {
+    color: #137DE2;
+  }
+}
+
+.datepicker--icon-left-d:before {
+  content: "\e62a";
+  transform: rotate(180deg);
+}
+
+.datepicker--icon-left:before {
+  content: "\e663";
+  transform: rotate(180deg);
+}
+
+.datepicker--icon-top:before {
+  content: "\e663";
+  transform: rotate(-90deg);
+}
+
+.datepicker--icon-bottom:before {
+  content: "\e663";
+  transform: rotate(90deg);
+}
+
+.date-picker {
+  display: inline-block;
+  vertical-align: middle;
+
+  input {
+    border: none;
+    height: 32px;
+    line-height: 22px;
+    width: 100%;
+    outline: none;
+    padding: 5px;
+    box-sizing: border-box;
+    color: #444444;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  &-mini {
+    input {
+      height: 20px;
+    }
+  }
+
+  &-small {
+    input {
+      height: 24px;
+    }
+  }
+
+  &-large {
+    input {
+      height: 40px;
+    }
+  }
+}
+
+.date-picker-container {
+  border-radius: 4px;
+  border: 1px solid #DCDFE6;
+  overflow: hidden;
+  width: 100px;
+}
+
+.date-picker--datetime {
+  .date-picker-container {
+    width: 140px;
+  }
+
+  &.date-picker-range {
+    .date-picker-container {
+      width: 300px;
+    }
+  }
+}
+
+.date-picker-popover {
+  background-color: #ffffff;
+  user-select: none;
+
+  &.popper {
+    box-shadow: rgba(158, 156, 156, 0.45) 0 0 6px 2px;
+  }
+
+  &:after {
+    content: ' ';
+    display: block;
+    clear: both;
+  }
+
+  .date-picker-box + .date-picker-box {
+    border-left: 1px solid #e7e7e7;
+  }
+}
+
+
+.date-picker-panel__header {
+  display: grid;
+  grid-template-columns: 48px auto 48px;
+  line-height: 40px;
+  font-size: larger;
+  color: #555555;
+
+  &-prev, &-next {
+    cursor: default;
+  }
+
+  &-prev {
+    text-align: right;
+  }
+
+  &-next {
+    text-align: left;
+  }
+
+  &-year, &-month {
+    cursor: default;
+    padding: 2px;
+
+    &:hover {
+      color: #137DE2;
+    }
+  }
+
+  &-container {
+    display: grid;
+    grid-template-columns: 30px auto 30px;
+    grid-auto-flow: column;
+  }
+}
+
+.date-picker-box {
+  float: left;
+  padding: 10px;
+}
+
+.date-picker-panel__body {
+  box-sizing: border-box;
+
+  table {
+    border-collapse: collapse;
+    width: 280px;
+    height: 280px;
+  }
+
+  thead tr {
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+  th {
+    font-weight: normal;
+    padding-bottom: 10px;
+    border: none;
+  }
+
+  td {
+    cursor: default;
+    border: none;
+    padding: 0;
+  }
+}
+
+.value-active() {
+  background-color: rgba(19, 125, 226, 0.07);
+  color: #126ac4;
+  transition-duration: 312ms;
+}
+
+.value-hover() {
+  background-color: rgba(19, 125, 226, 0.15);
+  transition-duration: 312ms;
+}
+
+.date-picker-panel__value {
+  @size: 30px;
+  border-radius: 8px;
+  display: block;
+  width: @size;
+  height: @size;
+  line-height: @size;
+  text-align: center;
+  border: 1px solid transparent;
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: border-color 618ms, background-color 618ms, color 618ms;
+
+  &:not(&-disabled):hover {
+    .value-hover();
+  }
+
+  &-active {
+    .value-active();
+  }
+
+  &-overflow {
+    color: #888888;
+  }
+
+  &-disabled {
+    color: rgba(255, 255, 255, 0.7) !important;
+    text-shadow: 1px 1px 1px #7a7a7a;
+    cursor: not-allowed;
+  }
+}
+
+.date-picker-year, .date-picker-month {
+  .date-picker-panel__value {
+    width: 60px;
+    height: 40px;
+    line-height: 40px;
+  }
+}
+
+.date-picker-week, .date-picker-season {
+  tr.date-picker__row {
+    td {
+      color: unset;
+      transition: color 312ms, background-color 312ms;
+      background-clip: content-box;
+      box-sizing: content-box;
+
+      @radius: 20px;
+
+      &:first-child {
+        border-radius: @radius 0 0 @radius;
+      }
+
+      &:last-child {
+        border-radius: 0 @radius @radius 0;
+      }
+
+      .date-picker-panel__value {
+        &:hover, &-active {
+          color: unset;
+          background-color: unset;
+        }
+
+        &:hover {
+          border-color: transparent;
+        }
+      }
+    }
+
+    &-active {
+      td {
+        .value-active();
+      }
+    }
+
+    &:hover {
+      td {
+        .value-hover();
+      }
+    }
+  }
+}
+
+.date-picker__clear {
+  display: none;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  line-height: 22px;
+
+  &-button {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    user-select: none;
+  }
+}
+
+.date-picker-range {
+  .date-picker-container {
+    width: 200px;
+    display: grid;
+    grid-template-columns: auto 16px auto;
+    grid-auto-flow: column;
+
+    &.date-picker-container__show-clear {
+      grid-template-columns: auto 16px auto 24px;
+
+      .date-picker__clear {
+        display: flex;
+      }
+    }
+
+    input {
+      border: none;
+    }
+  }
+
+  .date-picker__begin {
+  }
+
+  .date-picker__separator {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .date-picker__end {
+  }
+}
+
+.date-picker-range-toolbar {
+  clear: both;
+  padding: 0 10px 10px;
+
+  &__preview {
+    float: left;
+  }
+
+  &__buttons {
+    float: right;
+  }
+
+  &:after {
+    content: ' ';
+    display: block;
+    clear: both;
+  }
+}
+
+.date-picker-time {
+  .date-picker-panel__body {
+    padding-top: 5px;
+  }
+
+  .date-picker-time__body {
+    width: 240px;
+    height: 160px;
+    margin: 0 auto;
+
+    td {
+      padding: 0;
+    }
+  }
+}
+
+.date-picker-time__title {
+  font-size: large;
+}
+
+.date-picker-time-wheel__value {
+  color: #126ac4;
+  border: 1px solid #888888;
+}
+
+.date-picker-time-wheel__prev, .date-picker-time-wheel__next {
+  color: #888888;
+
+  > span {
+    display: block;
+    border: 1px solid #cccccc;
+  }
+}
+
+.date-picker-time-wheel__prev > span:first-child,
+.date-picker-time-wheel__next > span:last-child {
+  color: #cccccc;
+  border: 1px solid #EEEEEE;
+}
+
+.popper {
+  color: #555555;
+}

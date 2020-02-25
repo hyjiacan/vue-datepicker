@@ -1,12 +1,12 @@
 {
   "name": "@hyjiacan/vue-datepicker",
-  "version": "0.1.0",
-  "main": "lib/datepicker.common.js",
-  "unpkg": "lib/datepicker.umd.js",
-  "jsdelivr": "lib/datepicker.umd.js",
+  "version": "0.1.1",
+  "main": "dist/datepicker.common.js",
+  "unpkg": "dist/datepicker.umd.js",
+  "jsdelivr": "dist/datepicker.umd.js",
   "scripts": {
     "serve": "npx vue-cli-service serve",
-    "build": "npx vue-cli-service build --target lib --dest=dist --name datepicker src/components/index.js",
+    "build": "npx vue-cli-service build --target lib --dest dist --name datepicker src/components/index.js",
     "build:docs": "npx vue-cli-service build --dest=docs",
     "release": "yarn run lint & yarn run build & yarn run build:docs & node version.js",
     "lint": "npx vue-cli-service lint",
@@ -20,7 +20,8 @@
     "url": "https://github.com/hyjiacan/vue-datepicker/issues"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.com"
   },
   "homepage": "https://hyjiacan.github.io/vue-datepicker/",
   "keywords": [

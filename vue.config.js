@@ -6,15 +6,17 @@ const config = {
   }
 }
 
-if (process.argv.indexOf('--dest=dist') === -1) {
+if (process.argv.indexOf('--target') === -1 || process.argv.indexOf('lib') === -1) {
+  console.info('Build docs')
   config.productionSourceMap = false
 } else {
+  console.info('Build dist')
   config.productionSourceMap = true
   config.configureWebpack = {
-    externals: {
-      'vue-popperjs': 'vue-popperjs',
-      'vue-popperjs/dist/vue-popper.min.css': 'vue-popperjs/dist/vue-popper.min.css'
-    },
+    externals: [
+      'vue-popperjs',
+      'vue-popperjs/dist/vue-popper.min.css'
+    ],
     output: {
       libraryExport: 'default'
     }

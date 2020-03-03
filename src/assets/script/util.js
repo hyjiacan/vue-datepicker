@@ -9,6 +9,7 @@ import formats from './formats'
  */
 function getPrevMonthDays (date, weekStart) {
   date = new Date(date.getTime())
+  date.setDate(1)
 
   // 本月1号是星期几
   const weekDay = date.getDay()
@@ -155,10 +156,11 @@ const util = {
    * @param month
    * @param date
    * @param formatted 是否返回格式化串
+   * @param weekStart
    */
-  getWeekOfYear (year, month, date, formatted) {
+  getWeekOfYear (year, month, date, formatted, weekStart) {
     const value = new Date(year, month, date)
-    const [start, end] = this.getWeekRange(value)
+    const [start, end] = this.getWeekRange(value, weekStart)
 
     let week
 
@@ -175,14 +177,14 @@ const util = {
   /**
    * 根据传入日期生成日期所在月的日历视图
    * @param {Date|String|Number} date
-   * @param {Number} weekStart
+   * @param {Number} [weekStart=0]
    * @return {*[]}
    */
   makeDateView (date, weekStart) {
     date = date ? this.parse(date) : new Date()
     // 一共是7列5行
     const size = 7 * 5
-    const prevMonthDays = getPrevMonthDays(date, weekStart)
+    const prevMonthDays = getPrevMonthDays(date, weekStart || 0)
     const currentMonthDays = getCurrentMonthDays(date)
     const nextMonthDays = getNextMonthDays(date, size - prevMonthDays.length - currentMonthDays.length)
     return [...prevMonthDays, ...currentMonthDays, ...nextMonthDays]
@@ -190,12 +192,23 @@ const util = {
   /**
    * 根据一个日期，谋算出其所在周的起止日期
    * @param {Date|String|Number} date
+   * @param {number} [weekStart=0]
    * @return {Array<Date>}
    */
-  getWeekRange (date) {
+  getWeekRange (date, weekStart) {
     const weekDay = date.getDay()
     const begin = new Date(date.getTime())
-    begin.setDate(begin.getDate() - weekDay)
+
+    if (weekStart) {
+      if (weekDay > weekStart) {
+        begin.setDate(begin.getDate() - weekStart)
+      } else if (weekDay > weekStart) {
+        begin.setDate(begin.getDate() - weekStart - 7)
+      }
+      // 相等的情况不需要处理，就是当天
+    } else {
+      begin.setDate(begin.getDate() - weekDay)
+    }
 
     const end = new Date(date.getTime())
     end.setDate(begin.getDate() + 6)

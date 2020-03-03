@@ -22,7 +22,7 @@ export default {
       let commit = false
       switch (this.type) {
         case this.types.WEEK:
-          temp = util.getWeekRange(v)
+          temp = util.getWeekRange(v, this.weekStart)
           if (util.format(temp[1], this.finalFormat) !== this.endValue) {
             this.endValue = util.format(temp[1], this.finalFormat)
           }
@@ -70,7 +70,7 @@ export default {
 
       switch (this.type) {
         case this.types.WEEK:
-          [beginValue, endValue] = util.getWeekRange(beginValue)
+          [beginValue, endValue] = util.getWeekRange(beginValue, this.weekStart)
           break
         case this.types.SEASON:
           [beginValue, endValue] = util.getSeasonRange(beginValue)

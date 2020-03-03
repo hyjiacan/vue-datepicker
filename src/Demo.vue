@@ -5,7 +5,7 @@
                 <h4>选择指定日期</h4>
                 <div class="date-label">年</div>
                 <date-picker :week-start="weekStart" v-model="year" type="year" @change="onChange" min="2016" max="2022"
-                             :mousewheel="false"/>
+                             :mousewheel="false" :visible="true"/>
                 <div>(min="2016" max="2022")</div>
                 <div class="date-value">{{year}}</div>
                 <div class="date-label">年-月</div>
@@ -39,7 +39,7 @@
             <div>
                 <h4>选择日期范围(一次弹框选择[<i>默认</i>])</h4>
                 <div class="date-label">年</div>
-                <date-picker range :week-start="weekStart" v-model="ryear" type="year" @change="onChange"/>
+                <date-picker range :week-start="weekStart" v-model="ryear" type="year" @change="onChange" readonly/>
                 <div class="date-value">{{ryear}}</div>
                 <div class="date-label">年-月</div>
                 <date-picker range :week-start="weekStart" v-model="rmonth" type="month" @change="onChange"/>

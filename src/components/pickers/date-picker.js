@@ -46,6 +46,7 @@ export default {
     }
   },
   mounted () {
+    this.validate()
     this.updateValue(this.value)
     this.isVisible = this.visible
   },
@@ -80,6 +81,11 @@ export default {
     }
   },
   methods: {
+    validate () {
+      if (this.weekStart < 0 || this.weekStart > 6) {
+        throw Error('week-start can only valued between 0 and 6')
+      }
+    },
     updateValue (value) {
       if (this.range) {
         this.updateRangeValue(value)

@@ -1,32 +1,26 @@
 <template>
-  <base-panel :view="view" @prev="onPrevYear" @next="onNextYear" :extra-class="classes"
-              :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
-    <template v-slot:header>
-      <div class="date-picker-panel__header-container">
-        <div @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></div>
-        <div>
-          <span class="date-picker-panel__header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
-          <span class="date-picker-panel__header-month"
-                @click="$emit('pick-month')">{{viewValue.getMonth() + 1}}月</span>
-        </div>
-        <div @click="onNextMonth" class="datepicker-iconfont datepicker--icon-right"></div>
-      </div>
-    </template>
-    <template v-slot:title>
-      <tr>
-        <th>日</th>
-        <th>一</th>
-        <th>二</th>
-        <th>三</th>
-        <th>四</th>
-        <th>五</th>
-        <th>六</th>
-      </tr>
-    </template>
-    <template v-slot:append>
-      <slot name="append"/>
-    </template>
-  </base-panel>
+    <base-panel :view="view" @prev="onPrevYear" @next="onNextYear" :extra-class="classes"
+                :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
+        <template v-slot:header>
+            <div class="date-picker-panel__header-container">
+                <div @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></div>
+                <div>
+                    <span class="date-picker-panel__header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
+                    <span class="date-picker-panel__header-month"
+                          @click="$emit('pick-month')">{{viewValue.getMonth() + 1}}月</span>
+                </div>
+                <div @click="onNextMonth" class="datepicker-iconfont datepicker--icon-right"></div>
+            </div>
+        </template>
+        <template v-slot:title>
+            <tr>
+                <th v-for="t in header" :key="t.day">{{weekDays[t.day]}}</th>
+            </tr>
+        </template>
+        <template v-slot:append>
+            <slot name="append"/>
+        </template>
+    </base-panel>
 </template>
 
 <script>
@@ -41,9 +35,25 @@ export default {
   props: {
     week: Boolean
   },
+  data () {
+    return {
+      weekDays: {
+        0: '日',
+        1: '一',
+        2: '二',
+        3: '三',
+        4: '四',
+        5: '五',
+        6: '六'
+      }
+    }
+  },
   computed: {
+    header () {
+      return this.view[0]
+    },
     view () {
-      const data = util.makeDateView(this.viewValue)
+      const data = util.makeDateView(this.viewValue, this.picker.weekStart)
       const active = {
         year: this.active.getFullYear(),
         month: this.active.getMonth() + 1,

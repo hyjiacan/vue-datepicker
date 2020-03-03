@@ -24,6 +24,13 @@ export default {
       type: Boolean,
       default: true
     },
+    /**
+     * 用于设置一周的第一天量。0：星期天，1：星期一
+     */
+    weekStart: {
+      type: Number,
+      default: 0
+    },
     // 仅在 range/!split 时有效
     toolbar: Boolean,
     visible: Boolean,

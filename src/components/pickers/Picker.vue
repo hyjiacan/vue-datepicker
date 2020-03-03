@@ -66,6 +66,10 @@ export default {
     mousewheel: {
       type: Boolean,
       default: true
+    },
+    weekStart: {
+      type: Number,
+      default: 0
     }
   },
   provide () {

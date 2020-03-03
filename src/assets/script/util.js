@@ -4,20 +4,39 @@ import formats from './formats'
 /**
  * 获取上个月剩下的天数(距离这个月一周内)
  * @param {Date} date
+ * @param {Number} weekStart 星期开始量
  * @return {Array}
  */
-function getPrevMonthDays (date) {
+function getPrevMonthDays (date, weekStart) {
   date = new Date(date.getTime())
-  // 将时间跳转到上月的最后一天
-  date.setDate(0)
 
-  // 上月的最后一天是星期几
+  // 本月1号是星期几
   const weekDay = date.getDay()
 
-  // 当星期天作为一周的第一天时，weekDay 为6表示上个月的最后一天是星期六
-  if (weekDay === 6) {
+  // 临界条件: 正好本月的第一天是【设置的一周的起始量】
+  // 不需要数据
+  if (weekDay === weekStart) {
     return []
   }
+
+  // 上月需要计入的天数
+  let lastDays
+
+  if (weekStart === 0) {
+    lastDays = weekDay
+  } else if (weekDay === 0) {
+    lastDays = 7 - weekStart
+  } else if (weekDay < weekStart) {
+    // 如果当前星期量小于起始量
+    lastDays = (7 + weekDay - weekStart) % 7
+  } else {
+    // 当前的星期量大于起始量
+    // 使用差值就行了
+    lastDays = weekDay - weekStart
+  }
+
+  // 将时间跳转到上月的最后一天
+  date.setDate(0)
   // 上月的最后一天是几号
   const day = date.getDate()
   // 年
@@ -28,13 +47,15 @@ function getPrevMonthDays (date) {
   const days = []
   // 上月的最后一天不是星期六(星期天是一周第一天)
   // 那就要在这月显示
-  for (let i = 0; i <= weekDay; i++) {
-    const value = day - weekDay + i
+  for (let i = 1; i <= lastDays; i++) {
+    const value = day - lastDays + i
+    date.setDate(value)
     days.push({
       overflow: true,
       value,
       year,
-      month
+      month,
+      day: date.getDay()
     })
   }
   return days
@@ -62,10 +83,12 @@ function getCurrentMonthDays (date) {
   const days = []
 
   for (let i = 1; i <= day; i++) {
+    date.setDate(i)
     days.push({
       value: i,
       year,
-      month
+      month,
+      day: date.getDay()
     })
   }
 
@@ -92,11 +115,13 @@ function getNextMonthDays (date, remain) {
 
   // 多显示7天
   for (let i = 1; i <= remain + 7; i++) {
+    date.setDate(i)
     days.push({
       overflow: true,
       value: i,
       year,
-      month
+      month,
+      day: date.getDay()
     })
   }
 
@@ -150,13 +175,14 @@ const util = {
   /**
    * 根据传入日期生成日期所在月的日历视图
    * @param {Date|String|Number} date
+   * @param {Number} weekStart
    * @return {*[]}
    */
-  makeDateView (date) {
+  makeDateView (date, weekStart) {
     date = date ? this.parse(date) : new Date()
     // 一共是7列5行
     const size = 7 * 5
-    const prevMonthDays = getPrevMonthDays(date)
+    const prevMonthDays = getPrevMonthDays(date, weekStart)
     const currentMonthDays = getCurrentMonthDays(date)
     const nextMonthDays = getNextMonthDays(date, size - prevMonthDays.length - currentMonthDays.length)
     return [...prevMonthDays, ...currentMonthDays, ...nextMonthDays]

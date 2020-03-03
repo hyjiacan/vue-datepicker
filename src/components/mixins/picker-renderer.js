@@ -107,7 +107,8 @@ export default {
           min: this[limitName][0],
           max: this[limitName][1],
           visible: this[visibleName],
-          mousewheel: this.mousewheel
+          mousewheel: this.mousewheel,
+          weekStart: this.weekStart
         },
         on: {
           input: (value) => {

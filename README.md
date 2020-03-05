@@ -46,12 +46,12 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 最新版本
 
 ```html
-<script src="https://cdn.jsdelivr.com/npm/@hyjiacan/vue-datepicker/dist/datepicker.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@hyjiacan/vue-datepicker/dist/datepicker.umd.min.js"></script>
 ```
 
 指定版本
 ```html
-<script src="https://cdn.jsdelivr.com/npm/@hyjiacan/vue-datepicker@<VERSION>/dist/datepicker.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@hyjiacan/vue-datepicker@<VERSION>/dist/datepicker.umd.min.js"></script>
 ```
 
 > **unpkg** 也是可用的: 替换 *cdn.jsdelivr.net* 为 *unpkg.com*

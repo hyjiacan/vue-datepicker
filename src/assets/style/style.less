@@ -38,32 +38,77 @@
 
   input {
     border: none;
-    height: 32px;
-    line-height: 22px;
     width: 100%;
     outline: none;
-    padding: 5px;
+    display: block;
+    padding: 2px 5px;
     box-sizing: border-box;
     color: #444444;
     text-align: center;
-    vertical-align: middle;
+    line-height: inherit;
+    height: inherit;
   }
 
-  &-mini {
-    input {
+  &__mini {
+    .date-picker-container {
+      height: 22px;
+    }
+
+    .date-picker-range__begin,
+    .date-picker-range__end {
       height: 20px;
     }
-  }
 
-  &-small {
-    input {
-      height: 24px;
+    .date-picker-range__separator {
+      line-height: 18px;
     }
   }
 
-  &-large {
-    input {
+  &__small {
+    .date-picker-container {
+      height: 26px;
+    }
+
+    .date-picker-range__begin,
+    .date-picker-range__end {
+      height: 24px;
+      line-height: 24px;
+    }
+
+    .date-picker-range__separator {
+      line-height: 22px;
+    }
+  }
+
+  &__normal {
+    .date-picker-container {
+      height: 32px;
+    }
+
+    .date-picker-range__begin,
+    .date-picker-range__end {
+      height: 30px;
+      line-height: 28px;
+    }
+
+    .date-picker-range__separator {
+      line-height: 28px;
+    }
+  }
+
+  &__large {
+    .date-picker-container {
       height: 40px;
+    }
+
+    .date-picker-range__begin,
+    .date-picker-range__end {
+      height: 38px;
+      line-height: 36px;
+    }
+
+    .date-picker-range__separator {
+      line-height: 36px;
     }
   }
 }
@@ -73,6 +118,8 @@
   border: 1px solid #DCDFE6;
   overflow: hidden;
   width: 100px;
+  background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 .date-picker--datetime {
@@ -287,7 +334,7 @@
 
 .date-picker-range {
   .date-picker-container {
-    width: 200px;
+    width: 180px;
     display: grid;
     grid-template-columns: auto 16px auto;
     grid-auto-flow: column;
@@ -304,18 +351,22 @@
       border: none;
     }
   }
+}
 
-  .date-picker__begin {
-  }
+.date-picker-range__begin {
+}
 
-  .date-picker__separator {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-  }
+.date-picker-range__separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  .date-picker__end {
+  &:after {
+    content: '-';
   }
+}
+
+.date-picker-range__end {
 }
 
 .date-picker-range-toolbar {

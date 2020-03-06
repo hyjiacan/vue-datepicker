@@ -15,7 +15,7 @@ export default {
     },
     size: {
       type: String,
-      default: 'small'
+      default: 'normal'
     },
     /**
      * 是否允许鼠标滚轮操作

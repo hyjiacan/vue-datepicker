@@ -3,8 +3,8 @@
     <div class="date-picker-range__begin">
       <slot name="begin"/>
     </div>
-    <div class="date-picker__separator">-</div>
-    <div class="date-picker__end">
+    <div class="date-picker-range__separator"></div>
+    <div class="date-picker-range__end">
       <slot name="end"/>
     </div>
     <div class="date-picker__clear">

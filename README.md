@@ -167,9 +167,9 @@ export default {
 ### size
 
 - type: String
-- default: small
+- default: normal
 
-控制日期值框的尺寸，可选值: `mini`, `small`, `large`
+控制日期值框的尺寸，可选值: `mini`, `small`, `normal`, `large`
 
 #### `mousewheel`
 
@@ -236,3 +236,9 @@ export default {
 参数: `({type, value}, oldValue)`
 
 - type 指定的类型
+
+## 更新日志
+
+### 0.2.1
+
+- 修复 按范围选择时，背景透明的问题

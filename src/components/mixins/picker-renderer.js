@@ -77,8 +77,7 @@ export default {
       const h = this.h
       return h(PopperWrapper, {
         props: {
-          visible: this[visibleName],
-          extraClass: `date-picker__${this.size}`
+          visible: this[visibleName]
         },
         on: {
           toggle: visible => {
@@ -201,7 +200,7 @@ export default {
     this.h = createElement
     this.c = context
 
-    const classes = ['date-picker', `date-picker--${this.type}`]
+    const classes = ['date-picker', `date-picker--${this.type}`, `date-picker__${this.size}`]
     if (this.range) {
       classes.push('date-picker-range')
     }

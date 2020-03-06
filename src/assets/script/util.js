@@ -70,9 +70,8 @@ function getPrevMonthDays (date, weekStart) {
 function getCurrentMonthDays (date) {
   date = new Date(date.getTime())
   // 设置日期到下个月
-  date.setMonth(date.getMonth() + 1)
   // 将时间跳转到本月的最后一天
-  date.setDate(0)
+  date.setMonth(date.getMonth() + 1, 0)
 
   // 本月的最后一天是几号
   const day = date.getDate()

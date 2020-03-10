@@ -3,6 +3,13 @@ import formats from '../../assets/script/formats'
 
 export default {
   props: {
+    /**
+     * 用于设置一周的第一天量。0：星期天，1：星期一
+     */
+    weekStart: {
+      type: Number,
+      default: 0
+    },
     // 是否将起止日期输入框分开显示
     split: Boolean,
     range: Boolean
@@ -86,6 +93,9 @@ export default {
     }
   },
   computed: {
+    isRange () {
+      return this.range || [this.types.SEASON, this.types.WEEK].indexOf(this.type) !== -1
+    },
     formattedRangeValue () {
       return [util.format(this.beginValue, this.finalFormat), util.format(this.endValue, this.finalFormat)]
     },

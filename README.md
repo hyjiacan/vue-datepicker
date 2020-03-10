@@ -275,6 +275,17 @@ DatePicker.util.offsetWeekRange(weekRange: Date[], offset: number): Date[]
 
 ## 更新日志
 
+### 0.2.6
+
+- 优化 `range` 属性，当设置 `type` 为 `week`或`season`时， `range` 自动变更为 `true`
+- 优化 `v-model` 属性，当设置的值为空(即未设置)时，使用当前日期
+
+### 0.2.5
+
+- 修复 计算周范围的错误
+- 添加 工具函数 DatePicker.$util
+- 添加 types 声明
+
 ### 0.2.1
 
 - 修复 按范围选择时，背景透明的问题

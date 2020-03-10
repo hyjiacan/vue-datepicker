@@ -181,7 +181,7 @@ export default {
     },
     // 判断需要渲染哪成单个日期选择还是按范围选择
     renderComponent () {
-      if (!this.range) {
+      if (!this.isRange) {
         return this.renderSinglePicker()
       }
 
@@ -201,7 +201,7 @@ export default {
     this.c = context
 
     const classes = ['date-picker', `date-picker--${this.type}`, `date-picker__${this.size}`]
-    if (this.range) {
+    if (this.isRange) {
       classes.push('date-picker-range')
     }
 

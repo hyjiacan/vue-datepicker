@@ -24,13 +24,6 @@ export default {
       type: Boolean,
       default: true
     },
-    /**
-     * 用于设置一周的第一天量。0：星期天，1：星期一
-     */
-    weekStart: {
-      type: Number,
-      default: 0
-    },
     // 仅在 range/!split 时有效
     toolbar: Boolean,
     visible: Boolean,
@@ -59,7 +52,7 @@ export default {
     },
     isVisible (v) {
       // 在关闭时触发更新
-      if (!v && this.range && !this.split) {
+      if (!v && this.isRange && !this.split) {
         this.commitChanges()
       }
       if (v !== this.visible) {
@@ -70,7 +63,7 @@ export default {
       this.commitChanges()
     },
     value (v) {
-      if (this.range) {
+      if (this.isRange) {
         if (util.equals(this.beginValue, v[0], this.finalFormat) && util.equals(this.endValue, v[1], this.finalFormat)) {
           return
         }
@@ -87,10 +80,10 @@ export default {
       }
     },
     updateValue (value) {
-      if (this.range) {
-        this.updateRangeValue(value)
+      if (this.isRange) {
+        this.updateRangeValue(value.map(i => i || new Date()))
       } else {
-        this.updateSingleValue(value)
+        this.updateSingleValue(value || new Date())
       }
     },
     updateSingleValue (value) {
@@ -101,10 +94,10 @@ export default {
       console.warn('clearable: Not implementation yet')
     },
     commitChanges () {
-      const oldValue = this.range ? this.value.map(v => util.format(v, this.finalFormat)) : util.format(this.value, this.finalFormat)
-      const newValue = this.range ? this.formattedRangeValue : this.formattedValue
+      const oldValue = this.isRange ? this.value.map(v => v ? util.format(v, this.finalFormat) : v) : (this.value ? util.format(this.value, this.finalFormat) : this.value)
+      const newValue = this.isRange ? this.formattedRangeValue : this.formattedValue
 
-      if (this.range) {
+      if (this.isRange) {
         if (oldValue[0] === newValue[0] && oldValue[1] === newValue[1]) {
           return
         }

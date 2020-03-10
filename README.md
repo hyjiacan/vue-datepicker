@@ -237,6 +237,42 @@ export default {
 
 - type 指定的类型
 
+## 工具函数
+
+导出了一点可能会用上的日期工具函数。
+
+引用:
+
+```javascript
+import DatePicker from '@hyjiacan/vue-datepicker'
+```
+
+所有的格式，请参照 [内置格式定义](#内置格式定义) 的写法。
+
+### 日期格式化
+
+```javascript
+DatePicker.util.format(date: [Date, string, number], format: string): string
+```
+
+### 将其它类型的数据处理成日期类型
+
+```javascript
+DatePicker.util.parse(date: [Date, string, number], format?: string): Date
+```
+
+### 获取指定日期所在的周
+
+```javascript
+DatePicker.util.getWeekRange(date: [Date, string, number], format?: string): Date[]
+```
+
+### 按指定周范围获取其偏移量
+
+```javascript
+DatePicker.util.offsetWeekRange(weekRange: Date[], offset: number): Date[]
+```
+
 ## 更新日志
 
 ### 0.2.1

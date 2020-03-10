@@ -1,6 +1,6 @@
 {
   "name": "@hyjiacan/vue-datepicker",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "main": "dist/datepicker.common.js",
   "unpkg": "dist/datepicker.umd.js",
   "jsdelivr": "dist/datepicker.umd.js",
@@ -33,10 +33,12 @@
   "files": [
     "dist",
     "src",
+    "types",
     "LICENSE",
     "README.md",
     "README.en.md"
   ],
+  "types": "types/index.d.ts",
   "dependencies": {
     "vue-popperjs": "^2.3.0"
   },

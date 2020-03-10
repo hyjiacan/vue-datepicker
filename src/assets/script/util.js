@@ -198,19 +198,44 @@ const util = {
     const weekDay = date.getDay()
     const begin = new Date(date.getTime())
 
+    // 先找出星期天为第一天的日期
+    begin.setDate(begin.getDate() - weekDay)
+
+    // ----判断 weekStart 的位置 与传入日期的位置差----
+
+    // 如果 weekStart 大于 传入日期，则直接使用 weekStart 对应的日期为起始
+
+    // 否则，将开始日期 - 7（跳转到上一周）
+    // 再移动 weekStart 的天数，就是正确的起始日期
+    if (weekStart > weekDay) {
+      begin.setDate(begin.getDate() - 7)
+    }
+
+    // ----判断 结束----
+
     if (weekStart) {
-      if (weekDay > weekStart) {
-        begin.setDate(begin.getDate() - weekStart)
-      } else if (weekDay > weekStart) {
-        begin.setDate(begin.getDate() - weekStart - 7)
-      }
-      // 相等的情况不需要处理，就是当天
-    } else {
-      begin.setDate(begin.getDate() - weekDay)
+      // 再移动 weekStart 的天数，就是正确的起始日期
+      begin.setDate(begin.getDate() + weekStart)
     }
 
     const end = new Date(date.getTime())
     end.setDate(begin.getDate() + 6)
+    return [begin, end]
+  },
+  /**
+   * 偏移周范围
+   * @param {Date[]} weekRange 周范围，这是一个包含两个元素的数组
+   * @param {number} offset 周偏移量，可以是任意整数
+   * @return {Date[]}
+   */
+  offsetWeekRange (weekRange, offset) {
+    offset = 7 * Math.round(offset)
+    const begin = this.setDate(weekRange[0], {
+      date: weekRange[0].getDate() + offset
+    })
+    const end = this.setDate(weekRange[1], {
+      date: weekRange[1].getDate() + offset
+    })
     return [begin, end]
   },
   /**

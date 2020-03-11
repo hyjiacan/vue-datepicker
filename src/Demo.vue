@@ -2,11 +2,14 @@
     <div class="demo">
         <div class="demo-grid">
             <single-demo/>
-            <merged-range-demo/>
+            <size-demo/>
         </div>
         <div class="demo-grid">
             <split-range-demo/>
-            <size-demo/>
+            <merged-range-demo/>
+        </div>
+        <div class="demo-grid">
+            <clear-demo />
         </div>
     </div>
 </template>
@@ -16,10 +19,11 @@ import SingleDemo from './demos/SingleDemo'
 import MergedRangeDemo from './demos/MergedRangeDemo'
 import SplitRangeDemo from './demos/SplitRangeDemo'
 import SizeDemo from './demos/SizeDemo'
+import ClearDemo from './demos/ClearDemo'
 
 export default {
   name: 'Demo',
-  components: {SizeDemo, SplitRangeDemo, MergedRangeDemo, SingleDemo}
+  components: {ClearDemo, SizeDemo, SplitRangeDemo, MergedRangeDemo, SingleDemo}
 }
 </script>
 

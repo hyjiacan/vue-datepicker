@@ -80,13 +80,10 @@ export default {
       }
     },
     updateValue (value) {
-      let now = new Date()
       if (this.isRange) {
-        value[0] = value[0] ? value[0] : now
-        value[1] = value[1] ? value[1] : now
         this.updateRangeValue(value)
       } else {
-        this.updateSingleValue(value || now)
+        this.updateSingleValue(value)
       }
     },
     updateSingleValue (value) {

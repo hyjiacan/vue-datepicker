@@ -3,20 +3,40 @@
         <h3>不同的尺寸</h3>
         <ul>
             <li>
-                <span>mini:</span>
-                <date-picker range :value="[new Date(), new Date()]" size="mini"/>
+                <div>mini:</div>
+                <div>
+                    <date-picker :value="new Date()" size="mini"/>
+                </div>
+                <div>
+                    <date-picker range :value="[new Date(), new Date()]" size="mini"/>
+                </div>
             </li>
             <li>
-                <span>small:</span>
-                <date-picker range :value="[new Date(), new Date()]" size="small"/>
+                <div>small:</div>
+                <div>
+                    <date-picker :value="new Date()" size="small"/>
+                </div>
+                <div>
+                    <date-picker range :value="[new Date(), new Date()]" size="small"/>
+                </div>
             </li>
             <li>
-                <span>normal:</span>
-                <date-picker range :value="[new Date(), new Date()]" size="normal"/>
+                <div>normal:</div>
+                <div>
+                    <date-picker :value="new Date()" size="normal"/>
+                </div>
+                <div>
+                    <date-picker range :value="[new Date(), new Date()]" size="normal"/>
+                </div>
             </li>
             <li>
-                <span>large:</span>
-                <date-picker range :value="[new Date(), new Date()]" size="large"/>
+                <div>large:</div>
+                <div>
+                    <date-picker :value="new Date()" size="large"/>
+                </div>
+                <div>
+                    <date-picker range :value="[new Date(), new Date()]" size="large"/>
+                </div>
             </li>
         </ul>
     </div>
@@ -34,5 +54,9 @@ export default {
 <style lang="less" scoped>
 li {
     margin: 10px 0;
+
+    > div {
+        margin-bottom: 10px;
+    }
 }
 </style>

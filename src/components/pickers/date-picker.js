@@ -80,10 +80,13 @@ export default {
       }
     },
     updateValue (value) {
+      let now = new Date()
       if (this.isRange) {
-        this.updateRangeValue(value.map(i => i || new Date()))
+        value[0] = value[0] ? value[0] : now
+        value[1] = value[1] ? value[1] : now
+        this.updateRangeValue(value)
       } else {
-        this.updateSingleValue(value || new Date())
+        this.updateSingleValue(value || now)
       }
     },
     updateSingleValue (value) {
@@ -91,6 +94,7 @@ export default {
     },
     clearValue () {
       // TODO 实现清除值
+      // eslint-disable-next-line no-console
       console.warn('clearable: Not implementation yet')
     },
     commitChanges () {

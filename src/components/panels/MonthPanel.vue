@@ -47,8 +47,8 @@ export default {
     },
     classes () {
       return {
-        'date-picker--month': true,
-        'date-picker--season': this.isSeason
+        'date-picker--panel-month': true,
+        'date-picker--panel-season': this.isSeason
       }
     },
     isSeason () {

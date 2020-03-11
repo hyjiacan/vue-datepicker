@@ -88,7 +88,7 @@ export default {
     },
     classes () {
       return {
-        'date-picker--week': this.isWeek
+        'date-picker--panel-week': this.isWeek
       }
     },
     isWeek () {

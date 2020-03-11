@@ -1,17 +1,17 @@
 <template>
-    <div class="demo">
-        <div class="demo-grid">
-            <single-demo/>
-            <size-demo/>
-        </div>
-        <div class="demo-grid">
-            <split-range-demo/>
-            <merged-range-demo/>
-        </div>
-        <div class="demo-grid">
-            <clear-demo />
-        </div>
+  <div class="demo">
+    <div class="demo-grid">
+      <single-demo/>
+      <size-demo/>
     </div>
+    <div class="demo-grid">
+      <merged-range-demo/>
+      <split-range-demo/>
+    </div>
+    <div class="demo-grid">
+      <clear-demo/>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -29,21 +29,33 @@ export default {
 
 <style lang="less">
 .demo-grid {
-    display: grid;
-    grid-template-columns: 50% 50%;
+  display: grid;
+  grid-template-columns: 50% 50%;
 }
 
 .date-label {
-    font-weight: bold;
-    padding: 10px;
+  font-weight: bold;
+  padding: 10px;
 }
 
 .date-value {
-    vertical-align: middle;
+  vertical-align: middle;
 
-    &:before {
-        content: 'value:';
-        margin-right: 5px;
-    }
+  &:before {
+    content: 'value:';
+    margin-right: 5px;
+  }
+}
+
+.tips {
+  color: #555555;
+  background-color: #eaeaea;
+  padding: 2px 5px;
+}
+
+div.tips {
+  margin: 5px 0 0 0;
+  border-left: 3px solid #333333;
+  padding: 10px 5px;
 }
 </style>

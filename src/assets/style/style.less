@@ -40,76 +40,75 @@
     border: none;
     width: 100%;
     outline: none;
-    display: block;
-    padding: 2px 5px;
+    padding: 0 5px;
     box-sizing: border-box;
     color: #444444;
     text-align: center;
-    line-height: inherit;
-    height: inherit;
+    line-height: 1;
+  }
+}
+
+// size
+
+.date-picker--mini {
+  .date-picker--container {
+    height: 22px;
+    line-height: 18px;
   }
 
-  &--mini {
-    .date-picker--container {
-      height: 22px;
-    }
+  .date-picker--range-begin,
+  .date-picker--range-end {
+    height: 20px;
+  }
+}
 
-    .date-picker--range-begin,
-    .date-picker--range-end {
-      height: 20px;
-    }
-
-    .date-picker--range-separator {
-      line-height: 18px;
-    }
+.date-picker--small {
+  .date-picker--container {
+    height: 26px;
+    line-height: 22px;
   }
 
-  &--small {
-    .date-picker--container {
-      height: 26px;
-    }
+  .date-picker--range-begin,
+  .date-picker--range-end {
+    height: 24px;
+  }
+}
 
-    .date-picker--range-begin,
-    .date-picker--range-end {
-      height: 24px;
-      line-height: 24px;
-    }
-
-    .date-picker--range-separator {
-      line-height: 22px;
-    }
+.date-picker--normal {
+  .date-picker--container {
+    height: 32px;
+    line-height: 28px;
   }
 
-  &--normal {
-    .date-picker--container {
-      height: 32px;
-    }
+  .date-picker--range-begin,
+  .date-picker--range-end {
+    height: 30px;
+  }
+}
 
-    .date-picker--range-begin,
-    .date-picker--range-end {
-      height: 30px;
-      line-height: 28px;
-    }
-
-    .date-picker--range-separator {
-      line-height: 28px;
-    }
+.date-picker--large {
+  .date-picker--container {
+    height: 40px;
+    line-height: 36px;
   }
 
-  &--large {
-    .date-picker--container {
-      height: 40px;
-    }
+  .date-picker--range-begin,
+  .date-picker--range-end {
+    height: 38px;
+  }
+}
 
-    .date-picker--range-begin,
-    .date-picker--range-end {
-      height: 38px;
-      line-height: 36px;
-    }
+// split
+.date-picker--split {
+  .date-picker--container {
+    border: none;
+    border-radius: unset;
+  }
 
-    .date-picker--range-separator {
-      line-height: 36px;
-    }
+  .date-picker--range-begin,
+  .date-picker--range-end {
+    border-radius: 4px;
+    border: 1px solid #DCDFE6;
   }
 }
 
@@ -345,7 +344,9 @@
   }
 }
 
-.date-picker--range-begin {
+.date-picker--range-begin,
+.date-picker--range-end {
+  overflow: hidden;
 }
 
 .date-picker--range-separator {

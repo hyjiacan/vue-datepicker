@@ -210,8 +210,12 @@ export default {
       classes.push('date-picker--range')
     }
 
-    if (this.split) {
+    if (this.split && [this.types.SEASON, this.types.WEEK].indexOf(this.type) === -1) {
       classes.push('date-picker--split')
+    }
+
+    if (this.clearable) {
+      classes.push('date-picker--clearable')
     }
 
     return createElement('div', {

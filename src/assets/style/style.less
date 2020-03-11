@@ -40,7 +40,7 @@
     border: none;
     width: 100%;
     outline: none;
-    padding: 0 5px;
+    padding: 0;
     box-sizing: border-box;
     color: #444444;
     text-align: center;
@@ -113,6 +113,7 @@
 }
 
 .date-picker--container {
+  display: grid;
   border-radius: 4px;
   border: 1px solid #DCDFE6;
   overflow: hidden;
@@ -314,27 +315,9 @@
   }
 }
 
-.date-picker--clear {
-  display: none;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  line-height: 22px;
-
-  &-button {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
-    text-align: center;
-    user-select: none;
-  }
-}
-
 .date-picker--range {
   .date-picker--container {
     width: 180px;
-    display: grid;
     grid-template-columns: auto 16px auto;
     grid-auto-flow: column;
 
@@ -360,25 +343,6 @@
 }
 
 .date-picker--range-end {
-}
-
-.date-picker--range-toolbar {
-  clear: both;
-  padding: 0 10px 10px;
-
-  &-preview {
-    float: left;
-  }
-
-  &-buttons {
-    float: right;
-  }
-
-  &:after {
-    content: ' ';
-    display: block;
-    clear: both;
-  }
 }
 
 .date-picker--panel-time {
@@ -423,4 +387,59 @@
 
 .popper {
   color: #555555;
+}
+
+// clearable
+
+.date-picker--clearable {
+  // 单个值以及非分离选择
+  // auto 16px 会根据内容自动重复
+  .date-picker--container {
+    grid-template-columns: auto 16px;
+  }
+
+  &.date-picker--datetime {
+    .date-picker--container {
+      width: 160px;
+    }
+  }
+
+  &.date-picker--range {
+    &.date-picker--datetime {
+      .date-picker--container {
+        width: 300px;
+      }
+    }
+
+    // split
+    &.date-picker--split {
+      &:not(.date-picker--datetime) .date-picker--container {
+        width: 220px;
+      }
+
+      .date-picker--range-begin,
+      .date-picker--range-end {
+        display: grid;
+        grid-template-columns: auto 16px;
+      }
+    }
+  }
+}
+
+.date-picker--clear {
+  justify-content: center;
+  align-items: center;
+
+  &-button {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    user-select: none;
+
+    &:before {
+      font-size: 16px;
+      vertical-align: -1px;
+    }
+  }
 }

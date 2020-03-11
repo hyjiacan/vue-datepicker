@@ -1,6 +1,7 @@
 import RangeLayout from '../pickers/RangeLayout'
 import Picker from '../pickers/Picker'
 import PopperWrapper from '../comps/PopperWrapper'
+import ClearButton from '../comps/ClearButton'
 
 export default {
   components: {RangeLayout, Picker, PopperWrapper},
@@ -12,16 +13,36 @@ export default {
   },
   methods: {
     renderLayout (begin, end) {
+      const slots = {}
+      if (this.clearable) {
+        if (this.split && [this.types.SEASON, this.types.WEEK].indexOf(this.type) === -1) {
+          // 分离选择
+          slots.begin = () => [begin, this.renderClearButton(this.clearBeginValue)]
+          slots.end = () => [end, this.renderClearButton(this.clearEndValue)]
+        } else {
+          // 合并选择
+          slots.begin = () => begin
+          slots.end = () => end
+          slots.append = () => this.renderClearButton(this.clearRangeValue)
+        }
+      } else {
+        slots.begin = () => begin
+        slots.end = () => end
+      }
       return this.h(RangeLayout, {
         props: {
           showClear: this.clearable
         },
-        scopedSlots: {
-          begin: () => begin,
-          end: () => end
-        },
+        scopedSlots: slots,
         on: {
           clear: this.clearValue
+        }
+      })
+    },
+    renderClearButton (handler) {
+      return this.h(ClearButton, {
+        on: {
+          clear: handler
         }
       })
     },
@@ -38,33 +59,6 @@ export default {
           }
         }
       })
-    },
-    renderToolbar () {
-      // 固定使用值  beginValue endValue
-      // 固定使用 isVisible
-      const h = this.h
-      return h('div', {
-        attrs: {
-          'class': 'date-picker--range-toolbar'
-        }
-      }, [
-        h('div', {
-          attrs: {
-            'class': 'date-picker--range-toolbar-preview'
-          }
-        }, `${this.beginValue} - ${this.endValue}`),
-        h('div', {
-          attrs: {
-            'class': 'date-picker--range-toolbar-buttons'
-          }
-        }, [h('button', {
-          on: {
-            click: () => {
-              this.isVisible = false
-            }
-          }
-        }, '确定')])
-      ])
     },
     /**
      *
@@ -141,9 +135,6 @@ export default {
         this.renderPicker('beginValue', 'isVisible', 'rangeBeginLimit', true),
         this.renderPicker('endValue', 'isVisible', 'rangeEndLimit', true)
       ]
-      if (this.toolbar) {
-        content.push(this.renderToolbar())
-      }
       return this.renderPopper(
         content,
         this.renderLayout(
@@ -166,6 +157,10 @@ export default {
     },
     // 渲染单个日期选择
     renderSinglePicker () {
+      const content = [this.renderInput('formattedValue')]
+      if (this.clearable) {
+        content.push(this.renderClearButton(this.clearSingleValue))
+      }
       return this.renderPopper(
         this.renderPicker('singleValue', 'isVisible', 'singleLimit'),
         this.h('div',
@@ -174,8 +169,7 @@ export default {
               'class': 'date-picker--container'
             }
           },
-          [this.renderInput('formattedValue')]
-        ),
+          content),
         'isVisible'
       )
     },

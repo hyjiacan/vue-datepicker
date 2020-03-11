@@ -23,6 +23,7 @@ import ClearDemo from './demos/ClearDemo'
 
 export default {
   name: 'Demo',
+  // eslint-disable-next-line vue/no-unused-components
   components: {ClearDemo, SizeDemo, SplitRangeDemo, MergedRangeDemo, SingleDemo}
 }
 </script>

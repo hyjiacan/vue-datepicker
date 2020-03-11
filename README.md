@@ -195,12 +195,6 @@ export default {
 - `5` 星期五
 - `6` 星期六
 
-#### `toolbar`
-
-> 仅在 range/!split 时有效 (未完全实现)
-
-- type: Boolean
-
 #### `visible`
 
 - type: Boolean

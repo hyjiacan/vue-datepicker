@@ -24,8 +24,6 @@ export default {
       type: Boolean,
       default: true
     },
-    // 仅在 range/!split 时有效
-    toolbar: Boolean,
     visible: Boolean,
     readonly: Boolean,
     editable: Boolean,
@@ -114,6 +112,9 @@ export default {
         type: this.type,
         value: newValue
       }, oldValue)
+    },
+    clearSingleValue () {
+      // TODO
     }
   },
   computed: {

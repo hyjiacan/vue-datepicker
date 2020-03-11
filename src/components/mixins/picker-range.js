@@ -90,6 +90,12 @@ export default {
 
       this.beginValue = util.format(beginValue, this.finalFormat)
       this.endValue = util.format(endValue, this.finalFormat)
+    },
+    clearRangeValue () {
+    },
+    clearBeginValue () {
+    },
+    clearEndValue () {
     }
   },
   computed: {

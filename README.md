@@ -245,32 +245,35 @@ export default {
 
 ```javascript
 import DatePicker from '@hyjiacan/vue-datepicker'
+// DatePicker.$util.format
 ```
 
-所有的格式，请参照 [内置格式定义](#内置格式定义) 的写法。
+导出的工具函数，在属性 `$util` 上，即: `DatePicker.$util`
+
+> 所有的格式，请参照 [内置格式定义](#内置格式定义) 的写法。
 
 ### 日期格式化
 
 ```javascript
-DatePicker.util.format(date: [Date, string, number], format: string): string
+DatePicker.$util.format(date: [Date, string, number], format: string): string
 ```
 
 ### 将其它类型的数据处理成日期类型
 
 ```javascript
-DatePicker.util.parse(date: [Date, string, number], format?: string): Date
+DatePicker.$util.parse(date: [Date, string, number], format?: string): Date
 ```
 
 ### 获取指定日期所在的周
 
 ```javascript
-DatePicker.util.getWeekRange(date: [Date, string, number], format?: string): Date[]
+DatePicker.$util.getWeekRange(date: [Date, string, number], format?: string): Date[]
 ```
 
 ### 按指定周范围获取其偏移量
 
 ```javascript
-DatePicker.util.offsetWeekRange(weekRange: Date[], offset: number): Date[]
+DatePicker.$util.offsetWeekRange(weekRange: Date[], offset: number): Date[]
 ```
 
 ## 更新日志

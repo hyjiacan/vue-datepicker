@@ -2,11 +2,11 @@
     <base-panel :view="view" @prev="onPrevYear" @next="onNextYear" :extra-class="classes"
                 :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
         <template v-slot:header>
-            <div class="date-picker-panel__header-container">
+            <div class="date-picker--panel-header-container">
                 <div @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></div>
                 <div>
-                    <span class="date-picker-panel__header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
-                    <span class="date-picker-panel__header-month"
+                    <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
+                    <span class="date-picker--panel-header-month"
                           @click="$emit('pick-month')">{{viewValue.getMonth() + 1}}月</span>
                 </div>
                 <div @click="onNextMonth" class="datepicker-iconfont datepicker--icon-right"></div>
@@ -88,7 +88,7 @@ export default {
     },
     classes () {
       return {
-        'date-picker-week': this.isWeek
+        'date-picker--week': this.isWeek
       }
     },
     isWeek () {
@@ -148,8 +148,8 @@ export default {
         return ''
       }
       return {
-        'date-picker__row-active': !row.every(cell => !cell.rowActive),
-        'date-picker__row-disabled': !row.every(cell => !cell.disabled)
+        'date-picker--row-active': !row.every(cell => !cell.rowActive),
+        'date-picker--row-disabled': !row.every(cell => !cell.disabled)
       }
     }
   }

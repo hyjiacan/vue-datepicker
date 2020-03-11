@@ -2,7 +2,7 @@
   <base-panel :extra-class="classes" :view="data" @prev="onPrevYear" @next="onNextYear"
               :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
     <template v-slot:header>
-      <span class="date-picker-panel__header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
+      <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
     </template>
   </base-panel>
 </template>
@@ -47,8 +47,8 @@ export default {
     },
     classes () {
       return {
-        'date-picker-month': true,
-        'date-picker-season': this.isSeason
+        'date-picker--month': true,
+        'date-picker--season': this.isSeason
       }
     },
     isSeason () {
@@ -80,8 +80,8 @@ export default {
         return ''
       }
       return {
-        'date-picker__row-active': !row.every(cell => !cell.rowActive),
-        'date-picker__row-disabled': !row.every(cell => !cell.disabled)
+        'date-picker--row-active': !row.every(cell => !cell.rowActive),
+        'date-picker--row-disabled': !row.every(cell => !cell.disabled)
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-    <div class="date-picker-box">
+    <div class="date-picker--box">
         <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="showTimePanel" v-if="renderTimePanel"/>
         <date-panel @pick-year="onPickYear" @pick-month="onPickMonth" @pick="onDatePicked" v-show="showDatePanel"
                     v-if="renderDatePanel">

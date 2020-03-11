@@ -45,17 +45,17 @@ export default {
       const h = this.h
       return h('div', {
         attrs: {
-          'class': 'date-picker-range-toolbar'
+          'class': 'date-picker--range-toolbar'
         }
       }, [
         h('div', {
           attrs: {
-            'class': 'date-picker-range-toolbar__preview'
+            'class': 'date-picker--range-toolbar-preview'
           }
         }, `${this.beginValue} - ${this.endValue}`),
         h('div', {
           attrs: {
-            'class': 'date-picker-range-toolbar__buttons'
+            'class': 'date-picker--range-toolbar-buttons'
           }
         }, [h('button', {
           on: {
@@ -171,7 +171,7 @@ export default {
         this.h('div',
           {
             attrs: {
-              'class': 'date-picker-container'
+              'class': 'date-picker--container'
             }
           },
           [this.renderInput('formattedValue')]
@@ -200,9 +200,18 @@ export default {
     this.h = createElement
     this.c = context
 
-    const classes = ['date-picker', `date-picker--${this.type}`, `date-picker__${this.size}`]
+    const classes = [
+      'date-picker',
+      `date-picker--${this.type}`,
+      `date-picker--${this.size}`
+    ]
+
     if (this.isRange) {
-      classes.push('date-picker-range')
+      classes.push('date-picker--range')
+    }
+
+    if (this.split) {
+      classes.push('date-picker--split')
     }
 
     return createElement('div', {

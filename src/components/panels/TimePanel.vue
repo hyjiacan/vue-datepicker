@@ -1,8 +1,8 @@
 <template>
-  <div class="date-picker-panel date-picker-time">
-    <div class="date-picker-panel__body">
-      <table class="date-picker-time__body">
-        <thead class="date-picker-time__title">
+  <div class="date-picker--panel date-picker--time">
+    <div class="date-picker--panel-body">
+      <table class="date-picker--time-body">
+        <thead class="date-picker--time-title">
         <tr>
           <td><span>{{this.time.hour | pad}}</span></td>
           <td style="width: 16px"><span>:</span></td>
@@ -14,17 +14,17 @@
         <tbody>
         <tr>
           <td>
-            <time-wheel class="date-picker-time__h" :value.sync="time.hour" :disabled.sync="disabled.hour"
+            <time-wheel class="date-picker--time-h" :value.sync="time.hour" :disabled.sync="disabled.hour"
                         :data="hours"/>
           </td>
           <td></td>
           <td>
-            <time-wheel class="date-picker-time__m" :value.sync="time.minute" :disabled.sync="disabled.minute"
+            <time-wheel class="date-picker--time-m" :value.sync="time.minute" :disabled.sync="disabled.minute"
                         :data="minutes"/>
           </td>
           <td></td>
           <td>
-            <time-wheel class="date-picker-time__s" :value.sync="time.second" :data="seconds"/>
+            <time-wheel class="date-picker--time-s" :value.sync="time.second" :data="seconds"/>
           </td>
         </tr>
         </tbody>

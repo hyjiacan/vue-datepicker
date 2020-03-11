@@ -1,5 +1,5 @@
 <template>
-  <base-panel extra-class="date-picker-year" :view="data"
+  <base-panel extra-class="date-picker--panel-year" :view="data"
               @prev="onPrevDecades" @next="onNextDecades" @pick-cell="onPick">
     <template v-slot:header>
       <span>{{startYear}}年 - {{stopYear}}年</span>

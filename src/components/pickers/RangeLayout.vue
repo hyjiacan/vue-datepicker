@@ -1,21 +1,23 @@
 <template>
-  <div class="date-picker-container" :class="{'date-picker-container__show-clear': showClear}">
-    <div class="date-picker-range__begin">
-      <slot name="begin"/>
+    <div class="date-picker--container">
+        <div class="date-picker--range-begin">
+            <slot name="begin"/>
+        </div>
+        <clear-button @clear="$emit('clear')"/>
+        <div class="date-picker--range-separator"></div>
+        <div class="date-picker--range-end">
+            <slot name="end"/>
+        </div>
+        <clear-button @clear="$emit('clear')"/>
     </div>
-    <div class="date-picker-range__separator"></div>
-    <div class="date-picker-range__end">
-      <slot name="end"/>
-    </div>
-    <div class="date-picker__clear">
-      <span class="date-picker__clear-button" @click.stop.prevent="$emit('clear')">x</span>
-    </div>
-  </div>
 </template>
 
 <script>
+import ClearButton from '../comps/ClearButton'
+
 export default {
   name: 'RangeLayout',
+  components: {ClearButton},
   props: {
     showClear: Boolean
   }

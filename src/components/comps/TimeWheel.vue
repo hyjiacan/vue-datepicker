@@ -1,19 +1,19 @@
 <template>
-  <div class="date-picker-time-wheel" @wheel="onWheel">
-    <div class="date-picker-time-wheel__prev-button datepicker-iconfont datepicker--icon-top"
+  <div class="date-picker--time-wheel" @wheel="onWheel">
+    <div class="date-picker--time-wheel-prev-button datepicker-iconfont datepicker--icon-top"
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
-    <div class="date-picker-time-wheel__prev">
+    <div class="date-picker--time-wheel-prev">
       <span :class="getCellClass(getPrevValue(prevValue))">{{getPrevValue(prevValue)}}</span>
       <span :class="getCellClass(prevValue)">{{prevValue}}</span>
     </div>
-    <div class="date-picker-time-wheel__value">
+    <div class="date-picker--time-wheel-value">
       <span :class="getCellClass(viewValue)">{{viewValue}}</span>
     </div>
-    <div class="date-picker-time-wheel__next">
+    <div class="date-picker--time-wheel-next">
       <span :class="getCellClass(nextValue)">{{nextValue}}</span>
       <span :class="getCellClass(getNextValue(nextValue))">{{getNextValue(nextValue)}}</span>
     </div>
-    <div class="date-picker-time-wheel__next-button datepicker-iconfont datepicker--icon-bottom"
+    <div class="date-picker--time-wheel-next-button datepicker-iconfont datepicker--icon-bottom"
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
   </div>
 </template>
@@ -68,7 +68,7 @@ export default {
     },
     getCellClass (val) {
       return {
-        'date-picker-panel__value-disabled': this.isDisabled(val)
+        'date-picker--panel-value-disabled': this.isDisabled(val)
       }
     },
     getPrevValue (v) {

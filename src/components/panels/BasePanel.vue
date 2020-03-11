@@ -1,22 +1,22 @@
 <template>
-  <div class="date-picker-panel" :class="extraClass || ''">
-    <div class="date-picker-panel__header">
-      <div class="date-picker-panel__header-prev datepicker-iconfont datepicker--icon-left-d" @click="$emit('prev')"></div>
-      <div class="date-picker-panel__header-content">
+  <div class="date-picker--panel" :class="extraClass || ''">
+    <div class="date-picker--panel-header">
+      <div class="date-picker--panel-header-prev datepicker-iconfont datepicker--icon-left-d" @click="$emit('prev')"></div>
+      <div class="date-picker--panel-header-content">
         <slot name="header"/>
       </div>
-      <div class="date-picker-panel__header-next datepicker-iconfont datepicker--icon-right-d" @click="$emit('next')"></div>
+      <div class="date-picker--panel-header-next datepicker-iconfont datepicker--icon-right-d" @click="$emit('next')"></div>
     </div>
-    <div class="date-picker-panel__body">
+    <div class="date-picker--panel-body">
       <table @wheel="onWheel">
         <thead>
         <slot name="title"/>
         </thead>
         <tbody>
-        <tr v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker__row" :title="getRowTip(row)"
+        <tr v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker--row" :title="getRowTip(row)"
             :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
           <td v-for="(cell, cellIndex) in row" :key="cellIndex" :title="cell.tip" @click="onCellClick(cell)">
-            <span class="date-picker-panel__value" :class="getCellClass(cell)">{{cell.text || cell.value}}</span>
+            <span class="date-picker--panel-value" :class="getCellClass(cell)">{{cell.text || cell.value}}</span>
           </td>
         </tr>
         </tbody>
@@ -43,9 +43,9 @@ export default {
   methods: {
     getCellClass (cell) {
       return {
-        'date-picker-panel__value-active': cell.active,
-        'date-picker-panel__value-overflow': cell.overflow,
-        'date-picker-panel__value-disabled': cell.disabled
+        'date-picker--panel-value-active': cell.active,
+        'date-picker--panel-value-overflow': cell.overflow,
+        'date-picker--panel-value-disabled': cell.disabled
       }
     },
     onRowClick (row, index) {

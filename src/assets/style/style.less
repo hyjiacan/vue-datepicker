@@ -49,71 +49,71 @@
     height: inherit;
   }
 
-  &__mini {
-    .date-picker-container {
+  &--mini {
+    .date-picker--container {
       height: 22px;
     }
 
-    .date-picker-range__begin,
-    .date-picker-range__end {
+    .date-picker--range-begin,
+    .date-picker--range-end {
       height: 20px;
     }
 
-    .date-picker-range__separator {
+    .date-picker--range-separator {
       line-height: 18px;
     }
   }
 
-  &__small {
-    .date-picker-container {
+  &--small {
+    .date-picker--container {
       height: 26px;
     }
 
-    .date-picker-range__begin,
-    .date-picker-range__end {
+    .date-picker--range-begin,
+    .date-picker--range-end {
       height: 24px;
       line-height: 24px;
     }
 
-    .date-picker-range__separator {
+    .date-picker--range-separator {
       line-height: 22px;
     }
   }
 
-  &__normal {
-    .date-picker-container {
+  &--normal {
+    .date-picker--container {
       height: 32px;
     }
 
-    .date-picker-range__begin,
-    .date-picker-range__end {
+    .date-picker--range-begin,
+    .date-picker--range-end {
       height: 30px;
       line-height: 28px;
     }
 
-    .date-picker-range__separator {
+    .date-picker--range-separator {
       line-height: 28px;
     }
   }
 
-  &__large {
-    .date-picker-container {
+  &--large {
+    .date-picker--container {
       height: 40px;
     }
 
-    .date-picker-range__begin,
-    .date-picker-range__end {
+    .date-picker--range-begin,
+    .date-picker--range-end {
       height: 38px;
       line-height: 36px;
     }
 
-    .date-picker-range__separator {
+    .date-picker--range-separator {
       line-height: 36px;
     }
   }
 }
 
-.date-picker-container {
+.date-picker--container {
   border-radius: 4px;
   border: 1px solid #DCDFE6;
   overflow: hidden;
@@ -123,18 +123,18 @@
 }
 
 .date-picker--datetime {
-  .date-picker-container {
+  .date-picker--container {
     width: 140px;
   }
 
-  &.date-picker-range {
-    .date-picker-container {
+  &.date-picker--range {
+    .date-picker--container {
       width: 300px;
     }
   }
 }
 
-.date-picker-popover {
+.date-picker--popover {
   background-color: #ffffff;
   user-select: none;
 
@@ -148,13 +148,13 @@
     clear: both;
   }
 
-  .date-picker-box + .date-picker-box {
+  .date-picker--box + .date-picker--box {
     border-left: 1px solid #e7e7e7;
   }
 }
 
 
-.date-picker-panel__header {
+.date-picker--panel-header {
   display: grid;
   grid-template-columns: 48px auto 48px;
   line-height: 40px;
@@ -189,12 +189,12 @@
   }
 }
 
-.date-picker-box {
+.date-picker--box {
   float: left;
   padding: 10px;
 }
 
-.date-picker-panel__body {
+.date-picker--panel-body {
   box-sizing: border-box;
 
   table {
@@ -231,7 +231,7 @@
   transition-duration: 312ms;
 }
 
-.date-picker-panel__value {
+.date-picker--panel-value {
   @size: 30px;
   border-radius: 8px;
   display: block;
@@ -263,16 +263,16 @@
   }
 }
 
-.date-picker-year, .date-picker-month {
-  .date-picker-panel__value {
+.date-picker--panel-year, .date-picker--panel-month {
+  .date-picker--panel-value {
     width: 60px;
     height: 40px;
     line-height: 40px;
   }
 }
 
-.date-picker-week, .date-picker-season {
-  tr.date-picker__row {
+.date-picker--panel-week, .date-picker--panel-season {
+  tr.date-picker--row {
     td {
       color: unset;
       transition: color 312ms, background-color 312ms;
@@ -289,7 +289,7 @@
         border-radius: 0 @radius @radius 0;
       }
 
-      .date-picker-panel__value {
+      .date-picker--panel-value {
         &:hover, &-active {
           color: unset;
           background-color: unset;
@@ -315,7 +315,7 @@
   }
 }
 
-.date-picker__clear {
+.date-picker--clear {
   display: none;
   align-content: center;
   justify-content: center;
@@ -332,20 +332,12 @@
   }
 }
 
-.date-picker-range {
-  .date-picker-container {
+.date-picker--range {
+  .date-picker--container {
     width: 180px;
     display: grid;
     grid-template-columns: auto 16px auto;
     grid-auto-flow: column;
-
-    &.date-picker-container__show-clear {
-      grid-template-columns: auto 16px auto 24px;
-
-      .date-picker__clear {
-        display: flex;
-      }
-    }
 
     input {
       border: none;
@@ -353,10 +345,10 @@
   }
 }
 
-.date-picker-range__begin {
+.date-picker--range-begin {
 }
 
-.date-picker-range__separator {
+.date-picker--range-separator {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -366,18 +358,18 @@
   }
 }
 
-.date-picker-range__end {
+.date-picker--range-end {
 }
 
-.date-picker-range-toolbar {
+.date-picker--range-toolbar {
   clear: both;
   padding: 0 10px 10px;
 
-  &__preview {
+  &-preview {
     float: left;
   }
 
-  &__buttons {
+  &-buttons {
     float: right;
   }
 
@@ -388,12 +380,12 @@
   }
 }
 
-.date-picker-time {
-  .date-picker-panel__body {
+.date-picker--panel-time {
+  .date-picker--panel-body {
     padding-top: 5px;
   }
 
-  .date-picker-time__body {
+  .date-picker--panel-time-body {
     width: 240px;
     height: 160px;
     margin: 0 auto;
@@ -404,16 +396,16 @@
   }
 }
 
-.date-picker-time__title {
+.date-picker--panel-time-title {
   font-size: large;
 }
 
-.date-picker-time-wheel__value {
+.date-picker--panel-time-wheel-value {
   color: #126ac4;
   border: 1px solid #888888;
 }
 
-.date-picker-time-wheel__prev, .date-picker-time-wheel__next {
+.date-picker--panel-time-wheel-prev, .date-picker--panel-time-wheel-next {
   color: #888888;
 
   > span {
@@ -422,8 +414,8 @@
   }
 }
 
-.date-picker-time-wheel__prev > span:first-child,
-.date-picker-time-wheel__next > span:last-child {
+.date-picker--panel-time-wheel-prev > span:first-child,
+.date-picker--panel-time-wheel-next > span:last-child {
   color: #cccccc;
   border: 1px solid #EEEEEE;
 }

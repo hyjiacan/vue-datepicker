@@ -106,9 +106,11 @@ export default {
       return [util.format(this.beginValue, this.finalFormat), util.format(this.endValue, this.finalFormat)]
     },
     formattedBeginValue () {
+      // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
       return this.formattedRangeValue[0]
     },
     formattedEndValue () {
+      // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
       return this.formattedRangeValue[1]
     },
     rangeBeginLimit () {

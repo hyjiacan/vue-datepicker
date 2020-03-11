@@ -260,7 +260,7 @@ const util = {
    * @param {Object} [option]
    * @param {Number} [option.year]
    * @param {Number} [option.month]
-   * @param {Number} [option.day]
+   * @param {Number} [option.date]
    * @param {Number} [option.hour]
    * @param {Number} [option.minute]
    * @param {Number} [option.second]
@@ -354,6 +354,12 @@ const util = {
    * @return {boolean}
    */
   equals (date1, date2, format) {
+    if (!date1 && !date2) {
+      return true
+    }
+    if (!date1 || !date2) {
+      return false
+    }
     return this.format(date1, format) === this.format(date2, format)
   },
   pad (val, len, fill) {

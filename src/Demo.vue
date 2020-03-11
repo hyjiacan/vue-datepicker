@@ -1,156 +1,32 @@
 <template>
     <div class="demo">
         <div class="demo-grid">
-            <div>
-                <h4>选择指定日期</h4>
-                <div class="date-label">年</div>
-                <date-picker :week-start="weekStart" v-model="year" type="year" @change="onChange" min="2016" max="2022"
-                             :mousewheel="false" :visible="true"/>
-                <div>(min="2016" max="2022")</div>
-                <div class="date-value">{{year}}</div>
-                <div class="date-label">年-月</div>
-                <date-picker :week-start="weekStart" v-model="month" type="month" @change="onChange" min="2016-05"
-                             max="2022-10"/>
-                <div>(min="2016-05" max="2022-10")</div>
-                <div class="date-value">{{month}}</div>
-                <div class="date-label">年-月-日</div>
-                <date-picker :week-start="weekStart" v-model="date" type="date" @change="onChange" min="2016-05-10"
-                             max="2022-10-20"/>
-                <div>(min="2016-05-10" max="2022-10-20")</div>
-                <div class="date-value">{{date}}</div>
-                <div class="date-label">时间</div>
-                <date-picker :week-start="weekStart" v-model="time" type="time" @change="onChange" min="09:00"
-                             max="20:30"/>
-                <div>(min="09:00" max="20:30")</div>
-                <div class="date-value">{{time}}</div>
-                <div class="date-label">年-月-日 时间</div>
-                <date-picker :week-start="weekStart" v-model="datetime" type="datetime" @change="onChange"
-                             min="2020-05-10 09:00"
-                             max="2020-10-20 20:30"/>
-                <div>(min="2020-05-10 09:00" max="2020-10-20 20:30")</div>
-                <div class="date-value">{{datetime}}</div>
-                <div class="date-label">年-季度</div>
-                <date-picker range :week-start="weekStart" v-model="rseason" type="season" @change="onChange"/>
-                <div class="date-value">{{rseason}}</div>
-                <div class="date-label">年-周</div>
-                <date-picker range :week-start="weekStart" v-model="rweek" type="week" @change="onChange"/>
-                <div class="date-value">{{rweek}}</div>
-            </div>
-            <div>
-                <h4>选择日期范围(一次弹框选择[<i>默认</i>])</h4>
-                <div class="date-label">年</div>
-                <date-picker range :week-start="weekStart" v-model="ryear" type="year" @change="onChange" readonly/>
-                <div class="date-value">{{ryear}}</div>
-                <div class="date-label">年-月</div>
-                <date-picker range :week-start="weekStart" v-model="rmonth" type="month" @change="onChange"/>
-                <div class="date-value">{{rmonth}}</div>
-                <div class="date-label">年-月-日</div>
-                <date-picker range :week-start="weekStart" v-model="rdate" type="date" @change="onChange"/>
-                <div class="date-value">{{rdate}}</div>
-                <div class="date-label">时间</div>
-                <date-picker range :week-start="weekStart" v-model="rtime" type="time" @change="onChange" min="09:00"
-                             max="20:30"/>
-                <div>(min="09:00" max="20:30")</div>
-                <div class="date-value">{{rtime}}</div>
-                <div class="date-label">年-月-日 时间</div>
-                <date-picker range :week-start="weekStart" v-model="rdatetime" type="datetime" @change="onChange"
-                             min="2020-05-10 09:00"
-                             max="2020-10-20 20:30"/>
-                <div>(min="2020-05-10 09:00" max="2020-10-20 20:30")</div>
-                <div class="date-value">{{rdatetime}}</div>
-            </div>
-
-            <div>
-                <h4>选择日期范围(分两次弹框选择)</h4>
-                <div class="date-label">年</div>
-                <date-picker range :week-start="weekStart" v-model="ryear" type="year" @change="onChange" split/>
-                <div class="date-value">{{ryear}}</div>
-                <div class="date-label">年-月</div>
-                <date-picker range :week-start="weekStart" v-model="rmonth" type="month" @change="onChange" split/>
-                <div class="date-value">{{rmonth}}</div>
-                <div class="date-label">年-月-日</div>
-                <date-picker range :week-start="weekStart" v-model="rdate" type="date" @change="onChange" split/>
-                <div class="date-value">{{rdate}}</div>
-                <div class="date-label">时间</div>
-                <date-picker range :week-start="weekStart" v-model="rtime" type="time" @change="onChange" split
-                             min="09:00" max="20:30"/>
-                <div>(min="09:00" max="20:30")</div>
-                <div class="date-value">{{rtime}}</div>
-                <div class="date-label">年-月-日 时间</div>
-                <date-picker range :week-start="weekStart" v-model="rdatetime" type="datetime" @change="onChange" split
-                             min="2020-05-10 09:00"
-                             max="2020-10-20 20:30"/>
-                <div>(min="2020-05-10 09:00" max="2020-10-20 20:30")</div>
-                <div class="date-value">{{rdatetime}}</div>
-            </div>
+            <single-demo/>
+            <merged-range-demo/>
         </div>
-        <div>
-            <h3>不同的尺寸</h3>
-            <ul>
-                <li>
-                    <span>mini:</span>
-                    <date-picker range :value="[new Date(), new Date()]" size="mini"/>
-                </li>
-                <li>
-                    <span>small:</span>
-                    <date-picker range :value="[new Date(), new Date()]" size="small"/>
-                </li>
-                <li>
-                    <span>normal:</span>
-                    <date-picker range :value="[new Date(), new Date()]" size="normal"/>
-                </li>
-                <li>
-                    <span>large:</span>
-                    <date-picker range :value="[new Date(), new Date()]" size="large"/>
-                </li>
-            </ul>
+        <div class="demo-grid">
+            <split-range-demo/>
+            <size-demo/>
         </div>
     </div>
 </template>
 
 <script>
-import DatePicker from './components'
+import SingleDemo from './demos/SingleDemo'
+import MergedRangeDemo from './demos/MergedRangeDemo'
+import SplitRangeDemo from './demos/SplitRangeDemo'
+import SizeDemo from './demos/SizeDemo'
 
 export default {
   name: 'Demo',
-  components: {DatePicker},
-  data () {
-    return {
-      weekStart: 6,
-      year: '2020',
-      month: '2020-01',
-      date: '2020-01-01',
-      time: '12:15',
-      datetime: '2020-01-01 12:15',
-      ryear: ['2020', '2022'],
-      rseason: ['2020-01-12'],
-      rmonth: ['2020-01-12', '2022-10-12'],
-      rweek: ['2020-01-01'],
-      rdate: ['2020-01-01', '2022-10-01'],
-      rtime: ['12:15', '20:30'],
-      rdatetime: ['2020-01-01 12:15', '2022-10-01 20:30']
-    }
-  },
-  // watch: {
-  //   rweek (v) {
-  //     console.info('rweek', v)
-  //   },
-  //   rseason (v) {
-  //     console.info('rseason', v)
-  //   }
-  // },
-  methods: {
-    onChange ({type, value}, oldValue) {
-      console.info(type, value, oldValue)
-    }
-  }
+  components: {SizeDemo, SplitRangeDemo, MergedRangeDemo, SingleDemo}
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .demo-grid {
     display: grid;
-    grid-template-columns: 33.33% 33.33% 33.33%;
+    grid-template-columns: 50% 50%;
 }
 
 .date-label {
@@ -166,18 +42,4 @@ export default {
         margin-right: 5px;
     }
 }
-
-li {
-    margin: 10px 0;
-}
-
-/*.left {*/
-/*  float: left;*/
-/*  width: 400px;*/
-/*}*/
-
-/*.right {*/
-/*  float: left;*/
-/*  width: 400px;*/
-/*}*/
 </style>

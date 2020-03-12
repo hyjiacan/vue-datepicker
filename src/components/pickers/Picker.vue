@@ -1,16 +1,16 @@
 <template>
-    <div class="date-picker--box">
-        <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="showTimePanel" v-if="renderTimePanel"/>
-        <date-panel @pick-year="onPickYear" @pick-month="onPickMonth" @pick="onDatePicked" v-show="showDatePanel"
-                    v-if="renderDatePanel">
-            <template v-slot:append>
-                <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="renderDateTimePanel"/>
-            </template>
-        </date-panel>
-        <month-panel @pick-year="onPickYear" @pick="onMonthPicked" v-show="showMonthPanel"
-                     v-if="renderDatePanel || renderMonthPanel"/>
-        <year-panel v-show="currentType === types.YEAR" @pick="onYearPicked"/>
-    </div>
+  <div class="date-picker--box">
+    <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="showTimePanel" v-if="renderTimePanel"/>
+    <date-panel @pick-year="onPickYear" @pick-month="onPickMonth" @pick="onDatePicked" v-show="showDatePanel"
+                v-if="renderDatePanel">
+      <template v-slot:append>
+        <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="renderDateTimePanel"/>
+      </template>
+    </date-panel>
+    <month-panel @pick-year="onPickYear" @pick="onMonthPicked" v-show="showMonthPanel"
+                 v-if="renderDatePanel || renderMonthPanel"/>
+    <year-panel v-show="currentType === types.YEAR" @pick="onYearPicked"/>
+  </div>
 </template>
 
 <script>
@@ -145,7 +145,7 @@ export default {
     },
     changeValue (value) {
       this.isVisible = false
-      const oldValue = util.format(this.value, this.format)
+      const oldValue = this.value ? util.format(this.value, this.format) : this.value
       const newValue = util.format(value, this.format)
 
       this.$emit('input', newValue)
@@ -169,7 +169,8 @@ export default {
      * 将传入的日期处理成 Date 对象
      */
     dateValue () {
-      return util.parse(this.value, this.format)
+      // 为空时使用当前日期
+      return this.value ? util.parse(this.value, this.format) : new Date()
     },
     renderTimePanel () {
       return this.type === this.types.TIME

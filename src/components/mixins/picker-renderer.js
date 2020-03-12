@@ -33,10 +33,7 @@ export default {
         props: {
           showClear: this.clearable
         },
-        scopedSlots: slots,
-        on: {
-          clear: this.clearValue
-        }
+        scopedSlots: slots
       })
     },
     renderClearButton (handler) {

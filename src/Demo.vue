@@ -29,6 +29,10 @@ export default {
 </script>
 
 <style lang="less">
+.demo {
+  padding-bottom: 160px;
+}
+
 .demo-grid {
   display: grid;
   grid-template-columns: 50% 50%;

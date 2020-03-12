@@ -24,6 +24,10 @@ export default {
   },
   watch: {
     beginValue (v) {
+      if (!v) {
+        this.commitChanges()
+        return
+      }
       v = util.parse(v, this.finalFormat)
       let temp
       let commit = false
@@ -53,6 +57,10 @@ export default {
       }
     },
     endValue (v) {
+      if (!v) {
+        this.commitChanges()
+        return
+      }
       v = util.parse(v, this.finalFormat)
       switch (this.type) {
         // case this.types.SEASON:
@@ -71,6 +79,11 @@ export default {
   },
   methods: {
     updateRangeValue (value) {
+      if (!value[0]) {
+        this.beginValue = ''
+        this.endValue = value[1] ? util.format(value[1], this.finalFormat) : value[1]
+        return
+      }
       let beginValue = util.parse(value[0], this.finalFormat)
 
       let endValue
@@ -89,13 +102,17 @@ export default {
       }
 
       this.beginValue = util.format(beginValue, this.finalFormat)
-      this.endValue = util.format(endValue, this.finalFormat)
+      this.endValue = endValue ? util.format(endValue, this.finalFormat) : endValue
     },
     clearRangeValue () {
+      this.beginValue = ''
+      this.endValue = ''
     },
     clearBeginValue () {
+      this.beginValue = ''
     },
     clearEndValue () {
+      this.endValue = ''
     }
   },
   computed: {
@@ -103,7 +120,10 @@ export default {
       return this.range || [this.types.SEASON, this.types.WEEK].indexOf(this.type) !== -1
     },
     formattedRangeValue () {
-      return [util.format(this.beginValue, this.finalFormat), util.format(this.endValue, this.finalFormat)]
+      return [
+        this.beginValue ? util.format(this.beginValue, this.finalFormat) : this.beginValue,
+        this.endValue ? util.format(this.endValue, this.finalFormat) : this.endValue
+      ]
     },
     formattedBeginValue () {
       // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
@@ -114,14 +134,15 @@ export default {
       return this.formattedRangeValue[1]
     },
     rangeBeginLimit () {
-      const v = util.parse(this.endValue, this.finalFormat).getTime()
+      // 设置为0表示不限制
+      const v = this.endValue ? util.parse(this.endValue, this.finalFormat).getTime() : 0
       return [
         this.minValue,
         !this.maxValue || v < this.maxValue ? v : this.maxValue
       ]
     },
     rangeEndLimit () {
-      const v = util.parse(this.beginValue, this.finalFormat).getTime()
+      const v = this.beginValue ? util.parse(this.beginValue, this.finalFormat).getTime() : 0
       return [
         !this.minValue || v > this.minValue ? v : this.minValue,
         this.maxValue

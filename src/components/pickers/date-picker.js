@@ -88,7 +88,7 @@ export default {
       }
     },
     updateSingleValue (value) {
-      this.singleValue = util.format(value, this.finalFormat)
+      this.singleValue = value ? util.format(value, this.finalFormat) : value
     },
     clearValue () {
       // TODO 实现清除值
@@ -114,7 +114,7 @@ export default {
       }, oldValue)
     },
     clearSingleValue () {
-      // TODO
+      this.singleValue = ''
     }
   },
   computed: {
@@ -126,7 +126,7 @@ export default {
       return this.format || formats[this.type]
     },
     formattedValue () {
-      return util.format(this.singleValue, this.finalFormat)
+      return this.singleValue ? util.format(this.singleValue, this.finalFormat) : this.singleValue
     },
     allowEdit () {
       return this.editable && !this.readonly

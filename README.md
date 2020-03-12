@@ -39,7 +39,7 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 
 ### 浏览器环境 (umd)
 
-> Since version 2.4.0
+> Since 2.4.0
  
 与 NodeJS 环境不同的是，会暴露一个小写的全局 `datepicker`。
 
@@ -205,6 +205,8 @@ export default {
 
 #### `shortcuts`
 
+> Since 0.3.0
+
 - type: Array
 
 快捷按钮的数据，这是一个对象数组。每一项的结构为:
@@ -220,10 +222,12 @@ export default {
 
 #### `shortcuts-orientation`
 
+> Since 0.3.0
+
 - type: String
 - default: vertical
 
-控制快捷键槽的方向，`horizon`表示水平放置，此时放置在上方；`vertical`表示竖直放置，此时放置在左侧。
+控制快捷按钮槽的方向，`horizon`表示水平放置，此时放置在上方；`vertical`表示竖直放置，此时放置在左侧。
 其宽度由内容宽度决定。
 
 #### `readonly`
@@ -255,6 +259,12 @@ export default {
 参数: `({type, value}, oldValue)`
 
 - type 指定的类型
+
+## 插槽
+
+#### `shortcuts`
+
+放置自定义的快捷按钮。
 
 ## 工具函数
 
@@ -338,7 +348,7 @@ getSeasonRange(date: Date, offset?: number, appendTime?: boolean): Date[];
 
 ## 更新日志
 
-### 0.2.8
+### 0.3.0
 
 - 优化 日历上对年的限制 1900 到 2999
 - 优化 范围选择样式
@@ -346,7 +356,7 @@ getSeasonRange(date: Date, offset?: number, appendTime?: boolean): Date[];
 - 优化 统一样式类命名规则
 - 添加 清除值功能
 - 添加 空值支持
-- 添加 `slots=shortcut`，用于放置快捷键
+- 添加 `shortcuts`属性以及`slots=shortcut`，用于放置快捷按钮
 
 ### 0.2.6
 

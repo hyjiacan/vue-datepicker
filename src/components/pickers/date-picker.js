@@ -87,11 +87,6 @@ export default {
     updateSingleValue (value) {
       this.singleValue = value ? util.format(value, this.finalFormat) : value
     },
-    clearValue () {
-      // TODO 实现清除值
-      // eslint-disable-next-line no-console
-      console.warn('clearable: Not implementation yet')
-    },
     commitChanges () {
       const oldValue = this.isRange ? this.value.map(v => v ? util.format(v, this.finalFormat) : v) : (this.value ? util.format(this.value, this.finalFormat) : this.value)
       const newValue = this.isRange ? this.formattedRangeValue : this.formattedValue

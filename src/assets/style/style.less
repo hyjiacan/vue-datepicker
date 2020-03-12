@@ -460,11 +460,35 @@
   overflow: hidden;
 }
 
+.date-picker--shortcuts-button {
+  width: 80px;
+  border: 1px solid #eaeaea;
+  background-color: #ffffff;
+  cursor: pointer;
+  color: #555555;
+  padding: 10px 5px;
+  outline: none;
+
+  &:hover, &:active {
+    color: #137DE2;
+  }
+}
+
 .date-picker--shortcuts-vertical {
   .date-picker--shortcuts {
     float: left;
     height: 340px;
     border-right: 1px solid #eaeaea;
+  }
+
+  .date-picker--shortcuts-button {
+    margin-bottom: -1px;
+    display: block;
+    border-right: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    white-space: nowrap;
   }
 }
 
@@ -473,15 +497,18 @@
     border-bottom: 1px solid #eaeaea;
   }
 
-  .date-picker--split {
-    .date-picker--shortcuts {
-      width: 300px;
-    }
+  .date-picker--shortcuts {
+    width: 300px;
   }
 
-  &:not(.date-picker--split) {
+  &.date-picker--range:not(.date-picker--split) {
     .date-picker--shortcuts {
       width: 600px;
     }
+  }
+
+  .date-picker--shortcuts-button {
+    margin-right: -1px;
+    margin-bottom: 1px;
   }
 }

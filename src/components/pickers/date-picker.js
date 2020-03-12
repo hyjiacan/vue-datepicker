@@ -28,6 +28,10 @@ export default {
     readonly: Boolean,
     editable: Boolean,
     clearable: Boolean,
+    shortcuts: {
+      type: Array,
+      default: () => []
+    },
     shortcutsOrientation: {
       type: String,
       default: 'vertical'

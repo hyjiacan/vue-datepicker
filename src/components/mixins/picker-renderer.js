@@ -2,6 +2,7 @@ import RangeLayout from '../pickers/RangeLayout'
 import Picker from '../pickers/Picker'
 import PopperWrapper from '../comps/PopperWrapper'
 import ClearButton from '../comps/ClearButton'
+import Shortcuts from '../comps/Shortcuts'
 
 export default {
   components: {RangeLayout, Picker, PopperWrapper},
@@ -69,12 +70,8 @@ export default {
 
       const slots = Array.isArray(content) ? content : [content]
 
-      if (this.$slots.shortcut) {
-        slots.unshift(h('div', {
-          attrs: {
-            'class': 'date-picker--shortcuts'
-          }
-        }, this.$slots.shortcut))
+      if (this.$slots.shortcut || this.shortcuts.length) {
+        slots.unshift(this.renderShortcuts(this.$slots.shortcut))
       }
 
       return h(PopperWrapper, {
@@ -93,6 +90,20 @@ export default {
           }
         }
       })
+    },
+    renderShortcuts (content) {
+      content = content || []
+
+      return this.h(Shortcuts, {
+        props: {
+          data: this.shortcuts
+        },
+        on: {
+          change: ({value}) => {
+            this.updateValue(value)
+          }
+        }
+      }, Array.isArray(content) ? content : [content])
     },
     renderPicker (valueName, visibleName, limitName, doNotAutoClose) {
       const h = this.h

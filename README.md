@@ -123,6 +123,8 @@ export default {
 例外的是，按**星期**和**季度**选择时，可以仅传入一个值。
 此时会自动根据传入日期所在范围设置值。
 
+> 若要使用空值时，请传入空字符串 `''`。 
+
 #### `type`
 
 - type: String
@@ -200,6 +202,21 @@ export default {
 - type: Boolean
 
 控制弹出框是否可见。设置为`true`以显示。
+
+#### `shortcuts`
+
+- type: Array
+
+快捷按钮的数据，这是一个对象数组。每一项的结构为:
+```json
+{
+  "text": "按钮文本",
+  "value": "按钮的值"
+}
+```
+
+其中，`value` 在指定了 `range` 时为数组，否则为单个值。`text` 是按钮显示的文字。
+在`shortcuts-orientation=vertical`时，一般最多不超过5个中文字符，超过时会自动显示为省略号。
 
 #### `shortcuts-orientation`
 

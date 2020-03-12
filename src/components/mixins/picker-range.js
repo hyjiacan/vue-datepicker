@@ -96,8 +96,8 @@ export default {
           [beginValue, endValue] = util.getSeasonRange(beginValue)
           break
         default:
-          beginValue = this.value[0]
-          endValue = this.value[1]
+          beginValue = value[0]
+          endValue = value[1]
           break
       }
 

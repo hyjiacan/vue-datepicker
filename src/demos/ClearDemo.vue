@@ -2,6 +2,7 @@
   <div>
     <h3>清除值</h3>
     <div class="date-label">日期</div>
+    <date-picker type="date" value="5-6-5" clearable/>
     <date-picker type="date" v-model="date" clearable/>
     <div class="date-value">{{date}}</div>
 

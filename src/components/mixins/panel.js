@@ -1,4 +1,6 @@
 import types from '../../assets/script/types'
+import {MAX_YEAR, MIN_YEAR} from '../../assets/script/option'
+import util from '../../assets/script/util'
 
 export default {
   inject: {
@@ -6,7 +8,9 @@ export default {
   },
   data () {
     return {
-      types
+      types,
+      MIN_YEAR,
+      MAX_YEAR
     }
   },
   computed: {
@@ -62,6 +66,14 @@ export default {
         }
       }
       return false
+    },
+    getPrevYearByViewDate () {
+      const temp = this.viewValue.getFullYear() - 1
+      return util.setDate(this.viewValue, {year: temp < this.MIN_YEAR ? this.MIN_YEAR : temp})
+    },
+    getNextYearByViewDate () {
+      const temp = this.viewValue.getFullYear() + 1
+      return util.setDate(this.viewValue, {year: temp > this.MAX_YEAR ? this.MAX_YEAR : temp})
     }
   }
 }

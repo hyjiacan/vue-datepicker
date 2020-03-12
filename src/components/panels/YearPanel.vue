@@ -68,7 +68,14 @@ export default {
       if (this.startYear <= year && year < this.stopYear) {
         return
       }
-      this.startYear = parseInt(Math.floor(year / 10).toString() + '0') - this.offset
+      const temp = parseInt(Math.floor(year / 10).toString() + '0') - this.offset
+      if (temp < this.MIN_YEAR) {
+        this.startYear = this.MIN_YEAR
+      } else if (temp > this.MAX_YEAR) {
+        this.startYear = this.MAX_YEAR - this.offset - 9
+      } else {
+        this.startYear = temp
+      }
     },
     onPrevDecades () {
       this.viewValue = util.setDate(this.viewValue, {year: this.startYear - this.offset})

@@ -1,26 +1,26 @@
 <template>
-    <base-panel :view="view" @prev="onPrevYear" @next="onNextYear" :extra-class="classes"
-                :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
-        <template v-slot:header>
-            <div class="date-picker--panel-header-container">
-                <div @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></div>
-                <div>
-                    <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
-                    <span class="date-picker--panel-header-month"
-                          @click="$emit('pick-month')">{{viewValue.getMonth() + 1}}月</span>
-                </div>
-                <div @click="onNextMonth" class="datepicker-iconfont datepicker--icon-right"></div>
-            </div>
-        </template>
-        <template v-slot:title>
-            <tr>
-                <th v-for="t in header" :key="t.day">{{weekDays[t.day]}}</th>
-            </tr>
-        </template>
-        <template v-slot:append>
-            <slot name="append"/>
-        </template>
-    </base-panel>
+  <base-panel :view="view" @prev="onPrevYear" @next="onNextYear" :extra-class="classes"
+              :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
+    <template v-slot:header>
+      <div class="date-picker--panel-header-container">
+        <div @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></div>
+        <div>
+          <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
+          <span class="date-picker--panel-header-month"
+                @click="$emit('pick-month')">{{viewValue.getMonth() + 1}}月</span>
+        </div>
+        <div @click="onNextMonth" class="datepicker-iconfont datepicker--icon-right"></div>
+      </div>
+    </template>
+    <template v-slot:title>
+      <tr>
+        <th v-for="t in header" :key="t.day">{{weekDays[t.day]}}</th>
+      </tr>
+    </template>
+    <template v-slot:append>
+      <slot name="append"/>
+    </template>
+  </base-panel>
 </template>
 
 <script>
@@ -117,14 +117,14 @@ export default {
         this.onPrevMonth()
         return
       }
-      this.viewValue = util.setDate(this.viewValue, {year: this.viewValue.getFullYear() - 1})
+      this.viewValue = this.getPrevYearByViewDate()
     },
     onNextYear (e) {
       if (e && e.wheel) {
         this.onNextMonth()
         return
       }
-      this.viewValue = util.setDate(this.viewValue, {year: this.viewValue.getFullYear() + 1})
+      this.viewValue = this.getNextYearByViewDate()
     },
     onPickCell ({year, month, value}) {
       if (this.isWeek) {

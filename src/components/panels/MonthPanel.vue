@@ -10,7 +10,6 @@
 <script>
 import BasePanel from './BasePanel'
 import mixin from '../mixins/panel'
-import util from '../../assets/script/util'
 
 export default {
   name: 'MonthPanel',
@@ -57,10 +56,10 @@ export default {
   },
   methods: {
     onPrevYear () {
-      this.viewValue = util.setDate(this.viewValue, {year: this.viewValue.getFullYear() - 1})
+      this.viewValue = this.getPrevYearByViewDate()
     },
     onNextYear () {
-      this.viewValue = util.setDate(this.viewValue, {year: this.viewValue.getFullYear() + 1})
+      this.viewValue = this.getNextYearByViewDate()
     },
     onPickCell ({year, value}) {
       if (this.isSeason) {

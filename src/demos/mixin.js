@@ -4,7 +4,7 @@ export default {
       weekStart: 6,
       year: '2020',
       month: '2020-01',
-      date: '2020-01-01',
+      date: '',
       time: '12:15',
       datetime: '2020-01-01 12:15',
       ryear: ['2020', '2022'],

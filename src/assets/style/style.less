@@ -453,3 +453,35 @@
     }
   }
 }
+
+.date-picker--shortcuts {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.date-picker--shortcuts-vertical {
+  .date-picker--shortcuts {
+    float: left;
+    height: 340px;
+    border-right: 1px solid #eaeaea;
+  }
+}
+
+.date-picker--shortcuts-horizon {
+  .date-picker--shortcuts {
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  .date-picker--split {
+    .date-picker--shortcuts {
+      width: 300px;
+    }
+  }
+
+  &:not(.date-picker--split) {
+    .date-picker--shortcuts {
+      width: 600px;
+    }
+  }
+}

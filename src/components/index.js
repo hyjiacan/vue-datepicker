@@ -8,7 +8,8 @@ DatePicker.$util = {
   format: util.format.bind(util),
   parse: util.parse.bind(util),
   getWeekRange: util.getWeekRange.bind(util),
-  offsetWeekRange: util.offsetWeekRange.bind(util)
+  getMonthRange: util.getMonthRange.bind(util),
+  getSeasonRange: util.getSeasonRange.bind(util)
 }
 
 export default DatePicker

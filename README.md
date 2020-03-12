@@ -201,6 +201,14 @@ export default {
 
 控制弹出框是否可见。设置为`true`以显示。
 
+#### `shortcuts-orientation`
+
+- type: String
+- default: vertical
+
+控制快捷键槽的方向，`horizon`表示水平放置，此时放置在上方；`vertical`表示竖直放置，此时放置在左侧。
+其宽度由内容宽度决定。
+
 #### `readonly`
 
 > (未实现)
@@ -221,7 +229,7 @@ export default {
 
 - type: Boolean
 
-控制清除按钮是否可见。设置为`true`以显示。
+控制清除功能是否可用。可用时会显示清除按钮。
 
 ## 事件
 
@@ -242,35 +250,86 @@ import DatePicker from '@hyjiacan/vue-datepicker'
 // DatePicker.$util.format
 ```
 
-导出的工具函数，在属性 `$util` 上，即: `DatePicker.$util`
+导出的工具函数，在属性 `$util` 上，如: `DatePicker.$util.format`
 
 > 所有的格式，请参照 [内置格式定义](#内置格式定义) 的写法。
 
 ### 日期格式化
 
 ```javascript
-DatePicker.$util.format(date: [Date, string, number], format: string): string
+/**
+ * 将任意格式的日期格式化成指定的格式
+ * @param {Date|String|Number} date
+ * @param {String} format 输出格式
+ * @param {String} [inputFormat] 当 date 是字符串时，通过此参数指定格式，不指定时使用 format 的值
+ * @return {string}
+ */
+format(date: [Date, String, Number], format: String, inputFormat?: string): string;
 ```
 
 ### 将其它类型的数据处理成日期类型
 
 ```javascript
-DatePicker.$util.parse(date: [Date, string, number], format?: string): Date
+/**
+ * 将任意类型的日期格式转换成 Date 类型
+ * @param {Date|String|Number} date
+ * @param {String} [format] 当 date 是字符串时，通过此参数指定格式
+ * @return {Date}
+ */
+parse(date: [Date, String, Number], format?: string): Date;
 ```
 
-### 获取指定日期所在的周
+### 获取指定日期所在的周的范围
 
 ```javascript
-DatePicker.$util.getWeekRange(date: [Date, string, number], format?: string): Date[]
+/**
+ * 根据一个日期，谋算出其所在周的起止日期
+ * @param {Date} date
+ * @param {number} [weekStart=0]
+ * @param {number} [offset=0] 月偏移量，可以是任意整数
+ * @param {boolean} [appendTime=false] 是否附带时间串
+ * @return {Array<Date>}
+ */
+getWeekRange(date: Date, weekStart?: number, offset?: number, appendTime?: boolean): Date[];
 ```
 
-### 按指定周范围获取其偏移量
+### 获取指定日期所在的月的范围
 
 ```javascript
-DatePicker.$util.offsetWeekRange(weekRange: Date[], offset: number): Date[]
+/**
+ * 根据一个日期，谋算出其所在月的起止日期 (月的第一天和最后一天)
+ * @param {Date} date
+ * @param {number} [offset=0] 月偏移量，可以是任意整数
+ * @param {boolean} [appendTime=false] 是否附带时间串
+ * @return {Array<Date>}
+ */
+getMonthRange(date: Date, offset?: number, appendTime?: boolean): Date[];
+```
+
+### 获取指定日期所在的季度的范围
+
+```javascript
+/**
+ * 根据一个日期，谋算出其所在季度的起止日期
+ * @param {Date} date
+ * @param {number} [offset=0] 月偏移量，可以是任意整数
+ * @param {boolean} [appendTime=false] 是否附带时间串
+ * @return {Date[]}
+ */
+getSeasonRange(date: Date, offset?: number, appendTime?: boolean): Date[];
 ```
 
 ## 更新日志
+
+### 0.2.8
+
+- 优化 日历上对年的限制 1900 到 2999
+- 优化 范围选择样式
+- 优化 函数功能
+- 优化 统一样式类命名规则
+- 添加 清除值功能
+- 添加 空值支持
+- 添加 `slots=shortcut`，用于放置快捷键
 
 ### 0.2.6
 

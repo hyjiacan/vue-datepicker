@@ -27,7 +27,11 @@ export default {
     visible: Boolean,
     readonly: Boolean,
     editable: Boolean,
-    clearable: Boolean
+    clearable: Boolean,
+    shortcutsOrientation: {
+      type: String,
+      default: 'vertical'
+    }
   },
   data () {
     return {

@@ -189,12 +189,24 @@ const util = {
     return [...prevMonthDays, ...currentMonthDays, ...nextMonthDays]
   },
   /**
+   * 给指定的起始日期设置时间范围 00:00:00 和 23:59:59
+   * @param {Date} begin
+   * @param {Date} end
+   * @private
+   */
+  appendTime (begin, end) {
+    begin.setHours(0, 0, 0)
+    end.setHours(23, 59, 59)
+  },
+  /**
    * 根据一个日期，谋算出其所在周的起止日期
-   * @param {Date|String|Number} date
-   * @param {number} [weekStart=0]
+   * @param {Date} date
+   * @param {number} [weekStart=0] 周起始量，0-6分别表示星期天到星期六
+   * @param {number} [offset=0] 周偏移量，可以是任意整数
+   * @param {boolean} [appendTime=false] 是否附带时间串
    * @return {Array<Date>}
    */
-  getWeekRange (date, weekStart) {
+  getWeekRange (date, weekStart, offset, appendTime) {
     const weekDay = date.getDay()
     const begin = new Date(date.getTime())
 
@@ -220,30 +232,47 @@ const util = {
 
     const end = new Date(date.getTime())
     end.setDate(begin.getDate() + 6)
+
+    if (offset) {
+      offset = Math.round(offset) * 7
+      begin.setDate(begin.getDate() + offset)
+      end.setDate(begin.getDate() + offset)
+    }
+
+    if (appendTime) {
+      this.appendTime(begin, end)
+    }
+
     return [begin, end]
   },
   /**
-   * 偏移周范围
-   * @param {Date[]} weekRange 周范围，这是一个包含两个元素的数组
-   * @param {number} offset 周偏移量，可以是任意整数
-   * @return {Date[]}
-   */
-  offsetWeekRange (weekRange, offset) {
-    offset = 7 * Math.round(offset)
-    const begin = this.setDate(weekRange[0], {
-      date: weekRange[0].getDate() + offset
-    })
-    const end = this.setDate(weekRange[1], {
-      date: weekRange[1].getDate() + offset
-    })
-    return [begin, end]
-  },
-  /**
-   *
+   * 根据一个日期，谋算出其所在月的起止日期 (月的第一天和最后一天)
    * @param {Date} date
+   * @param {number} [offset=0] 月偏移量，可以是任意整数
+   * @param {boolean} [appendTime=false] 是否附带时间串
+   * @return {Array<Date>}
+   */
+  getMonthRange (date, offset, appendTime) {
+    const begin = new Date(date.getTime())
+    const end = new Date(date.getTime())
+
+    begin.setMonth(begin.getMonth() + Math.round(offset), 1)
+    end.setMonth(end.getMonth() + Math.round(offset) + 1, 0)
+
+    if (appendTime) {
+      this.appendTime(begin, end)
+    }
+
+    return [begin, end]
+  },
+  /**
+   * 根据一个日期，谋算出其所在季度的起止日期
+   * @param {Date} date
+   * @param {number} [offset=0] 月偏移量，可以是任意整数
+   * @param {boolean} [appendTime=false] 是否附带时间串
    * @return {Date[]}
    */
-  getSeasonRange (date) {
+  getSeasonRange (date, offset, appendTime) {
     const month = date.getMonth()
     const beginMonth = Math.floor(month / 3) * 3
     const begin = new Date(date.getTime())
@@ -252,6 +281,17 @@ const util = {
     const end = new Date(date.getTime())
     // 设置为月底
     end.setMonth(begin.getMonth() + 3, 0)
+
+    if (offset) {
+      offset = Math.round(offset) * 3
+      begin.setMonth(begin.getMonth() + offset, 1)
+      end.setMonth(end.getMonth() + offset + 1, 0)
+    }
+
+    if (appendTime) {
+      this.appendTime(begin, end)
+    }
+
     return [begin, end]
   },
   /**

@@ -66,6 +66,17 @@ export default {
      */
     renderPopper (content, trigger, visibleName) {
       const h = this.h
+
+      const slots = Array.isArray(content) ? content : [content]
+
+      if (this.$slots.shortcut) {
+        slots.unshift(h('div', {
+          attrs: {
+            'class': 'date-picker--shortcuts'
+          }
+        }, this.$slots.shortcut))
+      }
+
       return h(PopperWrapper, {
         props: {
           visible: this[visibleName]
@@ -76,7 +87,7 @@ export default {
           }
         },
         scopedSlots: {
-          default: () => Array.isArray(content) ? content : [content],
+          default: () => slots,
           reference: () => {
             return [trigger]
           }
@@ -194,7 +205,8 @@ export default {
     const classes = [
       'date-picker',
       `date-picker--${this.type}`,
-      `date-picker--${this.size}`
+      `date-picker--${this.size}`,
+      `date-picker--shortcuts-${this.shortcutsOrientation}`
     ]
 
     if (this.isRange) {
@@ -209,10 +221,12 @@ export default {
       classes.push('date-picker--clearable')
     }
 
+    const content = [this.renderComponent()]
+
     return createElement('div', {
       attrs: {
         'class': classes.join(' ')
       }
-    }, [this.renderComponent()])
+    }, content)
   }
 }

@@ -1,15 +1,14 @@
 const config = {
   publicPath: './',
   filenameHashing: false,
+  productionSourceMap: false,
   css: {
     extract: false
   }
 }
 
 if (process.argv.indexOf('--target') === -1 || process.argv.indexOf('lib') === -1) {
-  config.productionSourceMap = false
 } else {
-  config.productionSourceMap = true
   config.configureWebpack = {
     externals: [
       'vue-popperjs',

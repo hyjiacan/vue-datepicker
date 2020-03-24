@@ -325,6 +325,10 @@
       border: none;
     }
   }
+
+  &.date-picker--show-icon {
+    grid-template-columns: 24px auto 16px auto;
+  }
 }
 
 .date-picker--range-begin,
@@ -400,6 +404,10 @@
   // auto 16px 会根据内容自动重复
   .date-picker--container {
     grid-template-columns: auto 16px;
+  }
+
+  &.date-picker--show-icon {
+    grid-template-columns: 24px auto 16px;
   }
 
   &.date-picker--datetime {
@@ -510,5 +518,21 @@
   .date-picker--shortcuts-button {
     margin-right: -1px;
     margin-bottom: 1px;
+  }
+}
+
+.date-picker--show-icon {
+  .date-picker--container {
+    grid-template-columns: 24px auto;
+  }
+}
+
+.date-picker--icon {
+  display: block;
+  text-align: center;
+  line-height: inherit;
+
+  &:before {
+    content: '※';
   }
 }

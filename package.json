@@ -32,7 +32,6 @@
   "license": "MIT",
   "files": [
     "dist",
-    "src",
     "types",
     "LICENSE",
     "README.md",

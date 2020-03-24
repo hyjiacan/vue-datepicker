@@ -159,7 +159,7 @@ const util = {
    */
   getWeekOfYear (year, month, date, formatted, weekStart) {
     const value = new Date(year, month, date)
-    const [start, end] = this.getWeekRange(value, weekStart)
+    const [start, end] = this.getWeekRange(value, {start: weekStart})
 
     let week
 
@@ -201,78 +201,88 @@ const util = {
   /**
    * 根据一个日期，谋算出其所在周的起止日期
    * @param {Date} date
-   * @param {number} [weekStart=0] 周起始量，0-6分别表示星期天到星期六
-   * @param {number} [offset=0] 周偏移量，可以是任意整数
-   * @param {boolean} [appendTime=false] 是否附带时间串
-   * @return {Array<Date>}
+   * @param {Object} [option]
+   * @param {number} [option.start=0] 周起始量，0-6分别表示星期天到星期六
+   * @param {number} [option.offset=0] 周偏移量，可以是任意整数
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @return {Date[]|String[]}
    */
-  getWeekRange (date, weekStart, offset, appendTime) {
+  getWeekRange (date, option) {
+    const {start, offset, time, format} = option || {}
     const weekDay = date.getDay()
     const begin = new Date(date.getTime())
 
     // 先找出星期天为第一天的日期
     begin.setDate(begin.getDate() - weekDay)
 
-    // ----判断 weekStart 的位置 与传入日期的位置差----
+    // ----判断 start 的位置 与传入日期的位置差----
 
-    // 如果 weekStart 大于 传入日期，则直接使用 weekStart 对应的日期为起始
+    // 如果 start 大于 传入日期，则直接使用 start 对应的日期为起始
 
     // 否则，将开始日期 - 7（跳转到上一周）
-    // 再移动 weekStart 的天数，就是正确的起始日期
-    if (weekStart > weekDay) {
+    // 再移动 start 的天数，就是正确的起始日期
+    if (start > weekDay) {
       begin.setDate(begin.getDate() - 7)
     }
 
     // ----判断 结束----
 
-    if (weekStart) {
-      // 再移动 weekStart 的天数，就是正确的起始日期
-      begin.setDate(begin.getDate() + weekStart)
+    if (start) {
+      // 再移动 start 的天数，就是正确的起始日期
+      begin.setDate(begin.getDate() + start)
     }
 
     const end = new Date(date.getTime())
     end.setDate(begin.getDate() + 6)
 
     if (offset) {
-      offset = Math.round(offset) * 7
-      begin.setDate(begin.getDate() + offset)
-      end.setDate(begin.getDate() + offset)
+      begin.setDate(begin.getDate() + Math.round(offset) * 7)
+      end.setDate(begin.getDate() + Math.round(offset) * 7)
     }
 
-    if (appendTime) {
+    if (time) {
       this.appendTime(begin, end)
     }
 
-    return [begin, end]
+    const range = [begin, end]
+    return format ? range.map(d => this.format(d, format)) : range
   },
   /**
    * 根据一个日期，谋算出其所在月的起止日期 (月的第一天和最后一天)
    * @param {Date} date
-   * @param {number} [offset=0] 月偏移量，可以是任意整数
-   * @param {boolean} [appendTime=false] 是否附带时间串
-   * @return {Array<Date>}
+   * @param {Object} [option]
+   * @param {number} [option.offset=0] 月偏移量，可以是任意整数
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @return {Date[]|String[]}
    */
-  getMonthRange (date, offset, appendTime) {
+  getMonthRange (date, option) {
+    const {offset, time, format} = option || {}
     const begin = new Date(date.getTime())
     const end = new Date(date.getTime())
 
     begin.setMonth(begin.getMonth() + Math.round(offset), 1)
     end.setMonth(end.getMonth() + Math.round(offset) + 1, 0)
 
-    if (appendTime) {
+    if (time) {
       this.appendTime(begin, end)
     }
 
-    return [begin, end]
+    const range = [begin, end]
+    return format ? range.map(d => this.format(d, format)) : range
   },
   /**
    * 根据一个日期，谋算出其所在季度的起止日期
    * @param {Date} date
-   * @param {number} [offset=0] 月偏移量，可以是任意整数
-   * @param {boolean} [appendTime=false] 是否附带时间串
-   * @return {Date[]}
+   * @param {Object} [option]
+   * @param {number} [option.offset=0] 季度偏移量，可以是任意整数
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @return {Date[]|String[]}
    */
-  getSeasonRange (date, offset, appendTime) {
+  getSeasonRange (date, option) {
+    const {offset, time, format} = option || {}
     const month = date.getMonth()
     const beginMonth = Math.floor(month / 3) * 3
     const begin = new Date(date.getTime())
@@ -283,16 +293,16 @@ const util = {
     end.setMonth(begin.getMonth() + 3, 0)
 
     if (offset) {
-      offset = Math.round(offset) * 3
-      begin.setMonth(begin.getMonth() + offset, 1)
-      end.setMonth(end.getMonth() + offset + 1, 0)
+      begin.setMonth(begin.getMonth() + Math.round(offset) * 3, 1)
+      end.setMonth(end.getMonth() + Math.round(offset) * 3 + 1, 0)
     }
 
-    if (appendTime) {
+    if (time) {
       this.appendTime(begin, end)
     }
 
-    return [begin, end]
+    const range = [begin, end]
+    return format ? range.map(d => this.format(d, format)) : range
   },
   /**
    * 按照指定的值设置 Date 对象

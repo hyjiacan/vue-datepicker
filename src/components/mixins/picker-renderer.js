@@ -48,12 +48,19 @@ export default {
         }
       })
     },
-    renderInput (valueName) {
+    /**
+     * 渲染 input 输入框
+     * @param {string} valueName
+     * @param {string} [placeholder]
+     * @return {*|void}
+     */
+    renderInput (valueName, placeholder) {
       return this.h('input', {
         attrs: {
           type: 'text',
           value: this[valueName],
-          readonly: !this.allowEdit
+          readonly: !this.allowEdit,
+          placeholder
         },
         on: {
           input: e => {
@@ -146,8 +153,8 @@ export default {
       return this.renderPopper(
         content,
         this.renderLayout(
-          this.renderInput('formattedBeginValue'),
-          this.renderInput('formattedEndValue')
+          this.renderInput('formattedBeginValue', this.placeholderBeginText),
+          this.renderInput('formattedEndValue', this.placeholderEndText)
         ),
         'isVisible'
       )
@@ -157,7 +164,7 @@ export default {
       return this.renderPopper(
         this.renderPicker('beginValue', 'isVisible', 'singleLimit'),
         this.renderLayout(
-          this.renderInput('formattedBeginValue'),
+          this.renderInput('formattedBeginValue', this.placeholderText),
           this.renderInput('formattedEndValue')
         ),
         'isVisible'
@@ -165,7 +172,7 @@ export default {
     },
     // 渲染单个日期选择
     renderSinglePicker () {
-      const content = [this.renderInput('formattedValue')]
+      const content = [this.renderInput('formattedValue', this.placeholderText)]
       if (this.isIconVisible) {
         content.unshift(this.renderIcon())
       }
@@ -187,7 +194,7 @@ export default {
     renderIcon () {
       return this.h('span', {
         attrs: {
-          'class': 'date-picker--icon datepicker-iconfont datepicker--icon-date'
+          'class': 'date-picker--icon datepicker-iconfont'
         }
       })
     },
@@ -218,7 +225,7 @@ export default {
         'date-picker--range': this.isRange,
         'date-picker--clearable': this.clearable,
         'date-picker--show-icon': this.isIconVisible,
-        'date-picker--empty': this.isEmpty,
+        'date-picker--empty': this.isEmpty
       }
     }, content)
   }

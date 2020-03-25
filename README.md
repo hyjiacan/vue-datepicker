@@ -218,7 +218,13 @@ export default {
 ```
 
 其中，`value` 在指定了 `range` 时为数组，否则为单个值。`text` 是按钮显示的文字。
-在`shortcuts-orientation=vertical`时，一般最多不超过5个中文字符，超过时会自动显示为省略号。
+一般最多不超过5个中文字符，超过时会自动显示为省略号。
+
+#### `clearable`
+
+- type: Boolean
+
+控制清除功能是否可用。可用时会显示清除按钮。
 
 #### `hide-icon`
 
@@ -229,15 +235,36 @@ export default {
 
 是否隐藏左侧的日历图标
 
-#### `shortcuts-orientation`
+#### `placeholder`
 
-> Since 0.3.0
+> Since 0.4.0
 
-- type: String
-- default: vertical
+- type: String, Array
+- default: 见下方
 
-控制快捷按钮槽的方向，`horizon`表示水平放置，此时放置在上方；`vertical`表示竖直放置，此时放置在左侧。
-其宽度由内容宽度决定。
+指定 `placeholder` 文本。
+当未指定 `range` 属性，或 `type` 为 `week/season`时，应该指定为单个字符串；
+否则，应该指定为包含两个字符串的数组。
+
+默认值如下:
+
+```javascript
+const placeholders = {
+    year: '选择年',
+    month: '选择月',
+    week: '选择周',
+    season: '选择季度',
+    date: '选择日期',
+    time: '选择时间',
+    datetime: '选择时间',
+    
+    yearRange: ['起始年份', '结束年份'],
+    monthRange: ['起始月份', '结束月份'],
+    dateRange: ['起始日期', '结束日期'],
+    timeRange: ['起始时间', '结束时间'],
+    datetimeRange: ['起始时间', '结束时间']
+}
+```
 
 #### `readonly`
 
@@ -254,12 +281,6 @@ export default {
 - type: Boolean
 
 输入框是否可编辑。设置为`true`以手动输入日期/时间。
-
-#### `clearable`
-
-- type: Boolean
-
-控制清除功能是否可用。可用时会显示清除按钮。
 
 ## 事件
 
@@ -361,6 +382,10 @@ getMonthRange(date: Date, option?: MonthRangeOption): Date[];
 getSeasonRange(date: Date, option?: SeasonRangeOption): Date[];
 ```
 
+## 支持
+
+### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
+
 ## 更新日志
 
 ### 0.4.0
@@ -369,6 +394,7 @@ getSeasonRange(date: Date, option?: SeasonRangeOption): Date[];
 - 添加 日历图标
 - 优化 样式
 - 移除 `split` 属性
+- 添加 `placeholder` 支持
 
 ### 0.3.0
 

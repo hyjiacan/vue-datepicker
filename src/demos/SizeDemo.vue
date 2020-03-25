@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-/deep/ .date-picker--container {
+.date-picker {
   margin-bottom: 10px;
 }
 </style>

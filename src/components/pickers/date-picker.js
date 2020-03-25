@@ -4,6 +4,7 @@ import renderer from '../mixins/picker-renderer'
 import types from '../../assets/script/types'
 import formats from '../../assets/script/formats'
 import util from '../../assets/script/util'
+import placeholders from '../../assets/script/placeholders'
 
 export default {
   name: 'DatePicker',
@@ -35,6 +36,9 @@ export default {
     hideIcon: {
       type: Boolean,
       default: false
+    },
+    placeholder: {
+      type: [String, Array]
     }
   },
   data () {
@@ -148,6 +152,12 @@ export default {
     },
     isIconVisible () {
       return !this.hideIcon
+    },
+    placeholderText () {
+      if (this.placeholder) {
+        return this.placeholder
+      }
+      return placeholders[this.type]
     }
   }
 }

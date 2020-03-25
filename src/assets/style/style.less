@@ -35,6 +35,7 @@
 .date-picker {
   display: inline-block;
   vertical-align: middle;
+  color: #444444;
 
   input {
     border: none;
@@ -42,9 +43,9 @@
     outline: none;
     padding: 0;
     box-sizing: border-box;
-    color: #444444;
     text-align: center;
     line-height: 1;
+    color: inherit;
   }
 }
 
@@ -55,6 +56,11 @@
   overflow: hidden;
   background-color: #ffffff;
   box-sizing: border-box;
+  height: inherit;
+}
+
+.popper-reference {
+  height: 100%;
 }
 
 .date-picker--popover {
@@ -91,7 +97,7 @@
 
 .date-picker--range-begin,
 .date-picker--range-end {
-  overflow: hidden;
+  display: flex;
 }
 
 .date-picker--range-begin input {
@@ -124,13 +130,13 @@
 }
 
 .date-picker--clear {
+  display: flex;
   justify-content: center;
   align-items: center;
 
   &-button {
     display: inline-block;
     width: 16px;
-    height: 16px;
     text-align: center;
     user-select: none;
     cursor: pointer;
@@ -143,7 +149,7 @@
 
 .date-picker--empty {
   .date-picker--clear-button {
-    display: none;
+    color: #e0e0e0;
   }
 }
 
@@ -184,12 +190,28 @@
 }
 
 .date-picker--icon {
-  display: block;
-  text-align: right;
-  line-height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:before {
-    //content: '※';
+    content: "\e60a";
+  }
+}
+
+.date-picker--time {
+  .date-picker--icon {
+    &:before {
+      content: "\e682";
+    }
+  }
+}
+
+.date-picker--datetime {
+  .date-picker--icon {
+    &:before {
+      content: "\e611";
+    }
   }
 }
 

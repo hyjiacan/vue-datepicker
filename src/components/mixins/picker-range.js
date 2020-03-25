@@ -1,5 +1,6 @@
 import util from '../../assets/script/util'
 import formats from '../../assets/script/formats'
+import placeholders from '../../assets/script/placeholders'
 
 export default {
   props: {
@@ -142,6 +143,18 @@ export default {
         !this.minValue || v > this.minValue ? v : this.minValue,
         this.maxValue
       ]
+    },
+    placeholderBeginText () {
+      if (this.placeholder) {
+        return this.placeholder[0]
+      }
+      return placeholders[`${this.type}Range`][0]
+    },
+    placeholderEndText () {
+      if (this.placeholder) {
+        return this.placeholder[1]
+      }
+      return placeholders[`${this.type}Range`][1]
     }
   }
 }

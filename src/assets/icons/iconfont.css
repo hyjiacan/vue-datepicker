@@ -1,10 +1,10 @@
 @font-face {font-family: "datepicker-iconfont";
-  src: url('iconfont.eot?t=1585097894766'); /* IE9 */
-  src: url('iconfont.eot?t=1585097894766#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAPsAAsAAAAACcgAAAOdAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDMgqFZIR0ATYCJAMUCwwABCAFhXEHSBuECBEVnLHIfhyUY3omjXXa+OTSI24U+x1EpEtnT6fP+/SSASgAIAcJ5VQE3BFXXAFQmQoDYHOuBzYqwgzl7JNHX0jbYXppnn7+mOkSaMDPhjiCir/MxtlsQFHWlwFyR1h+onwWsStiL3kSH3wbAhiyqIg0b9m+O2E0dJEAMn7MqCGES3J0R6oQRgiBOzWyBpuwWqruAqvjr5fvVJcwKGwLurLzyBbD8T+ZT9us4H/QP8TAXE4LKPeBBVQENMhUqB+PlfIqxsig/RofMIRRqKW2lf807NO2//9zzoWEhv3DA4WFRkBCEIoIRD+g4ZPxyVDwqTwZFnwaxugWbONZzwXZ4R0G8IDfkgoJC2KtIsqPl0ikwGTFCFfGx8f22hBsXJ48a3PppmUJOqWKkqSZ/E0bgsR5RjYdM2bZEYhwOPlAc+BSit56uTD68FWxS6/033Akwdt0TKxo8aT0uOMQHHVk+fFkcTmcQw28RxMnO5t59lyTBEd7lEc5eKh02ua935fUc9OyAzsTe3TfEBxdntwvVvda3sybFpqOBInWoc3bznTsGXsntsfYRZF2xK4RArdngd9DeB411bUgx411xY31cshxxcNLs4I9NYxvauyJn5Hup9dIGxiJveY/jHUHB34wuFU6OCew4ok7HHkTtW7OYCEqO9t/KBGm8Pwm711KrsVWKIh1S9zxTgn6X03qiFpZJqvW69f7s+pXa3v3NqVvTa2RuvX4ucz9+rXO7NzJkq0vXxzNqpG17NZVJlmanRQcfft0UyqzIbtVoh7FpMCSc6IWAajNavEf6W+oWnK07KDohr/Cjgbg2Z57h3i5ZlogjILBzL8Nc2CHttmksLVZ7TPMRJsTRMEXwfqHVPxZzHG8WkacKAaFeBJzUJShLFjEUwWriU3BxqEHhIhnMBgqMO1+h3h2YSE6CijPWQ6EIp6DwhMBiyKJxmpiLbBJkn68ECJOAUNP2Yx1nvDTGI6MStCC/kNraHKeVg62lhpb0yNn6nw39O9BMaxnfNULObU0QZWXHaErTsjbXZM+vhZx4JhGuPDvw2EgiEwdGsmDSGyKwqFPyg2NswNHRiVoQf+hNTS5MCgHbDeKePYeORvye9zQvwfFw1tgoRfCJrqyGlDl5TTsFU245hWfmz6+FnHgmEZLeBG1ODA/QcTHOjSShwne2BRCLzcU5dsLx09pCjDQS2xRYokWW0Kshw2UcPWI87fc+iCZXcey2QwAAAA=') format('woff2'),
-  url('iconfont.woff?t=1585097894766') format('woff'),
-  url('iconfont.ttf?t=1585097894766') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
-  url('iconfont.svg?t=1585097894766#datepicker-iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1585118093357'); /* IE9 */
+  src: url('iconfont.eot?t=1585118093357#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAXMAAsAAAAADXAAAAV/AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDXgqMQIoZATYCJAMcCxAABCAFhXEHWhtvC1GUT06P7AtsG/ZkmeHO3XTcYexAuYBAwKJGAAAA4M9gBAAWD9/v185979uaRpJo3NBguuh0hkQoYmkrNEohJqZ7Cey7n2XjAxYmekBy6ogU2kF/2t9P6Utz5MwJf07T//9edt9kqmSS2RTg18JIpgJewRRMTqfiYPFVrPAl4U81ZJ4/T3PzXfv0N/0r4HtjawdyBEewUTOzUT/mqpsygJIj2jQJ5MyG855Up1DzjGWuLxNoWzFQ27+8f4KugkaBRtferaDbshWWhNBoFXNjAfEKBppUL7sE4CX//viDWRiDpMygX3VwdZHA8SdZTeD/WHDGgLdH4N1Gxi5QEEs27RlRwt0ct7nD5U6AvkZSbetr2b1mxRv1//+0u+u5oW/+waMQSpUkExUAd8l/UV7xScYUBZ8sRfDpS1HyGcVJlQqYEhQ1FM+Ct27ZxypIczg3oIMLNWsDSQs5sWm+jVjWJFehMLFN89xJxzm47OjowGwT11AKEkLlIkkmFQ2dAIockrhCjjUULUjlYiIFuGsplVYXUsCk3Lp14PZt7u5d1Z07/hHkC6ZJbt2KXCsXd1GUR3iys06woKScCBKJW80wh64OipJwnkts1NUlSWJggaIStqGF21XOCYtBRSBC49Tw2KNJnq/z6xWQaq3nubUdPW7dd4ISTtkd5BkHxrXlOkGDJyN2j1QbNK3y/NQGc7kyLXPXIdii6BRaaUmyYRJAUXoQJLf0OXn3CQ/lxClkUH4yuHPSnBG1iFAiBpXrKAouYi4SdFbXDmouC1PSSYnGIp2SIG5qOVjDtSczXIqyLvFtlrzYMNpnwR3oxBrBKiiPqIRhmJVmTmKLyWGS+nyGXY5gcsxkKjYG3RPZNAu5G7lwrJ+3RenKhAu5+bYuulRozDXK4lF2NlIhPjubz5iaAY3qqvQNKDgYJfJGlwFLNOQNSMu40boelxYb57Xio66McfUx06MdbUHzjI+xx4y3GB/F6Vwd+B9hojU11SXPqJ/N3Ytz5I1HEXyHcPWeMjzzVnKmhTp7ddOvd5p/xveBqM9OWYT91NRsmf6k/M8f+UlDE5NIdTPq5wE98eYNAVlPDCQKO/RuoLaLYQL3hXu5leeZvJywUcgeuzm0FSYYHzU9emoFxLoaG4Ue19G/msCRXTx7keUSyzIS0x/jyHwDcepxsJCdxs40SyOaZZzBmUYMMGULPDifXEPOH8wfYbfGbr5tqII9veYaS4fjNTh8oRnunOQAg2g5ZtYktHO4quHktOYaUhiHWTNUcglOTrOdFLD0WnpmM/DyF4NNzEJH0nHh06cjjsvmbrt0QTfttplv062bqejhiNzBeiDUdT9+pHGc79hw/pQx6p2KR2ie3xdtoBQAwP//uZxATvNT+QyxFgCktuwOEOYYnIZkMpQBkN5kFb/YkzwuLWwXeyt+d7f+xGs+huybFPk/VWzBBvjZKcT875MXDiumoob1bFxiTphYe6csSWibafwqs8b+t6fOxCWESYv3QFLbBNnE2F34T0Gp4xRUJpagbUeEHTr9CyEKE2DbN0BY9wOSfiCQrYfSXfgXgtI8gmDF+TNA21lI7s4DPpOEVkoJrj/RG65sRHQzutc4eJOTDP2dPZB7LVbC9jX6rheS6LnC6WhiqbyiimR/l8Q3N1O1aIVLvMTrqCgYg3BGRkepapiPx5b7xMhwCZv2CLKiSAKtfaZJPYNVbIXadGnHgd9+joih5O94QJxXhRWRD8IEv3DuyHr7A02NTNZzX+GK7/Uca0ZvnBklKHuaJVgJXRIhhSljKPDHZYihRtI1SoK5sRrNSvFo/2r5Sm2BNn11HTJEIDkyQIbICBlDc4NL1ZfUTGq3ogqO1Oy37WR6l+owaeUWAAA=') format('woff2'),
+  url('iconfont.woff?t=1585118093357') format('woff'),
+  url('iconfont.ttf?t=1585118093357') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1585118093357#datepicker-iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .datepicker-iconfont {
@@ -13,6 +13,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.datepicker--icon-datetime:before {
+  content: "\e611";
+}
+
+.datepicker--icon-time:before {
+  content: "\e682";
 }
 
 .datepicker--icon-close:before {

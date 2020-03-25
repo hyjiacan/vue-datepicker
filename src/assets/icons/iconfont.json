@@ -6,11 +6,18 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "11553523",
+      "icon_id": "122691",
       "name": "close",
-      "font_class": "clear",
-      "unicode": "e6ac",
-      "unicode_decimal": 59052
+      "font_class": "close",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
+    },
+    {
+      "icon_id": "1441172",
+      "name": "calendar",
+      "font_class": "date",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
     },
     {
       "icon_id": "505806",

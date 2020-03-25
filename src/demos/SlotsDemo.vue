@@ -4,20 +4,27 @@
 
     <h4>使用JSON</h4>
 
-    <div class="date-label">单个 - 左侧</div>
+    <div class="date-label">单个</div>
     <date-picker type="date" v-model="date" :shortcuts="shortcuts1"/>
 
-    <div class="date-label">单个 - 上方</div>
-    <date-picker type="date" v-model="date" shortcuts-orientation="horizon" :shortcuts="shortcuts1"/>
-
-    <div class="date-label">范围 - 左侧</div>
+    <div class="date-label">范围</div>
     <date-picker type="date" v-model="rdate" :shortcuts="shortcuts2" range/>
 
-    <div class="date-label">范围 - 上方</div>
-    <date-picker type="date" v-model="rdate" shortcuts-orientation="horizon" :shortcuts="shortcuts2" range/>
-
-    <div class="date-label">单个 - 左侧 - 自定义</div>
+    <div class="date-label">单个 - 自定义</div>
     <date-picker type="date" v-model="date">
+      <template v-slot:shortcut>
+        <div class="b1">
+          <button>这些按钮</button>
+          <button>没有实际意义</button>
+          <button>只是为了演示</button>
+          <button>自定义按钮</button>
+          <button>是这么写的</button>
+        </div>
+      </template>
+    </date-picker>
+
+    <div class="date-label">范围</div>
+    <date-picker type="date" v-model="rdate" range>
       <template v-slot:shortcut>
         <div class="b1">
           <button>这些按钮</button>
@@ -82,7 +89,7 @@ export default {
 <style lang="less" scoped>
 .b1 {
   padding: 5px;
-  width:100px;
+  width: 100px;
 
   button {
     margin-bottom: 5px;

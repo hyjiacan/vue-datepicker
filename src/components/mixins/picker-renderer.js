@@ -15,24 +15,28 @@ export default {
   methods: {
     renderLayout (begin, end) {
       const slots = {}
+      let prependContent
+      let appendContent
+
       if (this.clearable) {
-        if (this.split && [this.types.SEASON, this.types.WEEK].indexOf(this.type) === -1) {
-          // 分离选择
-          slots.begin = () => [begin, this.renderClearButton(this.clearBeginValue)]
-          slots.end = () => [end, this.renderClearButton(this.clearEndValue)]
-        } else {
-          // 合并选择
-          slots.begin = () => begin
-          slots.end = () => end
-          slots.append = () => this.renderClearButton(this.clearRangeValue)
-        }
-      } else {
-        slots.begin = () => begin
-        slots.end = () => end
+        appendContent = this.renderClearButton(this.clearRangeValue)
       }
+      if (this.isIconVisible) {
+        prependContent = this.renderIcon()
+      }
+
+      slots.begin = () => [begin]
+      slots.end = () => [end]
+      if (prependContent) {
+        slots.prepend = () => prependContent
+      }
+      if (appendContent) {
+        slots.append = () => appendContent
+      }
+
       return this.h(RangeLayout, {
         props: {
-          showClear: this.clearable
+          showClear: this.isClearVisible
         },
         scopedSlots: slots
       })
@@ -115,7 +119,6 @@ export default {
           type: this.type,
           readonly: this.readonly,
           size: this.size,
-          clearable: this.clearable,
           min: this[limitName][0],
           max: this[limitName][1],
           visible: this[visibleName],
@@ -135,21 +138,7 @@ export default {
         }
       })
     },
-    renderWithSplit () {
-      return this.renderLayout(
-        this.renderPopper(
-          this.renderPicker('beginValue', 'beginVisible', 'rangeBeginLimit'),
-          this.renderInput('formattedBeginValue'),
-          'beginVisible'
-        ),
-        this.renderPopper(
-          this.renderPicker('endValue', 'endVisible', 'rangeEndLimit'),
-          this.renderInput('formattedEndValue'),
-          'endVisible'
-        )
-      )
-    },
-    renderWithoutSplit () {
+    renderRange () {
       const content = [
         this.renderPicker('beginValue', 'isVisible', 'rangeBeginLimit', true),
         this.renderPicker('endValue', 'isVisible', 'rangeEndLimit', true)
@@ -177,6 +166,9 @@ export default {
     // 渲染单个日期选择
     renderSinglePicker () {
       const content = [this.renderInput('formattedValue')]
+      if (this.isIconVisible) {
+        content.unshift(this.renderIcon())
+      }
       if (this.clearable) {
         content.push(this.renderClearButton(this.clearSingleValue))
       }
@@ -192,6 +184,13 @@ export default {
         'isVisible'
       )
     },
+    renderIcon () {
+      return this.h('span', {
+        attrs: {
+          'class': 'date-picker--icon datepicker-iconfont datepicker--icon-date'
+        }
+      })
+    },
     // 判断需要渲染哪成单个日期选择还是按范围选择
     renderComponent () {
       if (!this.isRange) {
@@ -202,41 +201,24 @@ export default {
         return this.renderSpecialPicker()
       }
 
-      if (this.split) {
-        return this.renderWithSplit()
-      }
-
-      return this.renderWithoutSplit()
+      return this.renderRange()
     }
   },
   render (createElement, context) {
     this.h = createElement
     this.c = context
 
-    const classes = [
-      'date-picker',
-      `date-picker--${this.type}`,
-      `date-picker--${this.size}`,
-      `date-picker--shortcuts-${this.shortcutsOrientation}`
-    ]
-
-    if (this.isRange) {
-      classes.push('date-picker--range')
-    }
-
-    if (this.split && [this.types.SEASON, this.types.WEEK].indexOf(this.type) === -1) {
-      classes.push('date-picker--split')
-    }
-
-    if (this.clearable) {
-      classes.push('date-picker--clearable')
-    }
-
     const content = [this.renderComponent()]
 
     return createElement('div', {
-      attrs: {
-        'class': classes.join(' ')
+      'class': {
+        'date-picker': true,
+        [`date-picker--${this.type}`]: true,
+        [`date-picker--${this.size}`]: true,
+        'date-picker--range': this.isRange,
+        'date-picker--clearable': this.clearable,
+        'date-picker--show-icon': this.isIconVisible,
+        'date-picker--empty': this.isEmpty,
       }
     }, content)
   }

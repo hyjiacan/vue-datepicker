@@ -1,6 +1,6 @@
 export default {
   year: 'yyyy',
-  month: 'yyyy-MM-dd',
+  month: 'yyyy-MM',
   season: 'yyyy-MM-dd',
   date: 'yyyy-MM-dd',
   time: 'HH:mm:ss',

@@ -10,8 +10,6 @@ export default {
       type: Number,
       default: 0
     },
-    // 是否将起止日期输入框分开显示
-    split: Boolean,
     range: Boolean
   },
   data () {
@@ -52,7 +50,7 @@ export default {
           }
           break
       }
-      if (this.split || commit) {
+      if (commit) {
         this.commitChanges()
       }
     },
@@ -71,9 +69,6 @@ export default {
             this.endValue = temp
           }
           break
-      }
-      if (this.split) {
-        this.commitChanges()
       }
     }
   },

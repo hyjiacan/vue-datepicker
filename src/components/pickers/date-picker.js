@@ -32,9 +32,9 @@ export default {
       type: Array,
       default: () => []
     },
-    shortcutsOrientation: {
-      type: String,
-      default: 'vertical'
+    hideIcon: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -58,7 +58,7 @@ export default {
     },
     isVisible (v) {
       // 在关闭时触发更新
-      if (!v && this.isRange && !this.split) {
+      if (!v && this.isRange) {
         this.commitChanges()
       }
       if (v !== this.visible) {
@@ -139,6 +139,15 @@ export default {
     },
     maxValue () {
       return this.max ? util.parse(this.max, this.finalFormat).getTime() : 0
+    },
+    isClearVisible () {
+      return this.clearable && this.isEmpty
+    },
+    isEmpty () {
+      return this.isRange ? this.value.every(v => !v) : !this.value
+    },
+    isIconVisible () {
+      return !this.hideIcon
     }
   }
 }

@@ -5,20 +5,18 @@
       <size-demo/>
     </div>
     <div class="demo-grid">
-      <merged-range-demo/>
-      <split-range-demo/>
+      <range-demo/>
+      <clear-demo/>
     </div>
     <div class="demo-grid">
-      <clear-demo/>
-      <slots-demo />
+      <slots-demo/>
     </div>
   </div>
 </template>
 
 <script>
 import SingleDemo from './demos/SingleDemo'
-import MergedRangeDemo from './demos/MergedRangeDemo'
-import SplitRangeDemo from './demos/SplitRangeDemo'
+import RangeDemo from './demos/RangeDemo'
 import SizeDemo from './demos/SizeDemo'
 import ClearDemo from './demos/ClearDemo'
 import SlotsDemo from './demos/SlotsDemo'
@@ -26,7 +24,7 @@ import SlotsDemo from './demos/SlotsDemo'
 export default {
   name: 'Demo',
   // eslint-disable-next-line vue/no-unused-components
-  components: {SlotsDemo, ClearDemo, SizeDemo, SplitRangeDemo, MergedRangeDemo, SingleDemo}
+  components: {SlotsDemo, ClearDemo, SizeDemo, RangeDemo, SingleDemo}
 }
 </script>
 

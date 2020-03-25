@@ -220,6 +220,15 @@ export default {
 其中，`value` 在指定了 `range` 时为数组，否则为单个值。`text` 是按钮显示的文字。
 在`shortcuts-orientation=vertical`时，一般最多不超过5个中文字符，超过时会自动显示为省略号。
 
+#### `hide-icon`
+
+> Since 0.4.0
+
+- type: Boolean
+- default: false
+
+是否隐藏左侧的日历图标
+
 #### `shortcuts-orientation`
 
 > Since 0.3.0
@@ -357,6 +366,9 @@ getSeasonRange(date: Date, option?: SeasonRangeOption): Date[];
 ### 0.4.0
 
 - 修改 `geWeek(Month/Season)Range` 参数
+- 添加 日历图标
+- 优化 样式
+- 移除 `split` 属性
 
 ### 0.3.0
 

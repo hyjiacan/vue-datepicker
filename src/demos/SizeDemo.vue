@@ -9,7 +9,7 @@
       <date-picker range :value="[new Date(), new Date()]" size="mini"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="mini" split/>
+      <date-picker range :value="[new Date(), new Date()]" size="mini" />
     </div>
     <div class="demo-label">small:</div>
     <div>
@@ -19,7 +19,7 @@
       <date-picker range :value="[new Date(), new Date()]" size="small"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="small" split/>
+      <date-picker range :value="[new Date(), new Date()]" size="small" />
     </div>
     <div class="demo-label">normal:</div>
     <div>
@@ -29,7 +29,7 @@
       <date-picker range :value="[new Date(), new Date()]" size="normal"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="normal" split/>
+      <date-picker range :value="[new Date(), new Date()]" size="normal" />
     </div>
     <div class="demo-label">large:</div>
     <div>
@@ -39,7 +39,7 @@
       <date-picker range :value="[new Date(), new Date()]" size="large"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="large" split/>
+      <date-picker range :value="[new Date(), new Date()]" size="large" />
     </div>
   </div>
 </template>

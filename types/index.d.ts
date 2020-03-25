@@ -75,7 +75,7 @@ export interface $util {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getWeekRange(date: Date, option?: WeekRangeOption): Date[];
+  getWeekRange(date: Date, option?: WeekRangeOption): Date[] | String[];
 
   /**
    * 根据一个日期，谋算出其所在月的起止日期 (月的第一天和最后一天)
@@ -86,7 +86,7 @@ export interface $util {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getMonthRange(date: Date, option?: MonthRangeOption): Date[];
+  getMonthRange(date: Date, option?: MonthRangeOption): Date[] | String[];
 
   /**
    * 根据一个日期，谋算出其所在季度的起止日期
@@ -97,5 +97,5 @@ export interface $util {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getSeasonRange(date: Date, option?: SeasonRangeOption): Date[];
+  getSeasonRange(date: Date, option?: SeasonRangeOption): Date[] | String[];
 }

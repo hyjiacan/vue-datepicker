@@ -1,5 +1,6 @@
 <template>
   <div class="date-picker--container">
+    <slot name="prepend"/>
     <div class="date-picker--range-begin">
       <slot name="begin"/>
     </div>

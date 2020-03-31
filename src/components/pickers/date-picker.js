@@ -81,6 +81,9 @@ export default {
       } else if (!util.equals(this.formattedValue, v, this.finalFormat)) {
         this.updateSingleValue(v)
       }
+    },
+    type(){
+      this.updateValue(this.value)
     }
   },
   methods: {

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h3>Slots: shortcut</h3>
+    <h3>Slots</h3>
 
-    <h4>使用JSON</h4>
+    <h4>shortcut</h4>
 
     <div class="date-label">单个</div>
     <date-picker type="date" v-model="date" :shortcuts="shortcuts1"/>
@@ -35,6 +35,31 @@
         </div>
       </template>
     </date-picker>
+
+    <h4>value</h4>
+    <div class="date-label">自定义值的显示 - 单个</div>
+    <date-picker type="date" v-model="date">
+      <template v-slot:value="{value, format, type, visible}">
+        <ul>
+          <li>visible: {{visible}}</li>
+          <li>type: {{type}}</li>
+          <li>format: {{format}}</li>
+          <li>value: {{value}}</li>
+        </ul>
+      </template>
+    </date-picker>
+
+    <div class="date-label">自定义值的显示 - 范围</div>
+    <date-picker type="date" v-model="rdate" range>
+      <template v-slot:value="{value, format, type, visible}">
+        <ul>
+          <li>visible: {{visible}}</li>
+          <li>type: {{type}}</li>
+          <li>format: {{format}}</li>
+          <li>value: {{value}}</li>
+        </ul>
+      </template>
+    </date-picker>
   </div>
 </template>
 
@@ -49,6 +74,7 @@ export default {
     const date = new Date()
     const today = date.getDate()
     return {
+      date,
       shortcuts1: [{
         text: '昨天',
         value: util.setDate(date, {date: today - 1})

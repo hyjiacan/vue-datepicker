@@ -101,6 +101,9 @@ export default {
         this.setCurrentType()
         this.setViewValue(this.dateValue)
       })
+    },
+    type () {
+      this.setCurrentType()
     }
   },
   methods: {

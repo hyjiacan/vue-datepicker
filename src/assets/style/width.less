@@ -2,7 +2,8 @@
 @dash-size: 16px;
 @clear-size: 20px;
 
-.date-picker--year {
+
+.date-picker--year:not(.date-picker--custom-render) {
   width: 90px;
 
   &.date-picker--range {
@@ -10,7 +11,7 @@
   }
 }
 
-.date-picker--month {
+.date-picker--month:not(.date-picker--custom-render) {
   width: 100px;
 
   &.date-picker--range {
@@ -21,14 +22,16 @@
 .date-picker--date,
 .date-picker--week,
 .date-picker--season {
-  width: 120px;
+  &:not(.date-picker--custom-render) {
+    width: 120px;
 
-  &.date-picker--range {
-    width: 220px;
+    &.date-picker--range {
+      width: 220px;
+    }
   }
 }
 
-.date-picker--time {
+.date-picker--time:not(.date-picker--custom-render) {
   width: 100px;
 
   &.date-picker--range {
@@ -36,7 +39,7 @@
   }
 }
 
-.date-picker--datetime {
+.date-picker--datetime:not(.date-picker--custom-render) {
   width: 180px;
 
   &.date-picker--range {
@@ -44,7 +47,7 @@
   }
 }
 
-.date-picker--mini {
+.date-picker--mini:not(.date-picker--custom-render) {
   height: 22px;
 
   .date-picker--icon:before {
@@ -52,7 +55,7 @@
   }
 }
 
-.date-picker--small {
+.date-picker--small :not(.date-picker--custom-render) {
   height: 26px;
 
   .date-picker--icon:before {
@@ -60,7 +63,7 @@
   }
 }
 
-.date-picker--normal {
+.date-picker--normal:not(.date-picker--custom-render) {
   height: 32px;
 
   .date-picker--icon:before {
@@ -68,7 +71,7 @@
   }
 }
 
-.date-picker--large {
+.date-picker--large:not(.date-picker--custom-render) {
   height: 40px;
 
   .date-picker--icon:before {

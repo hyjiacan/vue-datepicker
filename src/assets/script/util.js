@@ -1,5 +1,4 @@
 import dateUtil from './date'
-import formats from './formats'
 
 /**
  * 获取上个月剩下的天数(距离这个月一周内)
@@ -209,7 +208,10 @@ const util = {
    * @return {Date[]|String[]}
    */
   getWeekRange (date, option) {
-    const {start, offset, time, format} = option || {}
+    const {start, offset, time, format} = option || {
+      start: 0,
+      offset: 0
+    }
     const weekDay = date.getDay()
     const begin = new Date(date.getTime())
 
@@ -258,7 +260,9 @@ const util = {
    * @return {Date[]|String[]}
    */
   getMonthRange (date, option) {
-    const {offset, time, format} = option || {}
+    const {offset, time, format} = option || {
+      offset: 0
+    }
     const begin = new Date(date.getTime())
     const end = new Date(date.getTime())
 
@@ -282,7 +286,9 @@ const util = {
    * @return {Date[]|String[]}
    */
   getSeasonRange (date, option) {
-    const {offset, time, format} = option || {}
+    const {offset, time, format} = option || {
+      offset: 0
+    }
     const month = date.getMonth()
     const beginMonth = Math.floor(month / 3) * 3
     const begin = new Date(date.getTime())
@@ -358,28 +364,22 @@ const util = {
     }
 
     if (typeof date === 'string') {
-      switch (date.length) {
-        case 4: // 2018 -> 2018-01-01
-          date = `${date}-01-01`
-          break
-        case 5: // 10:10 -> 1970-01-01 10:10:00
-          if (format === formats.time) {
-            date = `1970-01-01 ${date}:00`
-          }
-          break
-        case 7: // 2018-10 -> 2018-10-01
-          date = `${date}-01`
-          break
-        case 8: // 10:10:10 -> 1970-01-01 10:10:10
-          if (format === formats.time) {
-            date = `1970-01-01 ${date}`
-          }
-          break
-        case 16: // 2018-10-10 10:10 -> 2018-10-10 10:10:00
-          if (format === formats.datetime) {
-            date = `${date}:00`
-          }
-          break
+      let today = this.format(new Date(), 'yyyy-MM-dd')
+      if (/^\d{4}$/.test(date)) {
+        // 2018 -> 2018-01-01
+        date = `${date}-01-01`
+      } else if (/^\d{2}:\d{2}$/.test(date)) {
+        // 10:10 -> 20xx-01-01 10:10:00
+        date = `${today} ${date}:00`
+      } else if (/^\d{4}-\d{2}$/.test(date)) {
+        // 2018-10 -> 2018-10-01
+        date = `${date}-01`
+      } else if (/^\d{2}:\d{2}:\d{2}$/.test(date)) {
+        // 10:10:10 -> 20xx-01-01 10:10:10
+        date = `${today} ${date}`
+      } else if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(date)) {
+        // 2018-10-10 10:10 -> 2018-10-10 10:10:00
+        date = `${date}:00`
       }
     }
 

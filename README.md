@@ -292,9 +292,15 @@ const placeholders = {
 
 ## 插槽
 
-#### `shortcuts`
+#### `shortcut`
 
 放置自定义的快捷按钮。
+
+#### `value`
+
+自定义值的显示。
+
+参数: `{value, type, format, visible}`
 
 ## 工具函数
 

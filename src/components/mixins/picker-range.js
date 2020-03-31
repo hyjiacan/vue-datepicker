@@ -16,9 +16,7 @@ export default {
   data () {
     return {
       beginValue: util.format(new Date(), formats.date),
-      endValue: util.format(new Date(), formats.date),
-      beginVisible: false,
-      endVisible: false
+      endValue: util.format(new Date(), formats.date)
     }
   },
   watch: {
@@ -75,14 +73,16 @@ export default {
   },
   methods: {
     updateRangeValue (value) {
-      if (!value[0]) {
+      let beginValue = value[0] ? util.parse(value[0], this.finalFormat) : value[0]
+      let endValue = value[1] ? util.parse(value[1], this.finalFormat) : value[1]
+
+      if (!beginValue) {
         this.beginValue = ''
-        this.endValue = value[1] ? util.format(value[1], this.finalFormat) : value[1]
+        this.endValue = endValue
         return
       }
-      let beginValue = util.parse(value[0], this.finalFormat)
 
-      let endValue
+      let temp
 
       switch (this.type) {
         case this.types.WEEK:
@@ -90,6 +90,11 @@ export default {
           break
         case this.types.SEASON:
           [beginValue, endValue] = util.getSeasonRange(beginValue)
+          break
+        case this.types.MONTH:
+          temp = util.getMonthRange(beginValue)
+          beginValue = temp[0]
+          endValue = endValue ? util.getMonthRange(endValue)[1] : temp[1]
           break
         default:
           beginValue = value[0]

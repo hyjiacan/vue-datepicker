@@ -12,7 +12,23 @@ export default {
       c: null
     }
   },
+  computed: {
+    valueSlot () {
+      return this.$slots.value || this.$scopedSlots.value
+    }
+  },
   methods: {
+    renderValueSlot () {
+      if (!this.valueSlot) {
+        return null
+      }
+      return this.$slots.value || this.$scopedSlots.value({
+        type: this.type,
+        format: this.finalFormat,
+        value: this.value,
+        visible: this.isVisible
+      })
+    },
     renderLayout (begin, end) {
       const slots = {}
       let prependContent
@@ -152,9 +168,9 @@ export default {
       ]
       return this.renderPopper(
         content,
-        this.renderLayout(
-          this.renderInput('formattedBeginValue', this.placeholderBeginText),
-          this.renderInput('formattedEndValue', this.placeholderEndText)
+        this.renderValueSlot() || this.renderLayout(
+        this.renderInput('formattedBeginValue', this.placeholderBeginText),
+        this.renderInput('formattedEndValue', this.placeholderEndText)
         ),
         'isVisible'
       )
@@ -163,31 +179,34 @@ export default {
     renderSpecialPicker () {
       return this.renderPopper(
         this.renderPicker('beginValue', 'isVisible', 'singleLimit'),
-        this.renderLayout(
-          this.renderInput('formattedBeginValue', this.placeholderText),
-          this.renderInput('formattedEndValue')
+        this.renderValueSlot() || this.renderLayout(
+        this.renderInput('formattedBeginValue', this.placeholderText),
+        this.renderInput('formattedEndValue')
         ),
         'isVisible'
       )
     },
     // 渲染单个日期选择
     renderSinglePicker () {
-      const content = [this.renderInput('formattedValue', this.placeholderText)]
-      if (this.isIconVisible) {
-        content.unshift(this.renderIcon())
-      }
-      if (this.clearable) {
-        content.push(this.renderClearButton(this.clearSingleValue))
+      const content = []
+      if (!this.valueSlot) {
+        content.push(this.renderInput('formattedValue', this.placeholderText))
+        if (this.isIconVisible) {
+          content.unshift(this.renderIcon())
+        }
+        if (this.clearable) {
+          content.push(this.renderClearButton(this.clearSingleValue))
+        }
       }
       return this.renderPopper(
         this.renderPicker('singleValue', 'isVisible', 'singleLimit'),
-        this.h('div',
-          {
-            attrs: {
-              'class': 'date-picker--container'
-            }
-          },
-          content),
+        this.renderValueSlot() || this.h('div',
+        {
+          attrs: {
+            'class': 'date-picker--container'
+          }
+        },
+        content),
         'isVisible'
       )
     },
@@ -225,7 +244,8 @@ export default {
         'date-picker--range': this.isRange,
         'date-picker--clearable': this.clearable,
         'date-picker--show-icon': this.isIconVisible,
-        'date-picker--empty': this.isEmpty
+        'date-picker--empty': this.isEmpty,
+        'date-picker--custom-render': this.valueSlot
       }
     }, content)
   }

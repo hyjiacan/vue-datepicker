@@ -47,6 +47,21 @@ export interface SeasonRangeOption {
   format: String;
 }
 
+export interface WeekOfYearOption {
+  /**
+   * 周的偏移值
+   */
+  start: Number;
+  /**
+   * 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
+   */
+  format: boolean;
+  /**
+   * 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
+   */
+  boundary: string;
+}
+
 export interface $util {
   /**
    * 将任意格式的日期格式化成指定的格式
@@ -98,4 +113,15 @@ export interface $util {
    * @return {Date[]|String[]}
    */
   getSeasonRange(date: Date, option?: SeasonRangeOption): Date[] | String[];
+
+  /**
+   * 获取传入日期处于一年中的第多少周
+   * @param {Date} date
+   * @param {object} [option]
+   * @param {number} [option.start=0] 周的偏移值
+   * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
+   * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
+   * @return {string|number}
+   */
+  getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
 }

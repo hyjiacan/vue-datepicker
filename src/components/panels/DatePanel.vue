@@ -71,7 +71,8 @@ export default {
           }
           if (this.isWeek) {
             item.rowActive = item.year === active.year && item.month === active.month && item.value === active.date
-            // let result = util.getWeekOfYear(item.year, item.month - 1, item.value, true)
+            // let result = util.getWeekOfYear(new Date(item.year, item.month - 1, item.value),
+            // {start: this.weekStart, format: true})
             // item.week = result[0]
             // item.rowTip = result[1]
           } else {

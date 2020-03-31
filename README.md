@@ -388,6 +388,20 @@ getMonthRange(date: Date, option?: MonthRangeOption): Date[];
 getSeasonRange(date: Date, option?: SeasonRangeOption): Date[];
 ```
 
+### 获取指定日期处于一年中的第几周
+
+/**
+ * 获取传入日期处于一年中的第多少周
+ * @param {Date} date
+ * @param {object} [option]
+ * @param {number} [option.start=0] 周的偏移值
+ * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
+ * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
+ * @return {string|number}
+ */
+getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
+```
+
 ## 支持
 
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们

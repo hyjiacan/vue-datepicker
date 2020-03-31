@@ -150,27 +150,53 @@ const util = {
   },
   /**
    * 获取传入日期处于一年中的第多少周
-   * @param year
-   * @param month
-   * @param date
-   * @param formatted 是否返回格式化串
-   * @param weekStart
+   * @param {Date} date
+   * @param {object} [option]
+   * @param {number} [option.start=0] 周的偏移值
+   * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
+   * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
+   * @return {string|number}
    */
-  getWeekOfYear (year, month, date, formatted, weekStart) {
-    const value = new Date(year, month, date)
-    const [start, end] = this.getWeekRange(value, {start: weekStart})
+  getWeekOfYear (date, option) {
+    option = {
+      start: 0,
+      format: false,
+      boundary: null,
+      ...option
+    }
+    const [start, end] = this.getWeekRange(date, {start: option.start})
 
-    let week
+    let week, year
+    let currentYear = date.getFullYear()
+    let startYear = start.getFullYear()
+    let endYear = end.getFullYear()
 
     // 处理跨年的情况
-    if (start.getFullYear() < end.getFullYear()) {
-      year = end.getFullYear()
-      week = Math.ceil(this.getDayOfYear(end) / 7)
+    if (startYear < endYear) {
+      if (currentYear === endYear) {
+        // 上一年与今年
+        if (option.boundary === 'prev') {
+          year = startYear
+          week = Math.ceil(this.getDayOfYear(start) / 7)
+        } else {
+          year = currentYear
+          week = Math.ceil(this.getDayOfYear(end) / 7)
+        }
+      } else {
+        // 今年与下一年
+        if (option.boundary === 'next') {
+          year = endYear
+          week = Math.ceil(this.getDayOfYear(end) / 7)
+        } else {
+          year = currentYear
+          week = Math.ceil(this.getDayOfYear(start) / 7)
+        }
+      }
     } else {
-      // 年末
+      // 未跨年
       week = Math.ceil(this.getDayOfYear(start) / 7)
     }
-    return formatted ? [week, `${year}年 第${week}周`] : week
+    return option.format ? [week, `${year}年 第${week}周`] : week
   },
   /**
    * 根据传入日期生成日期所在月的日历视图

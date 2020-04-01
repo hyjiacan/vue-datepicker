@@ -234,9 +234,10 @@ const util = {
    * @return {Date[]|String[]}
    */
   getWeekRange (date, option) {
-    const {start, offset, time, format} = option || {
+    const {start, offset, time, format} = {
       start: 0,
-      offset: 0
+      offset: 0,
+      ...option
     }
     const weekDay = date.getDay()
     const begin = new Date(date.getTime())
@@ -286,8 +287,9 @@ const util = {
    * @return {Date[]|String[]}
    */
   getMonthRange (date, option) {
-    const {offset, time, format} = option || {
-      offset: 0
+    const {offset, time, format} = {
+      offset: 0,
+      ...option
     }
     const begin = new Date(date.getTime())
     const end = new Date(date.getTime())
@@ -312,8 +314,9 @@ const util = {
    * @return {Date[]|String[]}
    */
   getSeasonRange (date, option) {
-    const {offset, time, format} = option || {
-      offset: 0
+    const {offset, time, format} = {
+      offset: 0,
+      ...option
     }
     const month = date.getMonth()
     const beginMonth = Math.floor(month / 3) * 3

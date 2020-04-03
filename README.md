@@ -298,6 +298,8 @@ const placeholders = {
 
 #### `value`
 
+> since 0.5.0
+
 自定义值的显示。
 
 参数: `{value, type, format, visible}`
@@ -390,6 +392,7 @@ getSeasonRange(date: Date, option?: SeasonRangeOption): Date[];
 
 ### 获取指定日期处于一年中的第几周
 
+```javascript
 /**
  * 获取传入日期处于一年中的第多少周
  * @param {Date} date
@@ -407,6 +410,15 @@ getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 0.5.2
+
+- 修复 `getWeekRange` 计算错误
+
+### 0.5.0
+
+- 暴露出工具函数 `getWeekOfYear`
+- 添加 值渲染插槽
 
 ### 0.4.0
 

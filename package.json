@@ -1,6 +1,6 @@
 {
   "name": "@hyjiacan/vue-datepicker",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "main": "dist/datepicker.common.js",
   "unpkg": "dist/datepicker.umd.js",
   "jsdelivr": "dist/datepicker.umd.js",
@@ -21,7 +21,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "http://192.168.12.225:100"
+    "registry": "https://registry.npmjs.com"
   },
   "homepage": "https://hyjiacan.github.io/vue-datepicker/",
   "keywords": [

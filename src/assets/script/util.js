@@ -6,7 +6,7 @@ import dateUtil from './date'
  * @param {Number} weekStart 星期开始量
  * @return {Array}
  */
-function getPrevMonthDays (date, weekStart) {
+function getPrevMonthDays(date, weekStart) {
   date = new Date(date.getTime())
   date.setDate(1)
 
@@ -66,7 +66,7 @@ function getPrevMonthDays (date, weekStart) {
  * @param {Date} date
  * @return {Array}
  */
-function getCurrentMonthDays (date) {
+function getCurrentMonthDays(date) {
   date = new Date(date.getTime())
   // 设置日期到下个月
   // 将时间跳转到本月的最后一天
@@ -100,7 +100,7 @@ function getCurrentMonthDays (date) {
  * @param {number} remain 剩下的空余数量
  * @return {Array}
  */
-function getNextMonthDays (date, remain) {
+function getNextMonthDays(date, remain) {
   date = new Date(date.getTime())
   // 设置日期到下个月
   date.setMonth(date.getMonth() + 1)
@@ -134,7 +134,7 @@ const util = {
    * @param includeCurrentMonth
    * @return {number}
    */
-  getDayOfYear (date, includeCurrentMonth) {
+  getDayOfYear(date, includeCurrentMonth) {
     date = date ? this.parse(date) : new Date()
     let days = 0
     if (includeCurrentMonth !== false) {
@@ -157,7 +157,7 @@ const util = {
    * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
    * @return {string|number}
    */
-  getWeekOfYear (date, option) {
+  getWeekOfYear(date, option) {
     option = {
       start: 0,
       format: false,
@@ -204,7 +204,7 @@ const util = {
    * @param {Number} [weekStart=0]
    * @return {*[]}
    */
-  makeDateView (date, weekStart) {
+  makeDateView(date, weekStart) {
     date = date ? this.parse(date) : new Date()
     // 一共是7列5行
     const size = 7 * 5
@@ -219,7 +219,7 @@ const util = {
    * @param {Date} end
    * @private
    */
-  appendTime (begin, end) {
+  appendTime(begin, end) {
     begin.setHours(0, 0, 0)
     end.setHours(23, 59, 59)
   },
@@ -233,7 +233,7 @@ const util = {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getWeekRange (date, option) {
+  getWeekRange(date, option) {
     const {start, offset, time, format} = {
       start: 0,
       offset: 0,
@@ -263,7 +263,7 @@ const util = {
     }
 
     const end = new Date(date.getTime())
-    end.setDate(begin.getDate() + 6)
+    end.setMonth(begin.getMonth(), begin.getDate() + 6)
 
     if (offset) {
       begin.setDate(begin.getDate() + Math.round(offset) * 7)
@@ -286,7 +286,7 @@ const util = {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getMonthRange (date, option) {
+  getMonthRange(date, option) {
     const {offset, time, format} = {
       offset: 0,
       ...option
@@ -313,7 +313,7 @@ const util = {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getSeasonRange (date, option) {
+  getSeasonRange(date, option) {
     const {offset, time, format} = {
       offset: 0,
       ...option
@@ -352,7 +352,7 @@ const util = {
    * @param {Boolean} [option.copy=true]
    * @return {Date}
    */
-  setDate (date, option) {
+  setDate(date, option) {
     const {year, month, date: day, hour, minute, second, copy} = {
       copy: true,
       ...option
@@ -384,7 +384,7 @@ const util = {
    * @param {String} [format] 当 date 是字符串时，通过此参数指定格式
    * @return {Date}
    */
-  parse (date, format) {
+  parse(date, format) {
     if (date instanceof Date) {
       return new Date(date.getTime())
     }
@@ -421,7 +421,7 @@ const util = {
    * @param {String} [inputFormat] 当 date 是字符串时，通过此参数指定格式，不指定时使用 format 的值
    * @return {string}
    */
-  format (date, format, inputFormat) {
+  format(date, format, inputFormat) {
     const value = this.parse(date, inputFormat || format)
     return dateUtil.format(value, format)
   },
@@ -432,7 +432,7 @@ const util = {
    * @param {String} format 日期格式
    * @return {boolean}
    */
-  equals (date1, date2, format) {
+  equals(date1, date2, format) {
     if (!date1 && !date2) {
       return true
     }
@@ -441,7 +441,7 @@ const util = {
     }
     return this.format(date1, format) === this.format(date2, format)
   },
-  pad (val, len, fill) {
+  pad(val, len, fill) {
     val = String(val)
     len = len || 2
     fill = fill || '0'

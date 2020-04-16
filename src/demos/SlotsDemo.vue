@@ -23,7 +23,7 @@
       </template>
     </date-picker>
 
-    <div class="date-label">范围</div>
+    <div class="date-label">范围 - 自定义</div>
     <date-picker type="date" v-model="rdate" range>
       <template v-slot:shortcut>
         <div class="b1">
@@ -40,7 +40,7 @@
     <div class="date-label">自定义值的显示 - 单个</div>
     <date-picker type="date" v-model="date">
       <template v-slot:value="{value, format, type, visible}">
-        <ul>
+        <ul class="custom-value">
           <li>visible: {{visible}}</li>
           <li>type: {{type}}</li>
           <li>format: {{format}}</li>
@@ -52,12 +52,27 @@
     <div class="date-label">自定义值的显示 - 范围</div>
     <date-picker type="date" v-model="rdate" range>
       <template v-slot:value="{value, format, type, visible}">
-        <ul>
+        <ul class="custom-value">
           <li>visible: {{visible}}</li>
           <li>type: {{type}}</li>
           <li>format: {{format}}</li>
           <li>value: {{value}}</li>
         </ul>
+      </template>
+    </date-picker>
+
+    <div class="date-label">自定义提示文本 - 单个</div>
+    <date-picker type="date" v-model="date">
+      <template v-slot:title>
+        <span>选择日期</span>
+      </template>
+    </date-picker>
+
+    <div class="date-label">自定义提示文本 - 范围</div>
+    <date-picker type="date" v-model="rdate" range>
+      <template v-slot:title>
+        <div>开始日期</div>
+        <div>结束日期</div>
       </template>
     </date-picker>
   </div>
@@ -70,7 +85,7 @@ import util from '../assets/script/util'
 export default {
   name: 'SlotsDemo',
   mixins: [mixin],
-  data () {
+  data() {
     const date = new Date()
     const today = date.getDate()
     return {
@@ -119,6 +134,14 @@ export default {
 
   button {
     margin-bottom: 5px;
+  }
+}
+
+.custom-value {
+  border: 1px solid #55a532;
+
+  &:hover {
+    border-color: #126ac4;
   }
 }
 </style>

@@ -41,26 +41,26 @@ export default {
       type: [String, Array]
     }
   },
-  data () {
+  data() {
     return {
       types,
       singleValue: util.format(new Date(), formats.date),
       isVisible: false
     }
   },
-  mounted () {
+  mounted() {
     this.validate()
     this.updateValue(this.value)
     this.isVisible = this.visible
   },
   watch: {
-    visible (v) {
+    visible(v) {
       if (v === this.isVisible) {
         return
       }
       this.isVisible = v
     },
-    isVisible (v) {
+    isVisible(v) {
       // 在关闭时触发更新
       if (!v && this.isRange) {
         this.commitChanges()
@@ -69,10 +69,10 @@ export default {
         this.$emit('update:visible', v)
       }
     },
-    singleValue () {
+    singleValue() {
       this.commitChanges()
     },
-    value (v) {
+    value(v) {
       if (this.isRange) {
         if (util.equals(this.beginValue, v[0], this.finalFormat) && util.equals(this.endValue, v[1], this.finalFormat)) {
           return
@@ -82,27 +82,27 @@ export default {
         this.updateSingleValue(v)
       }
     },
-    type(){
+    type() {
       this.updateValue(this.value)
     }
   },
   methods: {
-    validate () {
+    validate() {
       if (this.weekStart < 0 || this.weekStart > 6) {
         throw Error('week-start can only valued between 0 and 6')
       }
     },
-    updateValue (value) {
+    updateValue(value) {
       if (this.isRange) {
         this.updateRangeValue(value)
       } else {
         this.updateSingleValue(value)
       }
     },
-    updateSingleValue (value) {
+    updateSingleValue(value) {
       this.singleValue = value ? util.format(value, this.finalFormat) : value
     },
-    commitChanges () {
+    commitChanges() {
       const oldValue = this.isRange ? this.value.map(v => v ? util.format(v, this.finalFormat) : v) : (this.value ? util.format(this.value, this.finalFormat) : this.value)
       const newValue = this.isRange ? this.formattedRangeValue : this.formattedValue
 
@@ -120,7 +120,7 @@ export default {
         value: newValue
       }, oldValue)
     },
-    clearSingleValue () {
+    clearSingleValue() {
       this.singleValue = ''
     }
   },
@@ -129,38 +129,41 @@ export default {
      * 在不指定 format 时，使用默认值
      * @return {String}
      */
-    finalFormat () {
+    finalFormat() {
       return this.format || formats[this.type]
     },
-    formattedValue () {
+    formattedValue() {
       return this.singleValue ? util.format(this.singleValue, this.finalFormat) : this.singleValue
     },
-    allowEdit () {
+    allowEdit() {
       return this.editable && !this.readonly
     },
-    singleLimit () {
+    singleLimit() {
       return [this.minValue, this.maxValue]
     },
-    minValue () {
+    minValue() {
       return this.min ? util.parse(this.min, this.finalFormat).getTime() : 0
     },
-    maxValue () {
+    maxValue() {
       return this.max ? util.parse(this.max, this.finalFormat).getTime() : 0
     },
-    isClearVisible () {
+    isClearVisible() {
       return this.clearable && this.isEmpty
     },
-    isEmpty () {
+    isEmpty() {
       return this.isRange ? this.value.every(v => !v) : !this.value
     },
-    isIconVisible () {
+    isIconVisible() {
       return !this.hideIcon
     },
-    placeholderText () {
+    placeholderText() {
       if (this.placeholder) {
         return this.placeholder
       }
       return placeholders[this.type]
+    },
+    singleTitle() {
+      return this.$slots.title
     }
   }
 }

@@ -1,11 +1,16 @@
 <template>
   <div class="date-picker--panel" :class="extraClass || ''">
+    <div class="date-picker--panel-title">
+      <slot name="panelTitle"/>
+    </div>
     <div class="date-picker--panel-header">
-      <div class="date-picker--panel-header-prev datepicker-iconfont datepicker--icon-left-d" @click="$emit('prev')"></div>
+      <div class="date-picker--panel-header-prev datepicker-iconfont datepicker--icon-left-d"
+           @click="$emit('prev')"></div>
       <div class="date-picker--panel-header-content">
         <slot name="header"/>
       </div>
-      <div class="date-picker--panel-header-next datepicker-iconfont datepicker--icon-right-d" @click="$emit('next')"></div>
+      <div class="date-picker--panel-header-next datepicker-iconfont datepicker--icon-right-d"
+           @click="$emit('next')"></div>
     </div>
     <div class="date-picker--panel-body">
       <table @wheel="onWheel">
@@ -41,26 +46,26 @@ export default {
     picker: 'datePicker'
   },
   methods: {
-    getCellClass (cell) {
+    getCellClass(cell) {
       return {
         'date-picker--panel-value-active': cell.active,
         'date-picker--panel-value-overflow': cell.overflow,
         'date-picker--panel-value-disabled': cell.disabled
       }
     },
-    onRowClick (row, index) {
+    onRowClick(row, index) {
       if (!row.every(cell => !cell.disabled)) {
         return
       }
       this.$emit('pick-row', {row, index})
     },
-    onCellClick (cell) {
+    onCellClick(cell) {
       if (cell.disabled) {
         return
       }
       this.$emit('pick-cell', cell)
     },
-    onWheel (e) {
+    onWheel(e) {
       if (!this.picker.mousewheel) {
         return
       }
@@ -76,13 +81,13 @@ export default {
         this.$emit('next', {wheel: true})
       }
     },
-    getRowClass (row, index) {
+    getRowClass(row, index) {
       if (!this.rowClassHandler) {
         return ''
       }
       return this.rowClassHandler({row, index})
     },
-    getRowTip (row) {
+    getRowTip(row) {
       return row[0].rowTip || ''
     }
   }

@@ -1,6 +1,9 @@
 <template>
   <base-panel extra-class="date-picker--panel-year" :view="data"
               @prev="onPrevDecades" @next="onNextDecades" @pick-cell="onPick">
+    <template v-slot:panelTitle>
+      <slot name="title"/>
+    </template>
     <template v-slot:header>
       <span>{{startYear}}年 - {{stopYear}}年</span>
     </template>
@@ -16,28 +19,28 @@ export default {
   name: 'YearPanel',
   components: {BasePanel},
   mixins: [mixin],
-  data () {
+  data() {
     return {
       // 向前偏移10年
       offset: 10,
       startYear: 0
     }
   },
-  mounted () {
+  mounted() {
     this.updateStartYear(this.viewValue)
   },
   watch: {
-    viewValue (v) {
+    viewValue(v) {
       this.updateStartYear(v)
     }
   },
   computed: {
-    stopYear () {
+    stopYear() {
       let len = this.data.length
       let temp = this.data[len - 1]
       return temp[temp.length - 1].value
     },
-    data () {
+    data() {
       const data = []
       const activeYear = this.active.getFullYear()
       let year = this.startYear
@@ -63,7 +66,7 @@ export default {
     }
   },
   methods: {
-    updateStartYear (v) {
+    updateStartYear(v) {
       const year = v.getFullYear()
       if (this.startYear <= year && year < this.stopYear) {
         return
@@ -77,13 +80,13 @@ export default {
         this.startYear = temp
       }
     },
-    onPrevDecades () {
+    onPrevDecades() {
       this.viewValue = util.setDate(this.viewValue, {year: this.startYear - this.offset})
     },
-    onNextDecades () {
+    onNextDecades() {
       this.viewValue = util.setDate(this.viewValue, {year: this.stopYear + 1 + this.offset})
     },
-    onPick ({value}) {
+    onPick({value}) {
       this.$emit('pick', {year: value})
     }
   }

@@ -1,6 +1,9 @@
 <template>
   <base-panel :extra-class="classes" :view="data" @prev="onPrevYear" @next="onNextYear"
               :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
+    <template v-slot:panelTitle>
+      <slot name="title"/>
+    </template>
     <template v-slot:header>
       <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
     </template>

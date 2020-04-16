@@ -304,6 +304,23 @@ const placeholders = {
 
 参数: `{value, type, format, visible}`
 
+#### `title`
+
+> since 0.6.0
+
+设置选择器上方的标题文字
+
+当指定了 `range` 属性时，插槽需要传入包含两个元素:
+
+```vue
+<date-picker range>
+  <template v-slot:title>
+    <div>左侧的标题</div>
+    <div>右侧的标题</div>
+  </template>
+</date-picker>
+```
+
 ## 工具函数
 
 导出了一点可能会用上的日期工具函数。
@@ -410,6 +427,10 @@ getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 0.6.0
+
+- 添加 `title` 插槽支持
 
 ### 0.5.2
 

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>动态设置 type</h3>
     <div style="padding: 20px 0;">
       <button v-for="t in types" :key="t" @click="currentType = t"
               :class="{active: currentType === t}">{{t}}

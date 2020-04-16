@@ -13,14 +13,14 @@ export default {
     },
     range: Boolean
   },
-  data () {
+  data() {
     return {
       beginValue: util.format(new Date(), formats.date),
       endValue: util.format(new Date(), formats.date)
     }
   },
   watch: {
-    beginValue (v) {
+    beginValue(v) {
       if (!v) {
         this.commitChanges()
         return
@@ -53,7 +53,7 @@ export default {
         this.commitChanges()
       }
     },
-    endValue (v) {
+    endValue(v) {
       if (!v) {
         this.commitChanges()
         return
@@ -72,7 +72,7 @@ export default {
     }
   },
   methods: {
-    updateRangeValue (value) {
+    updateRangeValue(value) {
       let beginValue = value[0] ? util.parse(value[0], this.finalFormat) : value[0]
       let endValue = value[1] ? util.parse(value[1], this.finalFormat) : value[1]
 
@@ -105,36 +105,36 @@ export default {
       this.beginValue = util.format(beginValue, this.finalFormat)
       this.endValue = endValue ? util.format(endValue, this.finalFormat) : endValue
     },
-    clearRangeValue () {
+    clearRangeValue() {
       this.beginValue = ''
       this.endValue = ''
     },
-    clearBeginValue () {
+    clearBeginValue() {
       this.beginValue = ''
     },
-    clearEndValue () {
+    clearEndValue() {
       this.endValue = ''
     }
   },
   computed: {
-    isRange () {
+    isRange() {
       return this.range || [this.types.SEASON, this.types.WEEK].indexOf(this.type) !== -1
     },
-    formattedRangeValue () {
+    formattedRangeValue() {
       return [
         this.beginValue ? util.format(this.beginValue, this.finalFormat) : this.beginValue,
         this.endValue ? util.format(this.endValue, this.finalFormat) : this.endValue
       ]
     },
-    formattedBeginValue () {
+    formattedBeginValue() {
       // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
       return this.formattedRangeValue[0]
     },
-    formattedEndValue () {
+    formattedEndValue() {
       // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
       return this.formattedRangeValue[1]
     },
-    rangeBeginLimit () {
+    rangeBeginLimit() {
       // 设置为0表示不限制
       const v = this.endValue ? util.parse(this.endValue, this.finalFormat).getTime() : 0
       return [
@@ -142,24 +142,30 @@ export default {
         !this.maxValue || v < this.maxValue ? v : this.maxValue
       ]
     },
-    rangeEndLimit () {
+    rangeEndLimit() {
       const v = this.beginValue ? util.parse(this.beginValue, this.finalFormat).getTime() : 0
       return [
         !this.minValue || v > this.minValue ? v : this.minValue,
         this.maxValue
       ]
     },
-    placeholderBeginText () {
+    placeholderBeginText() {
       if (this.placeholder) {
         return this.placeholder[0]
       }
       return placeholders[`${this.type}Range`][0]
     },
-    placeholderEndText () {
+    placeholderEndText() {
       if (this.placeholder) {
         return this.placeholder[1]
       }
       return placeholders[`${this.type}Range`][1]
+    },
+    rangeBeginTitle() {
+      return this.$slots.title ? this.$slots.title[0] : null
+    },
+    rangeEndTitle() {
+      return this.$slots.title ? this.$slots.title[1] : null
     }
   }
 }

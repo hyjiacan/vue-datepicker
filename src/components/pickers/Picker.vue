@@ -1,15 +1,34 @@
 <template>
   <div class="date-picker--box">
-    <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="showTimePanel" v-if="renderTimePanel"/>
+    <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="showTimePanel" v-if="renderTimePanel">
+      <template v-slot:title>
+        <slot name="title"/>
+      </template>
+    </time-panel>
     <date-panel @pick-year="onPickYear" @pick-month="onPickMonth" @pick="onDatePicked" v-show="showDatePanel"
                 v-if="renderDatePanel">
+      <template v-slot:title>
+        <slot name="title"/>
+      </template>
       <template v-slot:append>
-        <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="renderDateTimePanel"/>
+        <time-panel @pick-date="onPickDate" @pick="onTimePicked" v-show="renderDateTimePanel">
+          <template v-slot:title>
+            <slot name="title"/>
+          </template>
+        </time-panel>
       </template>
     </date-panel>
     <month-panel @pick-year="onPickYear" @pick="onMonthPicked" v-show="showMonthPanel"
-                 v-if="renderDatePanel || renderMonthPanel"/>
-    <year-panel v-show="currentType === types.YEAR" @pick="onYearPicked"/>
+                 v-if="renderDatePanel || renderMonthPanel">
+      <template v-slot:title>
+        <slot name="title"/>
+      </template>
+    </month-panel>
+    <year-panel v-show="currentType === types.YEAR" @pick="onYearPicked">
+      <template v-slot:title>
+        <slot name="title"/>
+      </template>
+    </year-panel>
   </div>
 </template>
 
@@ -72,27 +91,27 @@ export default {
       default: 0
     }
   },
-  provide () {
+  provide() {
     return {
       datePicker: this
     }
   },
-  data () {
+  data() {
     return {
       currentType: '',
       viewValue: new Date(),
       types
     }
   },
-  mounted () {
+  mounted() {
     this.setCurrentType()
     this.setViewValue(this.dateValue)
   },
   watch: {
-    dateValue (v) {
+    dateValue(v) {
       this.setViewValue(v)
     },
-    visible (v) {
+    visible(v) {
       if (v) {
         return
       }
@@ -102,21 +121,21 @@ export default {
         this.setViewValue(this.dateValue)
       })
     },
-    type () {
+    type() {
       this.setCurrentType()
     }
   },
   methods: {
-    setCurrentType () {
+    setCurrentType() {
       this.currentType = this.type === this.types.DATETIME ? this.types.DATE : this.type
     },
-    setViewValue (v) {
+    setViewValue(v) {
       this.viewValue = util.setDate(v)
     },
-    onTimePicked ({year, month, date, hour, minute, second}) {
+    onTimePicked({year, month, date, hour, minute, second}) {
       this.changeValue(new Date(year, month, date, hour, minute, second))
     },
-    onDatePicked (e) {
+    onDatePicked(e) {
       const value = util.setDate(this.viewValue, e)
       this.changeValue(value)
       // if (this.type === this.types.DATE) {
@@ -126,7 +145,7 @@ export default {
       // 选择时间
       // this.currentType = this.types.TIME
     },
-    onMonthPicked (e) {
+    onMonthPicked(e) {
       const value = util.setDate(this.viewValue, e)
       if (this.type === this.types.MONTH || this.type === this.types.SEASON) {
         this.changeValue(value)
@@ -136,7 +155,7 @@ export default {
       // 显示日期选择
       this.currentType = this.type
     },
-    onYearPicked (e) {
+    onYearPicked(e) {
       const value = util.setDate(this.viewValue, e)
       if (this.type === this.types.YEAR) {
         this.changeValue(value)
@@ -146,7 +165,7 @@ export default {
       // 显示月份选择
       this.currentType = this.types.MONTH
     },
-    changeValue (value) {
+    changeValue(value) {
       this.isVisible = false
       const oldValue = this.value ? util.format(this.value, this.format) : this.value
       const newValue = util.format(value, this.format)
@@ -157,13 +176,13 @@ export default {
         value: newValue
       }, oldValue)
     },
-    onPickYear () {
+    onPickYear() {
       this.currentType = this.types.YEAR
     },
-    onPickMonth () {
+    onPickMonth() {
       this.currentType = this.types.MONTH
     },
-    onPickDate () {
+    onPickDate() {
       this.currentType = this.types.DATE
     }
   },
@@ -171,39 +190,39 @@ export default {
     /**
      * 将传入的日期处理成 Date 对象
      */
-    dateValue () {
+    dateValue() {
       // 为空时使用当前日期
       return this.value ? util.parse(this.value, this.format) : new Date()
     },
-    renderTimePanel () {
+    renderTimePanel() {
       return this.type === this.types.TIME
     },
-    renderDateTimePanel () {
+    renderDateTimePanel() {
       return this.type === this.types.DATETIME
     },
-    renderDatePanel () {
+    renderDatePanel() {
       return this.type === this.types.DATE || this.type === this.types.DATETIME || this.type === this.types.WEEK
     },
-    renderMonthPanel () {
+    renderMonthPanel() {
       return this.type === this.types.MONTH || this.type === this.types.SEASON
     },
-    showTimePanel () {
+    showTimePanel() {
       return this.currentType === this.types.TIME
     },
-    showDatePanel () {
+    showDatePanel() {
       return this.currentType === this.types.DATE || this.currentType === this.types.DATETIME || this.currentType === this.types.WEEK
     },
-    showMonthPanel () {
+    showMonthPanel() {
       return this.currentType === this.types.MONTH || this.currentType === this.types.SEASON
     },
-    minValue () {
+    minValue() {
       return this.min ? new Date(this.min) : null
     },
-    maxValue () {
+    maxValue() {
       return this.max ? new Date(this.max) : null
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.setCurrentType()
     this.setViewValue(this.dateValue)
   }

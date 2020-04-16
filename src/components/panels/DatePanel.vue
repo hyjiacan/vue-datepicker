@@ -1,6 +1,9 @@
 <template>
   <base-panel :view="view" @prev="onPrevYear" @next="onNextYear" :extra-class="classes"
               :row-class-handler="getRowClass" @pick-cell="onPickCell" @pick-row="onPickRow">
+    <template v-slot:panelTitle>
+      <slot name="title"/>
+    </template>
     <template v-slot:header>
       <div class="date-picker--panel-header-container">
         <div @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></div>
@@ -35,7 +38,7 @@ export default {
   props: {
     week: Boolean
   },
-  data () {
+  data() {
     return {
       weekDays: {
         0: '日',
@@ -49,10 +52,10 @@ export default {
     }
   },
   computed: {
-    header () {
+    header() {
       return this.view[0]
     },
-    view () {
+    view() {
       const data = util.makeDateView(this.viewValue, this.picker.weekStart)
       const active = {
         year: this.active.getFullYear(),
@@ -87,12 +90,12 @@ export default {
       }
       return view
     },
-    classes () {
+    classes() {
       return {
         'date-picker--panel-week': this.isWeek
       }
     },
-    isWeek () {
+    isWeek() {
       return this.type === this.types.WEEK
     }
   },
@@ -100,34 +103,34 @@ export default {
     /**
      * 判断激活日期是否在当前月
      */
-    locateActiveDay (value) {
+    locateActiveDay(value) {
       if (value.getFullYear() === this.active.getFullYear() && value.getMonth() === this.active.getMonth()) {
         return util.setDate(this.active)
       }
 
       return value
     },
-    onPrevMonth () {
+    onPrevMonth() {
       this.viewValue = this.locateActiveDay(util.setDate(this.viewValue, {month: this.viewValue.getMonth() - 1}))
     },
-    onNextMonth () {
+    onNextMonth() {
       this.viewValue = this.locateActiveDay(util.setDate(this.viewValue, {month: this.viewValue.getMonth() + 1}))
     },
-    onPrevYear (e) {
+    onPrevYear(e) {
       if (e && e.wheel) {
         this.onPrevMonth()
         return
       }
       this.viewValue = this.getPrevYearByViewDate()
     },
-    onNextYear (e) {
+    onNextYear(e) {
       if (e && e.wheel) {
         this.onNextMonth()
         return
       }
       this.viewValue = this.getNextYearByViewDate()
     },
-    onPickCell ({year, month, value}) {
+    onPickCell({year, month, value}) {
       if (this.isWeek) {
         return
       }
@@ -135,7 +138,7 @@ export default {
         year, month: month - 1, date: value
       })
     },
-    onPickRow ({row}) {
+    onPickRow({row}) {
       if (this.type !== this.types.WEEK) {
         return
       }
@@ -144,7 +147,7 @@ export default {
         year, month: month - 1, date: value
       })
     },
-    getRowClass ({row}) {
+    getRowClass({row}) {
       if (this.type !== this.types.WEEK) {
         return ''
       }

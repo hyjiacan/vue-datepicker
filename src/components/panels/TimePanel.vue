@@ -1,5 +1,8 @@
 <template>
   <div class="date-picker--panel date-picker--panel-time">
+    <div class="date-picker--panel-title">
+      <slot name="title"/>
+    </div>
     <div class="date-picker--panel-body">
       <table class="date-picker--panel-time-body">
         <thead class="date-picker--panel-time-title">

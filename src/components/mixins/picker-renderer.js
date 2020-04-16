@@ -6,19 +6,19 @@ import Shortcuts from '../comps/Shortcuts'
 
 export default {
   components: {RangeLayout, Picker, PopperWrapper},
-  data () {
+  data() {
     return {
       h: null,
       c: null
     }
   },
   computed: {
-    valueSlot () {
+    valueSlot() {
       return this.$slots.value || this.$scopedSlots.value
     }
   },
   methods: {
-    renderValueSlot () {
+    renderValueSlot() {
       if (!this.valueSlot) {
         return null
       }
@@ -29,7 +29,7 @@ export default {
         visible: this.isVisible
       })
     },
-    renderLayout (begin, end) {
+    renderLayout(begin, end) {
       const slots = {}
       let prependContent
       let appendContent
@@ -57,7 +57,7 @@ export default {
         scopedSlots: slots
       })
     },
-    renderClearButton (handler) {
+    renderClearButton(handler) {
       return this.h(ClearButton, {
         on: {
           clear: handler
@@ -70,7 +70,7 @@ export default {
      * @param {string} [placeholder]
      * @return {*|void}
      */
-    renderInput (valueName, placeholder) {
+    renderInput(valueName, placeholder) {
       return this.h('input', {
         attrs: {
           type: 'text',
@@ -92,7 +92,7 @@ export default {
      * @param {String}visibleName
      * @return {*}
      */
-    renderPopper (content, trigger, visibleName) {
+    renderPopper(content, trigger, visibleName) {
       const h = this.h
 
       const slots = Array.isArray(content) ? content : [content]
@@ -118,7 +118,7 @@ export default {
         }
       })
     },
-    renderShortcuts (content) {
+    renderShortcuts(content) {
       content = content || []
 
       return this.h(Shortcuts, {
@@ -132,9 +132,17 @@ export default {
         }
       }, Array.isArray(content) ? content : [content])
     },
-    renderPicker (valueName, visibleName, limitName, doNotAutoClose) {
-      const h = this.h
-      return h(Picker, {
+    /**
+     *
+     * @param valueName
+     * @param visibleName
+     * @param limitName
+     * @param {null|HTMLElement} titleSlot
+     * @param {boolean} [doNotAutoClose=false]
+     * @returns {*|void}
+     */
+    renderPicker(valueName, visibleName, limitName, titleSlot, doNotAutoClose) {
+      const option = {
         props: {
           format: this.finalFormat,
           value: this[valueName],
@@ -159,12 +167,20 @@ export default {
             this[visibleName] = false
           }
         }
-      })
+      }
+
+      if (titleSlot) {
+        option.scopedSlots = {
+          title: () => titleSlot
+        }
+      }
+
+      return this.h(Picker, option)
     },
-    renderRange () {
+    renderRange() {
       const content = [
-        this.renderPicker('beginValue', 'isVisible', 'rangeBeginLimit', true),
-        this.renderPicker('endValue', 'isVisible', 'rangeEndLimit', true)
+        this.renderPicker('beginValue', 'isVisible', 'rangeBeginLimit', this.rangeBeginTitle, true),
+        this.renderPicker('endValue', 'isVisible', 'rangeEndLimit', this.rangeEndTitle, true)
       ]
       return this.renderPopper(
         content,
@@ -176,9 +192,9 @@ export default {
       )
     },
     // 针对季度与周单独渲染
-    renderSpecialPicker () {
+    renderSpecialPicker() {
       return this.renderPopper(
-        this.renderPicker('beginValue', 'isVisible', 'singleLimit'),
+        this.renderPicker('beginValue', 'isVisible', 'singleLimit', this.singleTitle),
         this.renderValueSlot() || this.renderLayout(
         this.renderInput('formattedBeginValue', this.placeholderText),
         this.renderInput('formattedEndValue')
@@ -187,7 +203,7 @@ export default {
       )
     },
     // 渲染单个日期选择
-    renderSinglePicker () {
+    renderSinglePicker() {
       const content = []
       if (!this.valueSlot) {
         content.push(this.renderInput('formattedValue', this.placeholderText))
@@ -199,7 +215,7 @@ export default {
         }
       }
       return this.renderPopper(
-        this.renderPicker('singleValue', 'isVisible', 'singleLimit'),
+        this.renderPicker('singleValue', 'isVisible', 'singleLimit', this.singleTitle),
         this.renderValueSlot() || this.h('div',
         {
           attrs: {
@@ -210,7 +226,7 @@ export default {
         'isVisible'
       )
     },
-    renderIcon () {
+    renderIcon() {
       return this.h('span', {
         attrs: {
           'class': 'date-picker--icon datepicker-iconfont'
@@ -218,7 +234,7 @@ export default {
       })
     },
     // 判断需要渲染哪成单个日期选择还是按范围选择
-    renderComponent () {
+    renderComponent() {
       if (!this.isRange) {
         return this.renderSinglePicker()
       }
@@ -230,7 +246,7 @@ export default {
       return this.renderRange()
     }
   },
-  render (createElement, context) {
+  render(createElement, context) {
     this.h = createElement
     this.c = context
 

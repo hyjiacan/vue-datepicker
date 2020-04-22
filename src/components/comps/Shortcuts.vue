@@ -1,18 +1,42 @@
 <template>
   <div class="date-picker--shortcuts">
     <slot>
-      <button class="date-picker--shortcuts-button" v-for="(item, index) in data" :key="index" @click="$emit('change', item)">{{item.text}}</button>
+      <button class="date-picker--shortcuts-button" v-for="(item, index) in data" :key="index" @click="onClick(item)">
+        {{item.text}}
+      </button>
     </slot>
   </div>
 </template>
 
 <script>
+import util from '../../assets/script/util'
+
 export default {
   name: 'Shortcuts',
   props: {
     data: {
       type: Array,
       required: true
+    }
+  },
+  methods: {
+    onClick(item) {
+      let value = item.value
+      if (typeof value !== 'function') {
+        this.$emit('change', {value})
+        return
+      }
+      // 处理函数
+      value = value(util)
+
+      if (!(value instanceof Promise)) {
+        this.$emit('change', {value})
+        return
+      }
+
+      value.then(val => {
+        this.$emit('change', {value: val})
+      })
     }
   }
 }

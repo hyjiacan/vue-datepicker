@@ -8942,12 +8942,12 @@ var PopperWrapper_component = normalizeComponent(
 )
 
 /* harmony default export */ var PopperWrapper = (PopperWrapper_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"270b888c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/ClearButton.vue?vue&type=template&id=58d02512&
-var ClearButtonvue_type_template_id_58d02512_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--clear"},[_c('span',{staticClass:"date-picker--clear-button datepicker-iconfont datepicker--icon-close",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.$emit('clear')}}})])}
-var ClearButtonvue_type_template_id_58d02512_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"270b888c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/ClearButton.vue?vue&type=template&id=6cf40fff&
+var ClearButtonvue_type_template_id_6cf40fff_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--clear",attrs:{"title":"清空"}},[_c('span',{staticClass:"date-picker--clear-button datepicker-iconfont datepicker--icon-close",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.$emit('clear')}}})])}
+var ClearButtonvue_type_template_id_6cf40fff_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/comps/ClearButton.vue?vue&type=template&id=58d02512&
+// CONCATENATED MODULE: ./src/components/comps/ClearButton.vue?vue&type=template&id=6cf40fff&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/ClearButton.vue?vue&type=script&lang=js&
 //
@@ -8972,8 +8972,8 @@ var ClearButtonvue_type_template_id_58d02512_staticRenderFns = []
 
 var ClearButton_component = normalizeComponent(
   comps_ClearButtonvue_type_script_lang_js_,
-  ClearButtonvue_type_template_id_58d02512_render,
-  ClearButtonvue_type_template_id_58d02512_staticRenderFns,
+  ClearButtonvue_type_template_id_6cf40fff_render,
+  ClearButtonvue_type_template_id_6cf40fff_staticRenderFns,
   false,
   null,
   null,
@@ -8982,14 +8982,16 @@ var ClearButton_component = normalizeComponent(
 )
 
 /* harmony default export */ var ClearButton = (ClearButton_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"270b888c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Shortcuts.vue?vue&type=template&id=6efedd80&scoped=true&
-var Shortcutsvue_type_template_id_6efedd80_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--shortcuts"},[_vm._t("default",_vm._l((_vm.data),function(item,index){return _c('button',{key:index,staticClass:"date-picker--shortcuts-button",on:{"click":function($event){return _vm.$emit('change', item)}}},[_vm._v(_vm._s(item.text))])}))],2)}
-var Shortcutsvue_type_template_id_6efedd80_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"270b888c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Shortcuts.vue?vue&type=template&id=f9107688&scoped=true&
+var Shortcutsvue_type_template_id_f9107688_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--shortcuts"},[_vm._t("default",_vm._l((_vm.data),function(item,index){return _c('button',{key:index,staticClass:"date-picker--shortcuts-button",on:{"click":function($event){return _vm.onClick(item)}}},[_vm._v(" "+_vm._s(item.text)+" ")])}))],2)}
+var Shortcutsvue_type_template_id_f9107688_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/comps/Shortcuts.vue?vue&type=template&id=6efedd80&scoped=true&
+// CONCATENATED MODULE: ./src/components/comps/Shortcuts.vue?vue&type=template&id=f9107688&scoped=true&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Shortcuts.vue?vue&type=script&lang=js&
+
+
 //
 //
 //
@@ -8998,12 +9000,45 @@ var Shortcutsvue_type_template_id_6efedd80_scoped_true_staticRenderFns = []
 //
 //
 //
+//
+//
+
 /* harmony default export */ var Shortcutsvue_type_script_lang_js_ = ({
   name: 'Shortcuts',
   props: {
     data: {
       type: Array,
       required: true
+    }
+  },
+  methods: {
+    onClick: function onClick(item) {
+      var _this = this;
+
+      var value = item.value;
+
+      if (typeof value !== 'function') {
+        this.$emit('change', {
+          value: value
+        });
+        return;
+      } // 处理函数
+
+
+      value = value(script_util);
+
+      if (!(value instanceof Promise)) {
+        this.$emit('change', {
+          value: value
+        });
+        return;
+      }
+
+      value.then(function (val) {
+        _this.$emit('change', {
+          value: val
+        });
+      });
     }
   }
 });
@@ -9019,11 +9054,11 @@ var Shortcutsvue_type_template_id_6efedd80_scoped_true_staticRenderFns = []
 
 var Shortcuts_component = normalizeComponent(
   comps_Shortcutsvue_type_script_lang_js_,
-  Shortcutsvue_type_template_id_6efedd80_scoped_true_render,
-  Shortcutsvue_type_template_id_6efedd80_scoped_true_staticRenderFns,
+  Shortcutsvue_type_template_id_f9107688_scoped_true_render,
+  Shortcutsvue_type_template_id_f9107688_scoped_true_staticRenderFns,
   false,
   null,
-  "6efedd80",
+  "f9107688",
   null
   
 )

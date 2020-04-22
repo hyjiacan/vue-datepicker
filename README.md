@@ -220,6 +220,8 @@ export default {
 其中，`value` 在指定了 `range` 时为数组，否则为单个值。`text` 是按钮显示的文字。
 一般最多不超过5个中文字符，超过时会自动显示为省略号。
 
+> `value` 也可以是一个函数(异步支持)，函数内的返回值将作为结果。
+
 #### `clearable`
 
 - type: Boolean
@@ -427,6 +429,10 @@ getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 0.6.5
+
+- 优化 快捷键配置的json格式中，支持将 `value` 设置成函数
 
 ### 0.6.0
 

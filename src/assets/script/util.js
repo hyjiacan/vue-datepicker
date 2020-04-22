@@ -127,6 +127,40 @@ function getNextMonthDays(date, remain) {
   return days
 }
 
+/**
+ * 解析日期偏移串
+ * @param {Object|string} offset
+ * @return {{year: number, month: number, date: number}}
+ */
+function resolveDateOffset(offset) {
+  if (!offset) {
+    return {
+      year: 0,
+      month: 0,
+      date: 0
+    }
+  }
+  // 值是偏移对象
+  if (typeof offset === 'object') {
+    return offset
+  }
+  // 不是字符串，数据无效
+  if (typeof offset !== 'string') {
+    throw Error(`[datepicker] Invalid offset type: ${typeof offset}`)
+  }
+  // 值是偏移串
+  const matches = /^((?<year>-?(\d+)?)y)?((?<month>-?(\d+)?)m)?((?<date>-?(\d+)?)d)?$/i.exec(offset)
+  if (!matches) {
+    throw Error(`[datepicker] Invalid offset value: ${offset}`)
+  }
+
+  return {
+    year: parseInt(matches.groups.year) || 0,
+    month: parseInt(matches.groups.month) || 0,
+    date: parseInt(matches.groups.date) || 0
+  }
+}
+
 const util = {
   /**
    * 获取当前日期是一年中的第几天
@@ -222,6 +256,47 @@ const util = {
   appendTime(begin, end) {
     begin.setHours(0, 0, 0)
     end.setHours(23, 59, 59)
+  },
+  /**
+   * 按指定规则对日期进行偏移
+   * @param {Date} date
+   * @param {Object|string} offset 日期的偏移量
+   * @return {Date} 偏移后的日期对象（新对象)
+   */
+  offsetDate(date, offset) {
+    offset = resolveDateOffset(offset)
+
+    const newValue = {
+      year: date.getFullYear() + (parseInt(offset.year) || 0),
+      month: date.getMonth() + (parseInt(offset.month) || 0),
+      date: date.getDate() + (parseInt(offset.date) || 0)
+    }
+
+    return new Date(newValue.year, newValue.month, newValue.date)
+  },
+  /**
+   * 根据一个日期以及偏移参数获取日期范围
+   * @param {Date} date
+   * @param {Object|string} beginOffset 开始日期的偏移量
+   * @param {Object|string} endOffset 结束日期的偏移量
+   * @param {object} [option]
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @return {Date[]|String[]}
+   */
+  getDateRange(date, beginOffset, endOffset, option) {
+    const {time, format} = option
+    endOffset = resolveDateOffset(endOffset)
+
+    const begin = this.offsetDate(date, beginOffset)
+    const end = this.offsetDate(date, endOffset)
+
+    if (time) {
+      this.appendTime(begin, end)
+    }
+
+    const range = [begin, end]
+    return format ? range.map(d => this.format(d, format)) : range
   },
   /**
    * 根据一个日期，谋算出其所在周的起止日期

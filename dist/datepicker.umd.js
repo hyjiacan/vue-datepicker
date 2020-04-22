@@ -142,6 +142,41 @@ module.exports = function (fn, that, length) {
 
 /***/ }),
 
+/***/ "0538":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var aFunction = __webpack_require__("1c0b");
+var isObject = __webpack_require__("861d");
+
+var slice = [].slice;
+var factories = {};
+
+var construct = function (C, argsLength, args) {
+  if (!(argsLength in factories)) {
+    for (var list = [], i = 0; i < argsLength; i++) list[i] = 'a[' + i + ']';
+    // eslint-disable-next-line no-new-func
+    factories[argsLength] = Function('C,a', 'return new C(' + list.join(',') + ')');
+  } return factories[argsLength](C, args);
+};
+
+// `Function.prototype.bind` method implementation
+// https://tc39.github.io/ecma262/#sec-function.prototype.bind
+module.exports = Function.bind || function bind(that /* , ...args */) {
+  var fn = aFunction(this);
+  var partArgs = slice.call(arguments, 1);
+  var boundFunction = function bound(/* args... */) {
+    var args = partArgs.concat(slice.call(arguments));
+    return this instanceof boundFunction ? construct(fn, args.length, args) : fn.apply(that, args);
+  };
+  if (isObject(fn.prototype)) boundFunction.prototype = fn.prototype;
+  return boundFunction;
+};
+
+
+/***/ }),
+
 /***/ "057f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -217,6 +252,120 @@ module.exports = !DESCRIPTORS && !fails(function () {
   return Object.defineProperty(createElement('div'), 'a', {
     get: function () { return 7; }
   }).a != 7;
+});
+
+
+/***/ }),
+
+/***/ "10d1":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var global = __webpack_require__("da84");
+var redefineAll = __webpack_require__("e2cc");
+var InternalMetadataModule = __webpack_require__("f183");
+var collection = __webpack_require__("6d61");
+var collectionWeak = __webpack_require__("acac");
+var isObject = __webpack_require__("861d");
+var enforceIternalState = __webpack_require__("69f3").enforce;
+var NATIVE_WEAK_MAP = __webpack_require__("7f9a");
+
+var IS_IE11 = !global.ActiveXObject && 'ActiveXObject' in global;
+var isExtensible = Object.isExtensible;
+var InternalWeakMap;
+
+var wrapper = function (init) {
+  return function WeakMap() {
+    return init(this, arguments.length ? arguments[0] : undefined);
+  };
+};
+
+// `WeakMap` constructor
+// https://tc39.github.io/ecma262/#sec-weakmap-constructor
+var $WeakMap = module.exports = collection('WeakMap', wrapper, collectionWeak);
+
+// IE11 WeakMap frozen keys fix
+// We can't use feature detection because it crash some old IE builds
+// https://github.com/zloirock/core-js/issues/485
+if (NATIVE_WEAK_MAP && IS_IE11) {
+  InternalWeakMap = collectionWeak.getConstructor(wrapper, 'WeakMap', true);
+  InternalMetadataModule.REQUIRED = true;
+  var WeakMapPrototype = $WeakMap.prototype;
+  var nativeDelete = WeakMapPrototype['delete'];
+  var nativeHas = WeakMapPrototype.has;
+  var nativeGet = WeakMapPrototype.get;
+  var nativeSet = WeakMapPrototype.set;
+  redefineAll(WeakMapPrototype, {
+    'delete': function (key) {
+      if (isObject(key) && !isExtensible(key)) {
+        var state = enforceIternalState(this);
+        if (!state.frozen) state.frozen = new InternalWeakMap();
+        return nativeDelete.call(this, key) || state.frozen['delete'](key);
+      } return nativeDelete.call(this, key);
+    },
+    has: function has(key) {
+      if (isObject(key) && !isExtensible(key)) {
+        var state = enforceIternalState(this);
+        if (!state.frozen) state.frozen = new InternalWeakMap();
+        return nativeHas.call(this, key) || state.frozen.has(key);
+      } return nativeHas.call(this, key);
+    },
+    get: function get(key) {
+      if (isObject(key) && !isExtensible(key)) {
+        var state = enforceIternalState(this);
+        if (!state.frozen) state.frozen = new InternalWeakMap();
+        return nativeHas.call(this, key) ? nativeGet.call(this, key) : state.frozen.get(key);
+      } return nativeGet.call(this, key);
+    },
+    set: function set(key, value) {
+      if (isObject(key) && !isExtensible(key)) {
+        var state = enforceIternalState(this);
+        if (!state.frozen) state.frozen = new InternalWeakMap();
+        nativeHas.call(this, key) ? nativeSet.call(this, key, value) : state.frozen.set(key, value);
+      } else nativeSet.call(this, key, value);
+      return this;
+    }
+  });
+}
+
+
+/***/ }),
+
+/***/ "131a":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__("23e7");
+var setPrototypeOf = __webpack_require__("d2bb");
+
+// `Object.setPrototypeOf` method
+// https://tc39.github.io/ecma262/#sec-object.setprototypeof
+$({ target: 'Object', stat: true }, {
+  setPrototypeOf: setPrototypeOf
+});
+
+
+/***/ }),
+
+/***/ "13d5":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("23e7");
+var $reduce = __webpack_require__("d58f").left;
+var arrayMethodIsStrict = __webpack_require__("a640");
+var arrayMethodUsesToLength = __webpack_require__("ae40");
+
+var STRICT_METHOD = arrayMethodIsStrict('reduce');
+var USES_TO_LENGTH = arrayMethodUsesToLength('reduce', { 1: 0 });
+
+// `Array.prototype.reduce` method
+// https://tc39.github.io/ecma262/#sec-array.prototype.reduce
+$({ target: 'Array', proto: true, forced: !STRICT_METHOD || !USES_TO_LENGTH }, {
+  reduce: function reduce(callbackfn /* , initialValue */) {
+    return $reduce(this, callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
+  }
 });
 
 
@@ -945,6 +1094,29 @@ var update = add("2745f23c", content, true, {"sourceMap":false,"shadowMode":fals
 
 /***/ }),
 
+/***/ "3410":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__("23e7");
+var fails = __webpack_require__("d039");
+var toObject = __webpack_require__("7b0b");
+var nativeGetPrototypeOf = __webpack_require__("e163");
+var CORRECT_PROTOTYPE_GETTER = __webpack_require__("e177");
+
+var FAILS_ON_PRIMITIVES = fails(function () { nativeGetPrototypeOf(1); });
+
+// `Object.getPrototypeOf` method
+// https://tc39.github.io/ecma262/#sec-object.getprototypeof
+$({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES, sham: !CORRECT_PROTOTYPE_GETTER }, {
+  getPrototypeOf: function getPrototypeOf(it) {
+    return nativeGetPrototypeOf(toObject(it));
+  }
+});
+
+
+
+/***/ }),
+
 /***/ "342f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1519,6 +1691,64 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
+/***/ "4ae1":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__("23e7");
+var getBuiltIn = __webpack_require__("d066");
+var aFunction = __webpack_require__("1c0b");
+var anObject = __webpack_require__("825a");
+var isObject = __webpack_require__("861d");
+var create = __webpack_require__("7c73");
+var bind = __webpack_require__("0538");
+var fails = __webpack_require__("d039");
+
+var nativeConstruct = getBuiltIn('Reflect', 'construct');
+
+// `Reflect.construct` method
+// https://tc39.github.io/ecma262/#sec-reflect.construct
+// MS Edge supports only 2 arguments and argumentsList argument is optional
+// FF Nightly sets third argument as `new.target`, but does not create `this` from it
+var NEW_TARGET_BUG = fails(function () {
+  function F() { /* empty */ }
+  return !(nativeConstruct(function () { /* empty */ }, [], F) instanceof F);
+});
+var ARGS_BUG = !fails(function () {
+  nativeConstruct(function () { /* empty */ });
+});
+var FORCED = NEW_TARGET_BUG || ARGS_BUG;
+
+$({ target: 'Reflect', stat: true, forced: FORCED, sham: FORCED }, {
+  construct: function construct(Target, args /* , newTarget */) {
+    aFunction(Target);
+    anObject(args);
+    var newTarget = arguments.length < 3 ? Target : aFunction(arguments[2]);
+    if (ARGS_BUG && !NEW_TARGET_BUG) return nativeConstruct(Target, args, newTarget);
+    if (Target == newTarget) {
+      // w/o altered newTarget, optimization for 0-4 arguments
+      switch (args.length) {
+        case 0: return new Target();
+        case 1: return new Target(args[0]);
+        case 2: return new Target(args[0], args[1]);
+        case 3: return new Target(args[0], args[1], args[2]);
+        case 4: return new Target(args[0], args[1], args[2], args[3]);
+      }
+      // w/o altered newTarget, lot of arguments case
+      var $args = [null];
+      $args.push.apply($args, args);
+      return new (bind.apply(Target, $args))();
+    }
+    // with altered newTarget, not support built-in constructors
+    var proto = newTarget.prototype;
+    var instance = create(isObject(proto) ? proto : Object.prototype);
+    var result = Function.apply.call(Target, instance, args);
+    return isObject(result) ? result : instance;
+  }
+});
+
+
+/***/ }),
+
 /***/ "4d63":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1720,6 +1950,23 @@ module.exports = function from(arrayLike /* , mapfn = undefined, thisArg = undef
   result.length = index;
   return result;
 };
+
+
+/***/ }),
+
+/***/ "4ec9":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var collection = __webpack_require__("6d61");
+var collectionStrong = __webpack_require__("6566");
+
+// `Map` constructor
+// https://tc39.github.io/ecma262/#sec-map-objects
+module.exports = collection('Map', function (init) {
+  return function Map() { return init(this, arguments.length ? arguments[0] : undefined); };
+}, collectionStrong);
 
 
 /***/ }),
@@ -2039,6 +2286,200 @@ module.exports = {
 
 /***/ }),
 
+/***/ "6566":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var defineProperty = __webpack_require__("9bf2").f;
+var create = __webpack_require__("7c73");
+var redefineAll = __webpack_require__("e2cc");
+var bind = __webpack_require__("0366");
+var anInstance = __webpack_require__("19aa");
+var iterate = __webpack_require__("2266");
+var defineIterator = __webpack_require__("7dd0");
+var setSpecies = __webpack_require__("2626");
+var DESCRIPTORS = __webpack_require__("83ab");
+var fastKey = __webpack_require__("f183").fastKey;
+var InternalStateModule = __webpack_require__("69f3");
+
+var setInternalState = InternalStateModule.set;
+var internalStateGetterFor = InternalStateModule.getterFor;
+
+module.exports = {
+  getConstructor: function (wrapper, CONSTRUCTOR_NAME, IS_MAP, ADDER) {
+    var C = wrapper(function (that, iterable) {
+      anInstance(that, C, CONSTRUCTOR_NAME);
+      setInternalState(that, {
+        type: CONSTRUCTOR_NAME,
+        index: create(null),
+        first: undefined,
+        last: undefined,
+        size: 0
+      });
+      if (!DESCRIPTORS) that.size = 0;
+      if (iterable != undefined) iterate(iterable, that[ADDER], that, IS_MAP);
+    });
+
+    var getInternalState = internalStateGetterFor(CONSTRUCTOR_NAME);
+
+    var define = function (that, key, value) {
+      var state = getInternalState(that);
+      var entry = getEntry(that, key);
+      var previous, index;
+      // change existing entry
+      if (entry) {
+        entry.value = value;
+      // create new entry
+      } else {
+        state.last = entry = {
+          index: index = fastKey(key, true),
+          key: key,
+          value: value,
+          previous: previous = state.last,
+          next: undefined,
+          removed: false
+        };
+        if (!state.first) state.first = entry;
+        if (previous) previous.next = entry;
+        if (DESCRIPTORS) state.size++;
+        else that.size++;
+        // add to index
+        if (index !== 'F') state.index[index] = entry;
+      } return that;
+    };
+
+    var getEntry = function (that, key) {
+      var state = getInternalState(that);
+      // fast case
+      var index = fastKey(key);
+      var entry;
+      if (index !== 'F') return state.index[index];
+      // frozen object case
+      for (entry = state.first; entry; entry = entry.next) {
+        if (entry.key == key) return entry;
+      }
+    };
+
+    redefineAll(C.prototype, {
+      // 23.1.3.1 Map.prototype.clear()
+      // 23.2.3.2 Set.prototype.clear()
+      clear: function clear() {
+        var that = this;
+        var state = getInternalState(that);
+        var data = state.index;
+        var entry = state.first;
+        while (entry) {
+          entry.removed = true;
+          if (entry.previous) entry.previous = entry.previous.next = undefined;
+          delete data[entry.index];
+          entry = entry.next;
+        }
+        state.first = state.last = undefined;
+        if (DESCRIPTORS) state.size = 0;
+        else that.size = 0;
+      },
+      // 23.1.3.3 Map.prototype.delete(key)
+      // 23.2.3.4 Set.prototype.delete(value)
+      'delete': function (key) {
+        var that = this;
+        var state = getInternalState(that);
+        var entry = getEntry(that, key);
+        if (entry) {
+          var next = entry.next;
+          var prev = entry.previous;
+          delete state.index[entry.index];
+          entry.removed = true;
+          if (prev) prev.next = next;
+          if (next) next.previous = prev;
+          if (state.first == entry) state.first = next;
+          if (state.last == entry) state.last = prev;
+          if (DESCRIPTORS) state.size--;
+          else that.size--;
+        } return !!entry;
+      },
+      // 23.2.3.6 Set.prototype.forEach(callbackfn, thisArg = undefined)
+      // 23.1.3.5 Map.prototype.forEach(callbackfn, thisArg = undefined)
+      forEach: function forEach(callbackfn /* , that = undefined */) {
+        var state = getInternalState(this);
+        var boundFunction = bind(callbackfn, arguments.length > 1 ? arguments[1] : undefined, 3);
+        var entry;
+        while (entry = entry ? entry.next : state.first) {
+          boundFunction(entry.value, entry.key, this);
+          // revert to the last existing entry
+          while (entry && entry.removed) entry = entry.previous;
+        }
+      },
+      // 23.1.3.7 Map.prototype.has(key)
+      // 23.2.3.7 Set.prototype.has(value)
+      has: function has(key) {
+        return !!getEntry(this, key);
+      }
+    });
+
+    redefineAll(C.prototype, IS_MAP ? {
+      // 23.1.3.6 Map.prototype.get(key)
+      get: function get(key) {
+        var entry = getEntry(this, key);
+        return entry && entry.value;
+      },
+      // 23.1.3.9 Map.prototype.set(key, value)
+      set: function set(key, value) {
+        return define(this, key === 0 ? 0 : key, value);
+      }
+    } : {
+      // 23.2.3.1 Set.prototype.add(value)
+      add: function add(value) {
+        return define(this, value = value === 0 ? 0 : value, value);
+      }
+    });
+    if (DESCRIPTORS) defineProperty(C.prototype, 'size', {
+      get: function () {
+        return getInternalState(this).size;
+      }
+    });
+    return C;
+  },
+  setStrong: function (C, CONSTRUCTOR_NAME, IS_MAP) {
+    var ITERATOR_NAME = CONSTRUCTOR_NAME + ' Iterator';
+    var getInternalCollectionState = internalStateGetterFor(CONSTRUCTOR_NAME);
+    var getInternalIteratorState = internalStateGetterFor(ITERATOR_NAME);
+    // add .keys, .values, .entries, [@@iterator]
+    // 23.1.3.4, 23.1.3.8, 23.1.3.11, 23.1.3.12, 23.2.3.5, 23.2.3.8, 23.2.3.10, 23.2.3.11
+    defineIterator(C, CONSTRUCTOR_NAME, function (iterated, kind) {
+      setInternalState(this, {
+        type: ITERATOR_NAME,
+        target: iterated,
+        state: getInternalCollectionState(iterated),
+        kind: kind,
+        last: undefined
+      });
+    }, function () {
+      var state = getInternalIteratorState(this);
+      var kind = state.kind;
+      var entry = state.last;
+      // revert to the last existing entry
+      while (entry && entry.removed) entry = entry.previous;
+      // get next entry
+      if (!state.target || !(state.last = entry = entry ? entry.next : state.state.first)) {
+        // or finish the iteration
+        state.target = undefined;
+        return { value: undefined, done: true };
+      }
+      // return step by kind
+      if (kind == 'keys') return { value: entry.key, done: false };
+      if (kind == 'values') return { value: entry.value, done: false };
+      return { value: [entry.key, entry.value], done: false };
+    }, IS_MAP ? 'entries' : 'values', !IS_MAP, true);
+
+    // add [@@species], 23.1.2.2, 23.2.2.2
+    setSpecies(CONSTRUCTOR_NAME);
+  }
+};
+
+
+/***/ }),
+
 /***/ "65f0":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2129,6 +2570,113 @@ module.exports = {
   has: has,
   enforce: enforce,
   getterFor: getterFor
+};
+
+
+/***/ }),
+
+/***/ "6d61":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("23e7");
+var global = __webpack_require__("da84");
+var isForced = __webpack_require__("94ca");
+var redefine = __webpack_require__("6eeb");
+var InternalMetadataModule = __webpack_require__("f183");
+var iterate = __webpack_require__("2266");
+var anInstance = __webpack_require__("19aa");
+var isObject = __webpack_require__("861d");
+var fails = __webpack_require__("d039");
+var checkCorrectnessOfIteration = __webpack_require__("1c7e");
+var setToStringTag = __webpack_require__("d44e");
+var inheritIfRequired = __webpack_require__("7156");
+
+module.exports = function (CONSTRUCTOR_NAME, wrapper, common) {
+  var IS_MAP = CONSTRUCTOR_NAME.indexOf('Map') !== -1;
+  var IS_WEAK = CONSTRUCTOR_NAME.indexOf('Weak') !== -1;
+  var ADDER = IS_MAP ? 'set' : 'add';
+  var NativeConstructor = global[CONSTRUCTOR_NAME];
+  var NativePrototype = NativeConstructor && NativeConstructor.prototype;
+  var Constructor = NativeConstructor;
+  var exported = {};
+
+  var fixMethod = function (KEY) {
+    var nativeMethod = NativePrototype[KEY];
+    redefine(NativePrototype, KEY,
+      KEY == 'add' ? function add(value) {
+        nativeMethod.call(this, value === 0 ? 0 : value);
+        return this;
+      } : KEY == 'delete' ? function (key) {
+        return IS_WEAK && !isObject(key) ? false : nativeMethod.call(this, key === 0 ? 0 : key);
+      } : KEY == 'get' ? function get(key) {
+        return IS_WEAK && !isObject(key) ? undefined : nativeMethod.call(this, key === 0 ? 0 : key);
+      } : KEY == 'has' ? function has(key) {
+        return IS_WEAK && !isObject(key) ? false : nativeMethod.call(this, key === 0 ? 0 : key);
+      } : function set(key, value) {
+        nativeMethod.call(this, key === 0 ? 0 : key, value);
+        return this;
+      }
+    );
+  };
+
+  // eslint-disable-next-line max-len
+  if (isForced(CONSTRUCTOR_NAME, typeof NativeConstructor != 'function' || !(IS_WEAK || NativePrototype.forEach && !fails(function () {
+    new NativeConstructor().entries().next();
+  })))) {
+    // create collection constructor
+    Constructor = common.getConstructor(wrapper, CONSTRUCTOR_NAME, IS_MAP, ADDER);
+    InternalMetadataModule.REQUIRED = true;
+  } else if (isForced(CONSTRUCTOR_NAME, true)) {
+    var instance = new Constructor();
+    // early implementations not supports chaining
+    var HASNT_CHAINING = instance[ADDER](IS_WEAK ? {} : -0, 1) != instance;
+    // V8 ~ Chromium 40- weak-collections throws on primitives, but should return false
+    var THROWS_ON_PRIMITIVES = fails(function () { instance.has(1); });
+    // most early implementations doesn't supports iterables, most modern - not close it correctly
+    // eslint-disable-next-line no-new
+    var ACCEPT_ITERABLES = checkCorrectnessOfIteration(function (iterable) { new NativeConstructor(iterable); });
+    // for early implementations -0 and +0 not the same
+    var BUGGY_ZERO = !IS_WEAK && fails(function () {
+      // V8 ~ Chromium 42- fails only with 5+ elements
+      var $instance = new NativeConstructor();
+      var index = 5;
+      while (index--) $instance[ADDER](index, index);
+      return !$instance.has(-0);
+    });
+
+    if (!ACCEPT_ITERABLES) {
+      Constructor = wrapper(function (dummy, iterable) {
+        anInstance(dummy, Constructor, CONSTRUCTOR_NAME);
+        var that = inheritIfRequired(new NativeConstructor(), dummy, Constructor);
+        if (iterable != undefined) iterate(iterable, that[ADDER], that, IS_MAP);
+        return that;
+      });
+      Constructor.prototype = NativePrototype;
+      NativePrototype.constructor = Constructor;
+    }
+
+    if (THROWS_ON_PRIMITIVES || BUGGY_ZERO) {
+      fixMethod('delete');
+      fixMethod('has');
+      IS_MAP && fixMethod('get');
+    }
+
+    if (BUGGY_ZERO || HASNT_CHAINING) fixMethod(ADDER);
+
+    // weak collections should not contains .clear method
+    if (IS_WEAK && NativePrototype.clear) delete NativePrototype.clear;
+  }
+
+  exported[CONSTRUCTOR_NAME] = Constructor;
+  $({ global: true, forced: Constructor != NativeConstructor }, exported);
+
+  setToStringTag(Constructor, CONSTRUCTOR_NAME);
+
+  if (!IS_WEAK) common.setStrong(Constructor, CONSTRUCTOR_NAME, IS_MAP);
+
+  return Constructor;
 };
 
 
@@ -2455,6 +3003,18 @@ var inspectSource = __webpack_require__("8925");
 var WeakMap = global.WeakMap;
 
 module.exports = typeof WeakMap === 'function' && /native code/.test(inspectSource(WeakMap));
+
+
+/***/ }),
+
+/***/ "80e0":
+/***/ (function(module, exports, __webpack_require__) {
+
+var defineWellKnownSymbol = __webpack_require__("746f");
+
+// `Symbol.replace` well-known symbol
+// https://tc39.github.io/ecma262/#sec-symbol.replace
+defineWellKnownSymbol('replace');
 
 
 /***/ }),
@@ -4116,6 +4676,135 @@ $({ target: 'RegExp', proto: true, forced: /./.exec !== exec }, {
 
 /***/ }),
 
+/***/ "acac":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var redefineAll = __webpack_require__("e2cc");
+var getWeakData = __webpack_require__("f183").getWeakData;
+var anObject = __webpack_require__("825a");
+var isObject = __webpack_require__("861d");
+var anInstance = __webpack_require__("19aa");
+var iterate = __webpack_require__("2266");
+var ArrayIterationModule = __webpack_require__("b727");
+var $has = __webpack_require__("5135");
+var InternalStateModule = __webpack_require__("69f3");
+
+var setInternalState = InternalStateModule.set;
+var internalStateGetterFor = InternalStateModule.getterFor;
+var find = ArrayIterationModule.find;
+var findIndex = ArrayIterationModule.findIndex;
+var id = 0;
+
+// fallback for uncaught frozen keys
+var uncaughtFrozenStore = function (store) {
+  return store.frozen || (store.frozen = new UncaughtFrozenStore());
+};
+
+var UncaughtFrozenStore = function () {
+  this.entries = [];
+};
+
+var findUncaughtFrozen = function (store, key) {
+  return find(store.entries, function (it) {
+    return it[0] === key;
+  });
+};
+
+UncaughtFrozenStore.prototype = {
+  get: function (key) {
+    var entry = findUncaughtFrozen(this, key);
+    if (entry) return entry[1];
+  },
+  has: function (key) {
+    return !!findUncaughtFrozen(this, key);
+  },
+  set: function (key, value) {
+    var entry = findUncaughtFrozen(this, key);
+    if (entry) entry[1] = value;
+    else this.entries.push([key, value]);
+  },
+  'delete': function (key) {
+    var index = findIndex(this.entries, function (it) {
+      return it[0] === key;
+    });
+    if (~index) this.entries.splice(index, 1);
+    return !!~index;
+  }
+};
+
+module.exports = {
+  getConstructor: function (wrapper, CONSTRUCTOR_NAME, IS_MAP, ADDER) {
+    var C = wrapper(function (that, iterable) {
+      anInstance(that, C, CONSTRUCTOR_NAME);
+      setInternalState(that, {
+        type: CONSTRUCTOR_NAME,
+        id: id++,
+        frozen: undefined
+      });
+      if (iterable != undefined) iterate(iterable, that[ADDER], that, IS_MAP);
+    });
+
+    var getInternalState = internalStateGetterFor(CONSTRUCTOR_NAME);
+
+    var define = function (that, key, value) {
+      var state = getInternalState(that);
+      var data = getWeakData(anObject(key), true);
+      if (data === true) uncaughtFrozenStore(state).set(key, value);
+      else data[state.id] = value;
+      return that;
+    };
+
+    redefineAll(C.prototype, {
+      // 23.3.3.2 WeakMap.prototype.delete(key)
+      // 23.4.3.3 WeakSet.prototype.delete(value)
+      'delete': function (key) {
+        var state = getInternalState(this);
+        if (!isObject(key)) return false;
+        var data = getWeakData(key);
+        if (data === true) return uncaughtFrozenStore(state)['delete'](key);
+        return data && $has(data, state.id) && delete data[state.id];
+      },
+      // 23.3.3.4 WeakMap.prototype.has(key)
+      // 23.4.3.4 WeakSet.prototype.has(value)
+      has: function has(key) {
+        var state = getInternalState(this);
+        if (!isObject(key)) return false;
+        var data = getWeakData(key);
+        if (data === true) return uncaughtFrozenStore(state).has(key);
+        return data && $has(data, state.id);
+      }
+    });
+
+    redefineAll(C.prototype, IS_MAP ? {
+      // 23.3.3.3 WeakMap.prototype.get(key)
+      get: function get(key) {
+        var state = getInternalState(this);
+        if (isObject(key)) {
+          var data = getWeakData(key);
+          if (data === true) return uncaughtFrozenStore(state).get(key);
+          return data ? data[state.id] : undefined;
+        }
+      },
+      // 23.3.3.5 WeakMap.prototype.set(key, value)
+      set: function set(key, value) {
+        return define(this, key, value);
+      }
+    } : {
+      // 23.4.3.1 WeakSet.prototype.add(value)
+      add: function add(value) {
+        return define(this, value, true);
+      }
+    });
+
+    return C;
+  }
+};
+
+
+/***/ }),
+
 /***/ "ad6d":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4434,6 +5123,18 @@ module.exports = {
   // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
   findIndex: createMethod(6)
 };
+
+
+/***/ }),
+
+/***/ "bb2f":
+/***/ (function(module, exports, __webpack_require__) {
+
+var fails = __webpack_require__("d039");
+
+module.exports = !fails(function () {
+  return Object.isExtensible(Object.preventExtensions({}));
+});
 
 
 /***/ }),
@@ -4774,6 +5475,53 @@ module.exports = function (it, TAG, STATIC) {
   if (it && !has(it = STATIC ? it : it.prototype, TO_STRING_TAG)) {
     defineProperty(it, TO_STRING_TAG, { configurable: true, value: TAG });
   }
+};
+
+
+/***/ }),
+
+/***/ "d58f":
+/***/ (function(module, exports, __webpack_require__) {
+
+var aFunction = __webpack_require__("1c0b");
+var toObject = __webpack_require__("7b0b");
+var IndexedObject = __webpack_require__("44ad");
+var toLength = __webpack_require__("50c4");
+
+// `Array.prototype.{ reduce, reduceRight }` methods implementation
+var createMethod = function (IS_RIGHT) {
+  return function (that, callbackfn, argumentsLength, memo) {
+    aFunction(callbackfn);
+    var O = toObject(that);
+    var self = IndexedObject(O);
+    var length = toLength(O.length);
+    var index = IS_RIGHT ? length - 1 : 0;
+    var i = IS_RIGHT ? -1 : 1;
+    if (argumentsLength < 2) while (true) {
+      if (index in self) {
+        memo = self[index];
+        index += i;
+        break;
+      }
+      index += i;
+      if (IS_RIGHT ? index < 0 : length <= index) {
+        throw TypeError('Reduce of empty array with no initial value');
+      }
+    }
+    for (;IS_RIGHT ? index >= 0 : length > index; index += i) if (index in self) {
+      memo = callbackfn(memo, self[index], index, O);
+    }
+    return memo;
+  };
+};
+
+module.exports = {
+  // `Array.prototype.reduce` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.reduce
+  left: createMethod(false),
+  // `Array.prototype.reduceRight` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.reduceright
+  right: createMethod(true)
 };
 
 
@@ -5734,6 +6482,74 @@ module.exports.f = function (C) {
 
 /***/ }),
 
+/***/ "f183":
+/***/ (function(module, exports, __webpack_require__) {
+
+var hiddenKeys = __webpack_require__("d012");
+var isObject = __webpack_require__("861d");
+var has = __webpack_require__("5135");
+var defineProperty = __webpack_require__("9bf2").f;
+var uid = __webpack_require__("90e3");
+var FREEZING = __webpack_require__("bb2f");
+
+var METADATA = uid('meta');
+var id = 0;
+
+var isExtensible = Object.isExtensible || function () {
+  return true;
+};
+
+var setMetadata = function (it) {
+  defineProperty(it, METADATA, { value: {
+    objectID: 'O' + ++id, // object ID
+    weakData: {}          // weak collections IDs
+  } });
+};
+
+var fastKey = function (it, create) {
+  // return a primitive with prefix
+  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!has(it, METADATA)) {
+    // can't set metadata to uncaught frozen object
+    if (!isExtensible(it)) return 'F';
+    // not necessary to add metadata
+    if (!create) return 'E';
+    // add missing metadata
+    setMetadata(it);
+  // return object ID
+  } return it[METADATA].objectID;
+};
+
+var getWeakData = function (it, create) {
+  if (!has(it, METADATA)) {
+    // can't set metadata to uncaught frozen object
+    if (!isExtensible(it)) return true;
+    // not necessary to add metadata
+    if (!create) return false;
+    // add missing metadata
+    setMetadata(it);
+  // return the store of weak collections IDs
+  } return it[METADATA].weakData;
+};
+
+// add metadata on freeze-family methods calling
+var onFreeze = function (it) {
+  if (FREEZING && meta.REQUIRED && isExtensible(it) && !has(it, METADATA)) setMetadata(it);
+  return it;
+};
+
+var meta = module.exports = {
+  REQUIRED: false,
+  fastKey: fastKey,
+  getWeakData: getWeakData,
+  onFreeze: onFreeze
+};
+
+hiddenKeys[METADATA] = true;
+
+
+/***/ }),
+
 /***/ "f5df":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5953,6 +6769,9 @@ function _slicedToArray(arr, i) {
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
+var es_regexp_exec = __webpack_require__("ac1f");
+
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
@@ -6066,20 +6885,283 @@ function _objectSpread2(target) {
 
   return target;
 }
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.slice.js
-var es_array_slice = __webpack_require__("fb6a");
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.replace.js
+var es_symbol_replace = __webpack_require__("80e0");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.reduce.js
+var es_array_reduce = __webpack_require__("13d5");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
 var es_regexp_constructor = __webpack_require__("4d63");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
-var es_regexp_exec = __webpack_require__("ac1f");
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.replace.js
+var es_string_replace = __webpack_require__("5319");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.weak-map.js
+var es_weak_map = __webpack_require__("10d1");
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+
+
+
+
+
+
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.map.js
+var es_map = __webpack_require__("4ec9");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.get-prototype-of.js
+var es_object_get_prototype_of = __webpack_require__("3410");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.set-prototype-of.js
+var es_object_set_prototype_of = __webpack_require__("131a");
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js
+
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/isNativeFunction.js
+
+
+
+function _isNativeFunction(fn) {
+  return Function.toString.call(fn).indexOf("[native code]") !== -1;
+}
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.reflect.construct.js
+var es_reflect_construct = __webpack_require__("4ae1");
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/construct.js
+
+
+
+
+
+function isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function construct_construct(Parent, args, Class) {
+  if (isNativeReflectConstruct()) {
+    construct_construct = Reflect.construct;
+  } else {
+    construct_construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Function.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) _setPrototypeOf(instance, Class.prototype);
+      return instance;
+    };
+  }
+
+  return construct_construct.apply(null, arguments);
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/wrapNativeSuper.js
+
+
+
+
+
+
+
+
+
+function wrapNativeSuper_wrapNativeSuper(Class) {
+  var _cache = typeof Map === "function" ? new Map() : undefined;
+
+  wrapNativeSuper_wrapNativeSuper = function _wrapNativeSuper(Class) {
+    if (Class === null || !_isNativeFunction(Class)) return Class;
+
+    if (typeof Class !== "function") {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+
+    if (typeof _cache !== "undefined") {
+      if (_cache.has(Class)) return _cache.get(Class);
+
+      _cache.set(Class, Wrapper);
+    }
+
+    function Wrapper() {
+      return construct_construct(Class, arguments, _getPrototypeOf(this).constructor);
+    }
+
+    Wrapper.prototype = Object.create(Class.prototype, {
+      constructor: {
+        value: Wrapper,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    return _setPrototypeOf(Wrapper, Class);
+  };
+
+  return wrapNativeSuper_wrapNativeSuper(Class);
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js
+
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inherits.js
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/wrapRegExp.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function _wrapRegExp(re, groups) {
+  _wrapRegExp = function _wrapRegExp(re, groups) {
+    return new BabelRegExp(re, undefined, groups);
+  };
+
+  var _RegExp = wrapNativeSuper_wrapNativeSuper(RegExp);
+
+  var _super = RegExp.prototype;
+
+  var _groups = new WeakMap();
+
+  function BabelRegExp(re, flags, groups) {
+    var _this = _RegExp.call(this, re, flags);
+
+    _groups.set(_this, groups || _groups.get(re));
+
+    return _this;
+  }
+
+  _inherits(BabelRegExp, _RegExp);
+
+  BabelRegExp.prototype.exec = function (str) {
+    var result = _super.exec.call(this, str);
+
+    if (result) result.groups = buildGroups(result, this);
+    return result;
+  };
+
+  BabelRegExp.prototype[Symbol.replace] = function (str, substitution) {
+    if (typeof substitution === "string") {
+      var groups = _groups.get(this);
+
+      return _super[Symbol.replace].call(this, str, substitution.replace(/\$<([^>]+)>/g, function (_, name) {
+        return "$" + groups[name];
+      }));
+    } else if (typeof substitution === "function") {
+      var _this = this;
+
+      return _super[Symbol.replace].call(this, str, function () {
+        var args = [];
+        args.push.apply(args, arguments);
+
+        if (_typeof(args[args.length - 1]) !== "object") {
+          args.push(buildGroups(args, _this));
+        }
+
+        return substitution.apply(this, args);
+      });
+    } else {
+      return _super[Symbol.replace].call(this, str, substitution);
+    }
+  };
+
+  function buildGroups(result, re) {
+    var g = _groups.get(re);
+
+    return Object.keys(g).reduce(function (groups, name) {
+      groups[name] = result[g[name]];
+      return groups;
+    }, Object.create(null));
+  }
+
+  return _wrapRegExp.apply(this, arguments);
+}
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.slice.js
+var es_array_slice = __webpack_require__("fb6a");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
 var es_string_match = __webpack_require__("466d");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.replace.js
-var es_string_replace = __webpack_require__("5319");
 
 // CONCATENATED MODULE: ./src/assets/script/date.js
 /* Modified from https://github.com/taylorhakes/fecha
@@ -6459,6 +7541,9 @@ fecha.parse = function (dateStr, format, i18nSettings) {
 
 
 
+
+
+
 /**
  * 获取上个月剩下的天数(距离这个月一周内)
  * @param {Date} date
@@ -6584,6 +7669,49 @@ function getNextMonthDays(date, remain) {
 
   return days;
 }
+/**
+ * 解析日期偏移串
+ * @param {Object|string} offset
+ * @return {{year: number, month: number, date: number}}
+ */
+
+
+function resolveDateOffset(offset) {
+  if (!offset) {
+    return {
+      year: 0,
+      month: 0,
+      date: 0
+    };
+  } // 值是偏移对象
+
+
+  if (_typeof(offset) === 'object') {
+    return offset;
+  } // 不是字符串，数据无效
+
+
+  if (typeof offset !== 'string') {
+    throw Error("[datepicker] Invalid offset type: ".concat(_typeof(offset)));
+  } // 值是偏移串
+
+
+  var matches = _wrapRegExp(/^((\x2D?([0-9]+)?)y)?((\x2D?([0-9]+)?)m)?((\x2D?([0-9]+)?)d)?$/i, {
+    year: 2,
+    month: 5,
+    date: 8
+  }).exec(offset);
+
+  if (!matches) {
+    throw Error("[datepicker] Invalid offset value: ".concat(offset));
+  }
+
+  return {
+    year: parseInt(matches.groups.year) || 0,
+    month: parseInt(matches.groups.month) || 0,
+    date: parseInt(matches.groups.date) || 0
+  };
+}
 
 var util = {
   /**
@@ -6695,6 +7823,51 @@ var util = {
   },
 
   /**
+   * 按指定规则对日期进行偏移
+   * @param {Date} date
+   * @param {Object|string} offset 日期的偏移量
+   * @return {Date} 偏移后的日期对象（新对象)
+   */
+  offsetDate: function offsetDate(date, offset) {
+    offset = resolveDateOffset(offset);
+    var newValue = {
+      year: date.getFullYear() + (parseInt(offset.year) || 0),
+      month: date.getMonth() + (parseInt(offset.month) || 0),
+      date: date.getDate() + (parseInt(offset.date) || 0)
+    };
+    return new Date(newValue.year, newValue.month, newValue.date);
+  },
+
+  /**
+   * 根据一个日期以及偏移参数获取日期范围
+   * @param {Date} date
+   * @param {Object|string} beginOffset 开始日期的偏移量
+   * @param {Object|string} endOffset 结束日期的偏移量
+   * @param {object} [option]
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @return {Date[]|String[]}
+   */
+  getDateRange: function getDateRange(date, beginOffset, endOffset, option) {
+    var _this = this;
+
+    var time = option.time,
+        format = option.format;
+    endOffset = resolveDateOffset(endOffset);
+    var begin = this.offsetDate(date, beginOffset);
+    var end = this.offsetDate(date, endOffset);
+
+    if (time) {
+      this.appendTime(begin, end);
+    }
+
+    var range = [begin, end];
+    return format ? range.map(function (d) {
+      return _this.format(d, format);
+    }) : range;
+  },
+
+  /**
    * 根据一个日期，谋算出其所在周的起止日期
    * @param {Date} date
    * @param {Object} [option]
@@ -6705,7 +7878,7 @@ var util = {
    * @return {Date[]|String[]}
    */
   getWeekRange: function getWeekRange(date, option) {
-    var _this = this;
+    var _this2 = this;
 
     var _start$offset$option = _objectSpread2({
       start: 0,
@@ -6748,7 +7921,7 @@ var util = {
 
     var range = [begin, end];
     return format ? range.map(function (d) {
-      return _this.format(d, format);
+      return _this2.format(d, format);
     }) : range;
   },
 
@@ -6762,7 +7935,7 @@ var util = {
    * @return {Date[]|String[]}
    */
   getMonthRange: function getMonthRange(date, option) {
-    var _this2 = this;
+    var _this3 = this;
 
     var _offset$option = _objectSpread2({
       offset: 0
@@ -6782,7 +7955,7 @@ var util = {
 
     var range = [begin, end];
     return format ? range.map(function (d) {
-      return _this2.format(d, format);
+      return _this3.format(d, format);
     }) : range;
   },
 
@@ -6796,7 +7969,7 @@ var util = {
    * @return {Date[]|String[]}
    */
   getSeasonRange: function getSeasonRange(date, option) {
-    var _this3 = this;
+    var _this4 = this;
 
     var _offset$option2 = _objectSpread2({
       offset: 0
@@ -6824,7 +7997,7 @@ var util = {
 
     var range = [begin, end];
     return format ? range.map(function (d) {
-      return _this3.format(d, format);
+      return _this4.format(d, format);
     }) : range;
   },
 
@@ -9551,7 +10724,9 @@ date_picker.$util = {
   getWeekRange: script_util.getWeekRange.bind(script_util),
   getMonthRange: script_util.getMonthRange.bind(script_util),
   getSeasonRange: script_util.getSeasonRange.bind(script_util),
-  getWeekOfYear: script_util.getWeekOfYear.bind(script_util)
+  getWeekOfYear: script_util.getWeekOfYear.bind(script_util),
+  getDateRange: script_util.getDateRange.bind(script_util),
+  offsetDate: script_util.offsetDate.bind(script_util)
 };
 /* harmony default export */ var components = (date_picker);
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js

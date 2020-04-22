@@ -336,99 +336,204 @@ import DatePicker from '@hyjiacan/vue-datepicker'
 
 导出的工具函数，在属性 `$util` 上，如: `DatePicker.$util.format`
 
-> 所有的格式，请参照 [内置格式定义](#内置格式定义) 的写法。
+> 所有的格式化串，请参照 [内置格式定义](#内置格式定义) 的写法。
 
-### 日期格式化
+```typescript
+export interface WeekRangeOption {
+  /**
+   * 周起始量，0-6分别表示星期天到星期六
+   */
+  start: Number;
+  /**
+   * 周偏移量，可以是任意整数
+   */
+  offset: Number;
+  /**
+   * 是否附带时间串
+   */
+  time: Boolean;
+  /**
+   * 格式化串，不指定时返回 Date 类型
+   */
+  format: String;
+}
 
-```javascript
-/**
- * 将任意格式的日期格式化成指定的格式
- * @param {Date|String|Number} date
- * @param {String} format 输出格式
- * @param {String} [inputFormat] 当 date 是字符串时，通过此参数指定格式，不指定时使用 format 的值
- * @return {string}
- */
-format(date: [Date, String, Number], format: String, inputFormat?: string): string;
+export interface MonthRangeOption {
+  /**
+   * 月偏移量，可以是任意整数
+   */
+  offset: Number;
+  /**
+   * 是否附带时间串
+   */
+  time: Boolean;
+  /**
+   * 格式化串，不指定时返回 Date 类型
+   */
+  format: String;
+}
+
+export interface SeasonRangeOption {
+  /**
+   * 季度偏移量，可以是任意整数
+   */
+  offset: Number;
+  /**
+   * 是否附带时间串
+   */
+  time: Boolean;
+  /**
+   * 格式化串，不指定时返回 Date 类型
+   */
+  format: String;
+}
+
+export interface WeekOfYearOption {
+  /**
+   * 周的偏移值
+   */
+  start: Number;
+  /**
+   * 是否格式化
+   */
+  format: boolean;
+  /**
+   * 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
+   */
+  boundary: string;
+}
+
+export interface DateRangeOption {
+  /**
+   * 是否格式化
+   */
+  format: boolean;
+  /**
+   * 是否附带时间串
+   */
+  time: Boolean;
+}
+
+export interface DateOffset {
+  year: number;
+  month: number;
+  date: number;
+}
+
+export interface $util {
+  /**
+   * 将任意格式的日期格式化成指定的格式
+   * @param {Date|String|Number} date
+   * @param {String} format 输出格式
+   * @param {String} [inputFormat] 当 date 是字符串时，通过此参数指定格式，不指定时使用 format 的值
+   * @return {string}
+   */
+  format(date: [Date, String, Number], format: String, inputFormat?: string): string;
+
+  /**
+   * 将任意类型的日期格式转换成 Date 类型
+   * @param {Date|String|Number} date
+   * @param {String} [format] 当 date 是字符串时，通过此参数指定格式
+   * @return {Date}
+   */
+  parse(date: [Date, String, Number], format?: string): Date;
+
+  /**
+   * 根据一个日期，谋算出其所在周的起止日期
+   * @param {Date} date
+   * @param {WeekRangeOption} [option]
+   * @param {number} [option.start=0] 周起始量，0-6分别表示星期天到星期六
+   * @param {number} [option.offset=0] 周偏移量，可以是任意整数
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @return {Date[]|String[]}
+   */
+  getWeekRange(date: Date, option?: WeekRangeOption): Date[] | String[];
+
+  /**
+   * 根据一个日期，谋算出其所在月的起止日期 (月的第一天和最后一天)
+   * @param {Date} date
+   * @param {MonthRangeOption} [option]
+   * @param {number} [option.offset=0] 月偏移量，可以是任意整数
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @return {Date[]|String[]}
+   */
+  getMonthRange(date: Date, option?: MonthRangeOption): Date[] | String[];
+
+  /**
+   * 根据一个日期，谋算出其所在季度的起止日期
+   * @param {Date} date
+   * @param {SeasonRangeOption} [option]
+   * @param {number} [option.offset=0] 季度偏移量，可以是任意整数
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @return {Date[]|String[]}
+   */
+  getSeasonRange(date: Date, option?: SeasonRangeOption): Date[] | String[];
+
+  /**
+   * 获取传入日期处于一年中的第多少周
+   * @param {Date} date
+   * @param {WeekOfYearOption} [option]
+   * @param {number} [option.start=0] 周的偏移值
+   * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
+   * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
+   * @return {string|number}
+   */
+  getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
+
+  /**
+   * 根据一个日期以及偏移参数获取日期范围
+   * @param {Date} date
+   * @param {DateOffset|string} beginOffset 开始日期的偏移量
+   * @param {DateOffset|string} endOffset 结束日期的偏移量
+   * @param {DateRangeOption} [option]
+   * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
+   * @param {boolean} [option.time=false] 是否附带时间串
+   * @return {Date[]|String[]}
+   */
+  getDateRange(date: Date, beginOffset: DateOffset | string, endOffset: DateOffset | string, option?: DateRangeOption): Date[] | string[];
+
+  /**
+   * 按指定规则对日期进行偏移
+   * @param {Date} date
+   * @param {DateOffset|string} offset 日期的偏移量
+   * @return {Date} 偏移后的日期对象（新对象)
+   */
+  offsetDate(date: Date, offset: DateOffset | string): Date;
+}
 ```
 
-### 将其它类型的数据处理成日期类型
+说明：
+
+函数 `getDateRange` 和  `offsetDate` 的偏移参数为字符串时，取值格式为 `1y-2m3d`:
+
+- `1y` 表示年偏移量为 `1`
+- `-2m` 表示月偏移量为 `-2`
+- `3d` 表示天偏移量为 `3`
+
+这个串的偏移结果相当于：
 
 ```javascript
-/**
- * 将任意类型的日期格式转换成 Date 类型
- * @param {Date|String|Number} date
- * @param {String} [format] 当 date 是字符串时，通过此参数指定格式
- * @return {Date}
- */
-parse(date: [Date, String, Number], format?: string): Date;
+const date = new Date()
+
+date.setFullYear(date.getFullYear() + 1)
+date.setMonth(date.getMonth() - 2)
+date.setDate(date.getDate() + 3)
 ```
 
-### 获取指定日期所在的周的范围
-
-```javascript
-/**
- * 根据一个日期，谋算出其所在周的起止日期
- * @param {Date} date
- * @param {Object} [option]
- * @param {number} [option.start=0] 周起始量，0-6分别表示星期天到星期六
- * @param {number} [option.offset=0] 周偏移量，可以是任意整数
- * @param {boolean} [option.time=false] 是否附带时间串
- * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
- * @return {Date[]|String[]}
- */
-getWeekRange(date: Date, option?: WeekRangeOption): Date[];
-```
-
-### 获取指定日期所在的月的范围
-
-```javascript
-/**
- * 根据一个日期，谋算出其所在月的起止日期 (月的第一天和最后一天)
- * @param {Date} date
- * @param {Object} [option]
- * @param {number} [option.offset=0] 月偏移量，可以是任意整数
- * @param {boolean} [option.time=false] 是否附带时间串
- * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
- * @return {Date[]|String[]}
- */
-getMonthRange(date: Date, option?: MonthRangeOption): Date[];
-```
-
-### 获取指定日期所在的季度的范围
-
-```javascript
-/**
- * 根据一个日期，谋算出其所在季度的起止日期
- * @param {Date} date
- * @param {Object} [option]
- * @param {number} [option.offset=0] 季度偏移量，可以是任意整数
- * @param {boolean} [option.time=false] 是否附带时间串
- * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
- * @return {Date[]|String[]}
- */
-getSeasonRange(date: Date, option?: SeasonRangeOption): Date[];
-```
-
-### 获取指定日期处于一年中的第几周
-
-```javascript
-/**
- * 获取传入日期处于一年中的第多少周
- * @param {Date} date
- * @param {object} [option]
- * @param {number} [option.start=0] 周的偏移值
- * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
- * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
- * @return {string|number}
- */
-getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
-```
+可以仅指定一项(`y/m/d`其中之一)或同时指定多项，不区分大小写。
 
 ## 支持
 
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 0.6.6
+
+- 添加工具函数 `getDateRange` 与 `offsetDate`
 
 ### 0.6.5
 

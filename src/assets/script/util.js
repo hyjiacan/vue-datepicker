@@ -337,12 +337,11 @@ const util = {
       begin.setDate(begin.getDate() + start)
     }
 
-    const end = new Date(date.getTime())
-    end.setMonth(begin.getMonth(), begin.getDate() + 6)
+    const end = new Date(begin.getFullYear(), begin.getMonth(), begin.getDate() + 6)
 
     if (offset) {
       begin.setDate(begin.getDate() + Math.round(offset) * 7)
-      end.setDate(begin.getDate() + Math.round(offset) * 7)
+      end.setFullYear(begin.getFullYear(), begin.getMonth(), begin.getDate() + 6)
     }
 
     if (time) {
@@ -404,7 +403,7 @@ const util = {
 
     if (offset) {
       begin.setMonth(begin.getMonth() + Math.round(offset) * 3, 1)
-      end.setMonth(end.getMonth() + Math.round(offset) * 3 + 1, 0)
+      end.setFullYear(begin.getFullYear(), end.getMonth() + Math.round(offset) * 3 + 1, 0)
     }
 
     if (time) {
@@ -472,18 +471,33 @@ const util = {
       if (/^\d{4}$/.test(date)) {
         // 2018 -> 2018-01-01
         date = `${date}-01-01`
+        if (!format) {
+          format = 'yyyy-MM-dd'
+        }
       } else if (/^\d{2}:\d{2}$/.test(date)) {
         // 10:10 -> 20xx-01-01 10:10:00
         date = `${today} ${date}:00`
+        if (!format) {
+          format = 'yyyy-MM-dd HH:mm:ss'
+        }
       } else if (/^\d{4}-\d{2}$/.test(date)) {
         // 2018-10 -> 2018-10-01
         date = `${date}-01`
+        if (!format) {
+          format = 'yyyy-MM-dd'
+        }
       } else if (/^\d{2}:\d{2}:\d{2}$/.test(date)) {
         // 10:10:10 -> 20xx-01-01 10:10:10
         date = `${today} ${date}`
+        if (!format) {
+          format = 'yyyy-MM-dd HH:mm:ss'
+        }
       } else if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(date)) {
         // 2018-10-10 10:10 -> 2018-10-10 10:10:00
         date = `${date}:00`
+        if (!format) {
+          format = 'yyyy-MM-dd HH:mm:ss'
+        }
       }
     }
 

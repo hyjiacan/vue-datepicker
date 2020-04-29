@@ -40,7 +40,7 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 ### 浏览器环境 (umd)
 
 > Since 2.4.0
- 
+
 与 NodeJS 环境不同的是，会暴露一个小写的全局 `datepicker`。
 
 最新版本
@@ -130,6 +130,7 @@ export default {
 - type: String
 - default: 'date'
       
+
 选择器显示的类型。可选值见[#类型定义](#类型定义)。
 
 #### `format`
@@ -530,6 +531,10 @@ date.setDate(date.getDate() + 3)
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 0.6.7
+
+- 修复 `getWeekRange` 计算错误
 
 ### 0.6.6
 

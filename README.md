@@ -532,6 +532,10 @@ date.setDate(date.getDate() + 3)
 
 ## 更新日志
 
+### 0.6.8
+
+- 修复 `getDateRange` 在未传入 `option` 参数时报错的问题
+
 ### 0.6.7
 
 - 修复 `getWeekRange` 计算错误

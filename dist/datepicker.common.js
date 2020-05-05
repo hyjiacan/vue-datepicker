@@ -7832,8 +7832,8 @@ var util = {
   /**
    * 根据一个日期以及偏移参数获取日期范围
    * @param {Date} date
-   * @param {Object|string} beginOffset 开始日期的偏移量
-   * @param {Object|string} endOffset 结束日期的偏移量
+   * @param {Object|string} [beginOffset] 开始日期的偏移量
+   * @param {Object|string} [endOffset] 结束日期的偏移量
    * @param {object} [option]
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @param {boolean} [option.time=false] 是否附带时间串
@@ -7842,9 +7842,10 @@ var util = {
   getDateRange: function getDateRange(date, beginOffset, endOffset, option) {
     var _this = this;
 
-    var time = option.time,
-        format = option.format;
-    endOffset = resolveDateOffset(endOffset);
+    var _ref = option || {},
+        time = _ref.time,
+        format = _ref.format;
+
     var begin = this.offsetDate(date, beginOffset);
     var end = this.offsetDate(date, endOffset);
 

@@ -76,6 +76,7 @@ export default {
           type: 'text',
           value: this[valueName],
           readonly: !this.allowEdit,
+          disabled: 'disabled',
           placeholder
         },
         on: {
@@ -262,6 +263,17 @@ export default {
         'date-picker--show-icon': this.isIconVisible,
         'date-picker--empty': this.isEmpty,
         'date-picker--custom-render': this.valueSlot
+      },
+      attrs: {
+        tabindex: '0'
+      },
+      on: {
+        focus: () => {
+          this.isVisible = true
+        },
+        blur: () => {
+          this.isVisible = false
+        }
       }
     }, content)
   }

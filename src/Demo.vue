@@ -30,7 +30,12 @@ import OffsetDemo from './demos/OffsetDemo'
 export default {
   name: 'Demo',
   // eslint-disable-next-line vue/no-unused-components
-  components: {OffsetDemo, DynamicTypeDemo, SlotsDemo, ClearDemo, SizeDemo, RangeDemo, SingleDemo}
+  components: {OffsetDemo, DynamicTypeDemo, SlotsDemo, ClearDemo, SizeDemo, RangeDemo, SingleDemo},
+  data() {
+    return {
+      date: ''
+    }
+  }
 }
 </script>
 

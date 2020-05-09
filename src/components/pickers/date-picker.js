@@ -59,6 +59,13 @@ export default {
         return
       }
       this.isVisible = v
+      setTimeout(() => {
+        if (v) {
+          this.$el.focus()
+        } else {
+          this.$el.blur()
+        }
+      }, 500)
     },
     isVisible(v) {
       // 在关闭时触发更新

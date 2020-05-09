@@ -8277,6 +8277,10 @@ var util = {
 
           break;
       }
+
+      if (v !== script_util.format(this.value[1], this.finalFormat)) {
+        this.commitChanges();
+      }
     }
   },
   methods: {

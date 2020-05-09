@@ -69,6 +69,10 @@ export default {
           }
           break
       }
+
+      if (v !== util.format(this.value[1], this.finalFormat)) {
+        this.commitChanges()
+      }
     }
   },
   methods: {

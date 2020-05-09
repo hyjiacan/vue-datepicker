@@ -532,6 +532,10 @@ date.setDate(date.getDate() + 3)
 
 ## 更新日志
 
+### 0.6.9
+
+- 修复 `type=week` 初始化时，传入值不是有正确的星期范围时可能不会触发值更新的问题
+
 ### 0.6.8
 
 - 修复 `getDateRange` 在未传入 `option` 参数时报错的问题

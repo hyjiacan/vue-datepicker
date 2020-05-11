@@ -271,14 +271,19 @@ export default {
         focus: () => {
           this.isVisible = true
         },
-        blur: () => {
+        blur: e => {
+          // 如果是弹出框中的内容被点击，那么不关闭
+          if (this.$el.contains(e.target)) {
+            return
+          }
+
           this.isVisible = false
         },
         keyup: e => {
           if (e.keyCode === 27) {
             // ESC 关闭
             this.isVisible = false
-          } else if(e.keyCode === 13) {
+          } else if (e.keyCode === 13) {
             // Enter 关闭
             this.isVisible = false
           }

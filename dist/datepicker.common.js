@@ -10543,7 +10543,12 @@ var Shortcuts_component = normalizeComponent(
         focus: function focus() {
           _this5.isVisible = true;
         },
-        blur: function blur() {
+        blur: function blur(e) {
+          // 如果是弹出框中的内容被点击，那么不关闭
+          if (_this5.$el.contains(e.target)) {
+            return;
+          }
+
           _this5.isVisible = false;
         },
         keyup: function keyup(e) {

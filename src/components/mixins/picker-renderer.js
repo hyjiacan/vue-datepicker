@@ -273,6 +273,15 @@ export default {
         },
         blur: () => {
           this.isVisible = false
+        },
+        keyup: e => {
+          if (e.keyCode === 27) {
+            // ESC 关闭
+            this.isVisible = false
+          } else if(e.keyCode === 13) {
+            // Enter 关闭
+            this.isVisible = false
+          }
         }
       }
     }, content)

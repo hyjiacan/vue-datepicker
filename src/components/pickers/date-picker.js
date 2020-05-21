@@ -59,13 +59,13 @@ export default {
         return
       }
       this.isVisible = v
-      setTimeout(() => {
+      this.$nextTick(() => {
         if (v) {
           this.$el.focus()
         } else {
           this.$el.blur()
         }
-      }, 500)
+      })
     },
     isVisible(v) {
       // 在关闭时触发更新
@@ -75,6 +75,13 @@ export default {
       if (v !== this.visible) {
         this.$emit('update:visible', v)
       }
+      this.$nextTick(() => {
+        if (v) {
+          this.$el.focus()
+        } else {
+          this.$el.blur()
+        }
+      })
     },
     singleValue() {
       this.commitChanges()

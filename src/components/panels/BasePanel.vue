@@ -49,6 +49,7 @@ export default {
     getCellClass(cell) {
       return {
         'date-picker--panel-value-active': cell.active,
+        'date-picker--panel-value-current': cell.current,
         'date-picker--panel-value-overflow': cell.overflow,
         'date-picker--panel-value-disabled': cell.disabled
       }

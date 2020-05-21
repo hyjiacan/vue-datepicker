@@ -42,6 +42,9 @@ export default {
     },
     data() {
       const data = []
+      const date = {
+        year: new Date().getFullYear()
+      }
       const activeYear = this.active.getFullYear()
       let year = this.startYear
       // 当前的20年
@@ -54,9 +57,11 @@ export default {
           }
           row.push({
             active: year === activeYear,
+            current: year === date.year,
             value: year,
             disabled: this.isDisabled(year)
           })
+
           year++
           years--
         }

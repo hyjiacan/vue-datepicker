@@ -62,6 +62,12 @@ export default {
         month: this.active.getMonth() + 1,
         date: this.active.getDate()
       }
+      const d = new Date()
+      const date = {
+        year: d.getFullYear(),
+        month: d.getMonth() + 1,
+        date: d.getDate()
+      }
       const view = []
       // 6行
       for (let i = 0; i < 6; i++) {
@@ -82,6 +88,8 @@ export default {
             item.active = item.year === active.year && item.month === active.month && item.value === active.date
             item.tip = `${item.year}年${item.month}月${item.value}日`
           }
+
+          item.current = item.year === date.year && item.month === date.month && item.value === date.date
 
           item.disabled = this.isDisabled(item.year, item.month - 1, item.value)
           row.push(item)

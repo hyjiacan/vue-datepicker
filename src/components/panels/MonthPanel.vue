@@ -19,8 +19,13 @@ export default {
   components: {BasePanel},
   mixins: [mixin],
   computed: {
-    data () {
+    data() {
       const data = []
+      const d = new Date()
+      const date = {
+        year: d.getFullYear(),
+        month: d.getMonth() + 1
+      }
       const year = this.viewValue.getFullYear()
       const activeYear = this.active.getFullYear()
       const activeMonth = this.active.getMonth() + 1
@@ -40,6 +45,9 @@ export default {
           } else {
             item.active = year === activeYear && month === activeMonth
           }
+
+          item.current = item.year === date.year && item.value === date.month
+
           row.push(item)
           month++
         }
@@ -47,37 +55,37 @@ export default {
       }
       return data
     },
-    classes () {
+    classes() {
       return {
         'date-picker--panel-month': true,
         'date-picker--panel-season': this.isSeason
       }
     },
-    isSeason () {
+    isSeason() {
       return this.type === this.types.SEASON
     }
   },
   methods: {
-    onPrevYear () {
+    onPrevYear() {
       this.viewValue = this.getPrevYearByViewDate()
     },
-    onNextYear () {
+    onNextYear() {
       this.viewValue = this.getNextYearByViewDate()
     },
-    onPickCell ({year, value}) {
+    onPickCell({year, value}) {
       if (this.isSeason) {
         return ''
       }
       this.$emit('pick', {year, month: value - 1})
     },
-    onPickRow ({row}) {
+    onPickRow({row}) {
       if (this.type !== this.types.SEASON) {
         return ''
       }
       const {year, value} = row[0]
       this.$emit('pick', {year, month: value - 1})
     },
-    getRowClass ({row}) {
+    getRowClass({row}) {
       if (this.type !== this.types.SEASON) {
         return ''
       }

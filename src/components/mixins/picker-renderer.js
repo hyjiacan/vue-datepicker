@@ -9,7 +9,8 @@ export default {
   data() {
     return {
       h: null,
-      c: null
+      c: null,
+      hideTimerHandle: -1
     }
   },
   computed: {
@@ -60,7 +61,10 @@ export default {
     renderClearButton(handler) {
       return this.h(ClearButton, {
         on: {
-          clear: handler
+          clear: () => {
+            this.isVisible = false
+            handler()
+          }
         }
       })
     },
@@ -271,13 +275,15 @@ export default {
         focus: () => {
           this.isVisible = true
         },
-        blur: e => {
-          // 如果是弹出框中的内容被点击，那么不关闭
-          if (this.$el.contains(e.target)) {
-            return
-          }
-
-          this.isVisible = false
+        click: () => {
+          // 点击时取消关闭
+          clearTimeout(this.hideTimerHandle)
+          this.hideTimerHandle = -1
+        },
+        blur: () => {
+          this.hideTimerHandle = setTimeout(() => {
+            this.isVisible = false
+          }, 100)
         },
         keyup: e => {
           if (e.keyCode === 27) {

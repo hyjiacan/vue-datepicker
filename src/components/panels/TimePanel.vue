@@ -45,7 +45,7 @@ export default {
   name: 'TimePanel',
   components: {TimeWheel},
   mixins: [mixin],
-  data () {
+  data() {
     return {
       time: {
         hour: -1,
@@ -62,13 +62,13 @@ export default {
   filters: {
     pad: util.pad
   },
-  mounted () {
+  mounted() {
     this.updateTime()
   },
   watch: {
     time: {
       deep: true,
-      handler (v) {
+      handler(v) {
         if (v.hour === -1 || v.minute === -1 || v.second === -1) {
           return
         }
@@ -88,24 +88,24 @@ export default {
     },
     viewValue: {
       deep: true,
-      handler (v) {
+      handler(v) {
         this.updateTime(v)
       }
     },
-    'picker.visible' (v) {
+    'picker.visible'(v) {
       if (!v) {
         this.updateTime()
       }
     }
   },
   computed: {
-    minValue () {
+    minValue() {
       return this.picker.minValue ? this.picker.minValue.getTime() : -1
     },
-    maxValue () {
+    maxValue() {
       return this.picker.maxValue ? this.picker.maxValue.getTime() : -1
     },
-    hours () {
+    hours() {
       const max = 23
       const data = {
         max
@@ -117,7 +117,7 @@ export default {
 
       return data
     },
-    minutes () {
+    minutes() {
       const max = 59
       const data = {
         max
@@ -133,7 +133,7 @@ export default {
 
       return data
     },
-    seconds () {
+    seconds() {
       const max = 59
       const data = {
         max
@@ -151,7 +151,7 @@ export default {
     }
   },
   methods: {
-    updateTime (value) {
+    updateTime(value) {
       value = value || this.viewValue
       if (this.time.hour === value.getHours() &&
         this.time.minute === value.getMinutes() &&
@@ -162,7 +162,7 @@ export default {
       this.time.minute = value.getMinutes()
       this.time.second = value.getSeconds()
     },
-    onPick () {
+    onPick() {
       this.$emit('pick', {
         year: this.viewValue.getFullYear(),
         month: this.viewValue.getMonth(),
@@ -179,7 +179,7 @@ export default {
      * @param {Number} [newTime.second]
      * @return {boolean}
      */
-    validate (newTime) {
+    validate(newTime) {
       const value = util.setDate(this.viewValue, {
         ...this.time,
         ...newTime
@@ -187,7 +187,7 @@ export default {
       return (this.minValue === -1 || this.minValue <= value) && (this.maxValue === -1 || value <= this.maxValue)
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.updateTime()
   }
 }

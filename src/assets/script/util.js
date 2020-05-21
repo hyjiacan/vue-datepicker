@@ -510,6 +510,9 @@ const util = {
    * @return {string}
    */
   format(date, format, inputFormat) {
+    if (!date) {
+      return ''
+    }
     const value = this.parse(date, inputFormat || format)
     return dateUtil.format(value, format)
   },

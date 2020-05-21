@@ -58,13 +58,13 @@ export default {
         this.commitChanges()
         return
       }
-      v = util.parse(v, this.finalFormat)
+      const value = util.parse(v, this.finalFormat)
       switch (this.type) {
         // case this.types.SEASON:
         case this.types.MONTH:
           // eslint-disable-next-line no-case-declarations
-          const temp = util.setDate(v, {date: 0, month: v.getMonth() + 1})
-          if (v.getDate() !== temp.getDate()) {
+          const temp = util.setDate(value, {date: 0, month: value.getMonth() + 1})
+          if (value.getDate() !== temp.getDate()) {
             this.endValue = temp
           }
           break

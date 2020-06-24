@@ -65,6 +65,7 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 </template>
 <script>
 import DatePicker from '@hyjiacan/vue-datepicker'
+import '@hyjiacan/vue-datepicker/dist/datepicker.css'
 
 export default {
     components: {DatePicker},

@@ -1,10 +1,7 @@
 const config = {
   publicPath: './',
   filenameHashing: false,
-  productionSourceMap: false,
-  css: {
-    extract: false
-  }
+  productionSourceMap: false
 }
 
 if (process.argv.indexOf('--target') === -1 || process.argv.indexOf('lib') === -1) {

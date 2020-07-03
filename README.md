@@ -275,7 +275,7 @@ const placeholders = {
 > Since 1.1.0 
 
 - type: Boolean
-- default: `true`
+- default: `false`
 
 是否高亮选中范围。(仅在指定了 `range` 时有效)
 
@@ -302,7 +302,8 @@ const placeholders = {
 参数: `({type, value, src}, oldValue)`
 
 - type 指定的类型
-- src 事件源，用以区分事件是从何而来:
+- src 事件源，用以区分事件是从何而来: 
+    > Since 1.1.0
     - `picker` 选择面板
     - `shortcut` 快捷键
     - `init` 初始化
@@ -548,6 +549,16 @@ date.setDate(date.getDate() + 3)
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 1.1.0
+
+- 添加 `highlight-range` 属性，以高亮选中范围的背景
+- 优化 给 `change` 事件添加 `src` 参数，以辅助开发
+
+### 1.0.0
+
+- 优化 将样式文件生成到独立CSS文件中，不再混入JS代码
+- 修复 outline 样式
 
 ### 0.6.14
 

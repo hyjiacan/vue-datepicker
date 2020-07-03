@@ -17,7 +17,7 @@ export default {
      */
     highlightRange: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {

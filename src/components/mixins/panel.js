@@ -6,7 +6,7 @@ export default {
   inject: {
     picker: 'datePicker'
   },
-  data () {
+  data() {
     return {
       types,
       MIN_YEAR,
@@ -15,40 +15,43 @@ export default {
   },
   computed: {
     viewValue: {
-      get () {
+      get() {
         return this.picker.viewValue
       },
-      set (value) {
+      set(value) {
         this.picker.setViewValue(value)
       }
     },
-    active () {
+    active() {
       return this.picker.dateValue
     },
-    type () {
+    type() {
       return this.picker.type
     },
-    minYear () {
+    minYear() {
       return this.picker.minValue ? this.picker.minValue.getFullYear() : -1
     },
-    maxYear () {
+    maxYear() {
       return this.picker.maxValue ? this.picker.maxValue.getFullYear() : -1
     },
-    minMonth () {
+    minMonth() {
       return this.picker.minValue ? this.picker.minValue.getMonth() : -1
     },
-    maxMonth () {
+    maxMonth() {
       return this.picker.maxValue ? this.picker.maxValue.getMonth() : -1
     },
-    minDate () {
+    minDate() {
       return this.picker.minValue ? this.picker.minValue.getDate() : -1
     },
-    maxDate () {
+    maxDate() {
       return this.picker.maxValue ? this.picker.maxValue.getDate() : -1
+    },
+    highlightRange() {
+      return this.picker.highlightValueRange
     }
   },
   methods: {
-    isDisabled (year, month, date) {
+    isDisabled(year, month, date) {
       // TODO 何时限制临界值？ 是否包含在内
       if ((this.minYear !== -1 && this.minYear > year) || (this.maxYear !== -1 && this.maxYear < year)) {
         return true
@@ -67,11 +70,34 @@ export default {
       }
       return false
     },
-    getPrevYearByViewDate () {
+    isHighlight(year, month, date) {
+      if (!this.highlightRange) {
+        return false
+      }
+
+      const from = this.highlightRange[0]
+      const to = this.highlightRange[1]
+      if (from.year > year || to.year < year) {
+        return false
+      }
+      if (month !== undefined) {
+        if ((from.year === year && from.month > month) || (to.year === year && to.month < month)) {
+          return false
+        }
+      }
+      if (date !== undefined) {
+        if ((from.year === year && from.month === month && from.date > date) ||
+          (to.year === year && to.month === month && to.date < date)) {
+          return false
+        }
+      }
+      return true
+    },
+    getPrevYearByViewDate() {
       const temp = this.viewValue.getFullYear() - 1
       return util.setDate(this.viewValue, {year: temp < this.MIN_YEAR ? this.MIN_YEAR : temp})
     },
-    getNextYearByViewDate () {
+    getNextYearByViewDate() {
       const temp = this.viewValue.getFullYear() + 1
       return util.setDate(this.viewValue, {year: temp > this.MAX_YEAR ? this.MAX_YEAR : temp})
     }

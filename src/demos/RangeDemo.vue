@@ -1,13 +1,13 @@
 <template>
     <div>
         <h4>选择日期范围(一次弹框选择[<i>默认</i>])</h4>
-        <div class="date-label">年</div>
+        <div class="date-label">年 (高亮选中范围)</div>
         <date-picker range :week-start="weekStart" v-model="ryear" type="year" readonly/>
         <div class="date-value">{{ryear}}</div>
-        <div class="date-label">年-月</div>
-        <date-picker range :week-start="weekStart" v-model="rmonth" type="month"/>
+      <div class="date-label">年-月 (<del>不高亮选中范围</del>)</div>
+        <date-picker range :highlight-range="false" :week-start="weekStart" v-model="rmonth" type="month"/>
         <div class="date-value">{{rmonth}}</div>
-        <div class="date-label">年-月-日</div>
+        <div class="date-label">年-月-日 (高亮选中范围)</div>
         <date-picker range :week-start="weekStart" v-model="rdate" type="date"/>
         <div class="date-value">{{rdate}}</div>
         <div class="date-label">时间</div>

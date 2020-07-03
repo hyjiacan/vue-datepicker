@@ -89,6 +89,9 @@ export default {
     weekStart: {
       type: Number,
       default: 0
+    },
+    highlightRange: {
+      type: Array
     }
   },
   provide() {
@@ -220,6 +223,26 @@ export default {
     },
     maxValue() {
       return this.max ? new Date(this.max) : null
+    },
+    highlightValueRange() {
+      if (!this.highlightRange || !this.highlightRange.length) {
+        return false
+      }
+      if (!this.highlightRange[0] || !this.highlightRange[1]) {
+        return false
+      }
+      return this.highlightRange.map(item => {
+        const date = util.parse(item, this.format)
+
+        return {
+          year: date.getFullYear(),
+          month: date.getMonth(),
+          date: date.getDate(),
+          hour: date.getHours(),
+          minute: date.getMinutes(),
+          second: date.getSeconds()
+        }
+      })
     }
   },
   beforeDestroy() {

@@ -11,7 +11,14 @@ export default {
       type: Number,
       default: 0
     },
-    range: Boolean
+    range: Boolean,
+    /**
+     * 是否高亮选中日期范围背景
+     */
+    highlightRange: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

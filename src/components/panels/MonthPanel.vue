@@ -38,7 +38,8 @@ export default {
             value: month,
             text: `${month}月`,
             tip: `${year}年${month}月`,
-            disabled: this.isDisabled(year, month - 1)
+            disabled: this.isDisabled(year, month - 1),
+            highlight: this.isHighlight(year, month - 1)
           }
           if (this.type === this.types.SEASON) {
             item.rowActive = year === activeYear && month === activeMonth

@@ -20,7 +20,8 @@
         <tbody>
         <tr v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker--row" :title="getRowTip(row)"
             :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
-          <td v-for="(cell, cellIndex) in row" :key="cellIndex" :title="cell.tip" @click="onCellClick(cell)">
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex" :title="cell.tip" @click="onCellClick(cell)"
+              :class="{'date-picker--panel-value-highlight': cell.highlight}">
             <span class="date-picker--panel-value" :class="getCellClass(cell)">{{cell.text || cell.value}}</span>
           </td>
         </tr>

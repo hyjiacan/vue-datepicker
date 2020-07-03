@@ -59,7 +59,8 @@ export default {
             active: year === activeYear,
             current: year === date.year,
             value: year,
-            disabled: this.isDisabled(year)
+            disabled: this.isDisabled(year),
+            highlight: this.isHighlight(year)
           })
 
           year++

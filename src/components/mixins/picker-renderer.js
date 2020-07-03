@@ -147,20 +147,24 @@ export default {
      * @returns {*|void}
      */
     renderPicker(valueName, visibleName, limitName, titleSlot, doNotAutoClose) {
+      const props = {
+        format: this.finalFormat,
+        value: this[valueName],
+        editable: this.editable,
+        type: this.type,
+        readonly: this.readonly,
+        size: this.size,
+        min: this[limitName][0],
+        max: this[limitName][1],
+        visible: this[visibleName],
+        mousewheel: this.mousewheel,
+        weekStart: this.weekStart
+      }
+      if (this.highlightRange && this.isRange) {
+        props.highlightRange = [this.beginValue, this.endValue]
+      }
       const option = {
-        props: {
-          format: this.finalFormat,
-          value: this[valueName],
-          editable: this.editable,
-          type: this.type,
-          readonly: this.readonly,
-          size: this.size,
-          min: this[limitName][0],
-          max: this[limitName][1],
-          visible: this[visibleName],
-          mousewheel: this.mousewheel,
-          weekStart: this.weekStart
-        },
+        props,
         on: {
           input: (value) => {
             this[valueName] = value

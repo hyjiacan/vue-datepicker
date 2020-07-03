@@ -48,6 +48,9 @@ export default {
           }
 
           item.current = item.year === date.year && item.value === date.month
+          if (item.current) {
+            item.tip = '本月'
+          }
 
           row.push(item)
           month++

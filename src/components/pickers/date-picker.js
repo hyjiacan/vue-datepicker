@@ -45,7 +45,9 @@ export default {
     return {
       types,
       singleValue: util.format(new Date(), formats.date),
-      isVisible: false
+      isVisible: false,
+      // 存储选中值更新事件的源信息
+      _eventSrc: 'init'
     }
   },
   mounted() {
@@ -131,7 +133,8 @@ export default {
       this.$emit('input', newValue)
       this.$emit('change', {
         type: this.type,
-        value: newValue
+        value: newValue,
+        src: this._eventSrc
       }, oldValue)
     },
     clearSingleValue() {

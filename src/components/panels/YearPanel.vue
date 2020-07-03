@@ -55,9 +55,11 @@ export default {
           if (years === 0) {
             break
           }
+          const isCurrent = year === date.year
           row.push({
             active: year === activeYear,
-            current: year === date.year,
+            current: isCurrent,
+            tip: isCurrent ? '今年' : '',
             value: year,
             disabled: this.isDisabled(year),
             highlight: this.isHighlight(year)

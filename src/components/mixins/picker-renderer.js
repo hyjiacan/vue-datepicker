@@ -62,6 +62,7 @@ export default {
       return this.h(ClearButton, {
         on: {
           clear: () => {
+            this._eventSrc = 'clear'
             this.isVisible = false
             handler()
           }
@@ -132,6 +133,7 @@ export default {
         },
         on: {
           change: ({value}) => {
+            this._eventSrc = 'shortcut'
             this.updateValue(value)
           }
         }
@@ -167,6 +169,7 @@ export default {
         props,
         on: {
           input: (value) => {
+            this._eventSrc = 'picker'
             this[valueName] = value
           },
           change: () => {

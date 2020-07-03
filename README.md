@@ -299,9 +299,14 @@ const placeholders = {
 
 #### `change`
 
-参数: `({type, value}, oldValue)`
+参数: `({type, value, src}, oldValue)`
 
 - type 指定的类型
+- src 事件源，用以区分事件是从何而来:
+    - `picker` 选择面板
+    - `shortcut` 快捷键
+    - `init` 初始化
+    - `clear` 清空按钮
 
 ## 插槽
 

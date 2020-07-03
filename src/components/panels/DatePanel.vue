@@ -90,7 +90,9 @@ export default {
           }
 
           item.current = item.year === date.year && item.month === date.month && item.value === date.date
-
+          if (item.current) {
+            item.tip = '今天'
+          }
           item.disabled = this.isDisabled(item.year, item.month - 1, item.value)
           item.highlight = this.isHighlight(item.year, item.month - 1, item.value)
           row.push(item)

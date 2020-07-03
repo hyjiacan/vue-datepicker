@@ -270,6 +270,15 @@ const placeholders = {
 }
 ```
 
+#### `highlight-range`
+
+> Since 1.1.0 
+
+- type: Boolean
+- default: `true`
+
+是否高亮选中范围。(仅在指定了 `range` 时有效)
+
 #### `readonly`
 
 > (未实现)

@@ -550,6 +550,10 @@ date.setDate(date.getDate() + 3)
 
 ## 更新日志
 
+### 1.1.1
+
+- 修复 选择弹框布局错乱
+
 ### 1.1.0
 
 - 添加 `highlight-range` 属性，以高亮选中范围的背景

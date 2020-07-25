@@ -7724,6 +7724,8 @@ var util = {
   },
   watch: {
     beginValue: function beginValue(v) {
+      var _this = this;
+
       if (!v) {
         this.commitChanges();
         return;
@@ -7766,9 +7768,12 @@ var util = {
           break;
       }
 
-      if (commit) {
-        this.commitChanges();
-      }
+      this.$nextTick(function () {
+        // 当结束值没有变化时，在此处执行提交
+        if (commit || _this.endValue === script_util.format(_this.value[1], _this.finalFormat)) {
+          _this.commitChanges();
+        }
+      });
     },
     endValue: function endValue(v) {
       if (!v) {

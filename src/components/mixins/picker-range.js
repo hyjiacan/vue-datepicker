@@ -56,9 +56,13 @@ export default {
           }
           break
       }
-      if (commit) {
-        this.commitChanges()
-      }
+
+      this.$nextTick(() => {
+        // 当结束值没有变化时，在此处执行提交
+        if (commit || this.endValue === util.format(this.value[1], this.finalFormat)) {
+          this.commitChanges()
+        }
+      })
     },
     endValue(v) {
       if (!v) {

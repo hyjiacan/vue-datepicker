@@ -184,12 +184,12 @@ const util = {
   },
   /**
    * 获取传入日期处于一年中的第多少周
-   * @param {Date} date
+   * @param {Date|Date[]} date
    * @param {object} [option]
    * @param {number} [option.start=0] 周的偏移值
    * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
    * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
-   * @return {string|number}
+   * @return {[]|number}
    */
   getWeekOfYear(date, option) {
     option = {
@@ -198,10 +198,13 @@ const util = {
       boundary: null,
       ...option
     }
-    const [start, end] = this.getWeekRange(date, {start: option.start})
+    const [start, end] = Array.isArray(date) ? date.map(d => this.parse(d)) :
+      this.getWeekRange(date, {start: option.start})
 
-    let week, year
-    let currentYear = date.getFullYear()
+    // date + 3 ，表示一周中间的那一天
+    let currentYear = this.offsetDate(start, {date: 3}).getFullYear()
+    let week
+    let year = currentYear
     let startYear = start.getFullYear()
     let endYear = end.getFullYear()
 
@@ -230,7 +233,7 @@ const util = {
       // 未跨年
       week = Math.ceil(this.getDayOfYear(start) / 7)
     }
-    return option.format ? [week, `${year}年 第${week}周`] : week
+    return option.format ? [{week, year}, `${year}年 第${week}周`] : {week, year}
   },
   /**
    * 根据传入日期生成日期所在月的日历视图
@@ -497,6 +500,8 @@ const util = {
         if (!format) {
           format = 'yyyy-MM-dd HH:mm:ss'
         }
+      } else if (!format) {
+        format = 'yyyy-MM-dd'
       }
     }
 

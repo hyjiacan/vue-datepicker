@@ -189,7 +189,7 @@ const util = {
    * @param {number} [option.start=0] 周的偏移值
    * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
    * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
-   * @return {[]|number}
+   * @return {[{year: Number, week: Number}, string]|{year: Number, week: Number}}
    */
   getWeekOfYear(date, option) {
     option = {

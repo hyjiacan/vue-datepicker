@@ -493,14 +493,14 @@ export interface $util {
 
   /**
    * 获取传入日期处于一年中的第多少周
-   * @param {Date} date
+   * @param {Date|Date[]} date
    * @param {WeekOfYearOption} [option]
    * @param {number} [option.start=0] 周的偏移值
    * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
    * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
-   * @return {string|number}
+   * @return {[{year: Number, week: Number}, string]|{year: Number, week: Number}
    */
-  getWeekOfYear(date: Date, option?: WeekOfYearOption): string | number;
+  getWeekOfYear(date: Date|Date[], option?: WeekOfYearOption): [{year: Number, week: Number}, string] | {year: Number, week: Number};
 
   /**
    * 根据一个日期以及偏移参数获取日期范围

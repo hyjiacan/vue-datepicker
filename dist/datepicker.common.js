@@ -7245,29 +7245,37 @@ var util = {
 
   /**
    * 获取传入日期处于一年中的第多少周
-   * @param {Date} date
+   * @param {Date|Date[]} date
    * @param {object} [option]
    * @param {number} [option.start=0] 周的偏移值
    * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
    * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
-   * @return {string|number}
+   * @return {[{year: Number, week: Number}, string]|{year: Number, week: Number}}
    */
   getWeekOfYear: function getWeekOfYear(date, option) {
+    var _this = this;
+
     option = _objectSpread2({
       start: 0,
       format: false,
       boundary: null
     }, option);
 
-    var _this$getWeekRange = this.getWeekRange(date, {
+    var _ref = Array.isArray(date) ? date.map(function (d) {
+      return _this.parse(d);
+    }) : this.getWeekRange(date, {
       start: option.start
     }),
-        _this$getWeekRange2 = _slicedToArray(_this$getWeekRange, 2),
-        start = _this$getWeekRange2[0],
-        end = _this$getWeekRange2[1];
+        _ref2 = _slicedToArray(_ref, 2),
+        start = _ref2[0],
+        end = _ref2[1]; // date + 3 ，表示一周中间的那一天
 
-    var week, year;
-    var currentYear = date.getFullYear();
+
+    var currentYear = this.offsetDate(start, {
+      date: 3
+    }).getFullYear();
+    var week;
+    var year = currentYear;
     var startYear = start.getFullYear();
     var endYear = end.getFullYear(); // 处理跨年的情况
 
@@ -7296,7 +7304,13 @@ var util = {
       week = Math.ceil(this.getDayOfYear(start) / 7);
     }
 
-    return option.format ? [week, "".concat(year, "\u5E74 \u7B2C").concat(week, "\u5468")] : week;
+    return option.format ? [{
+      week: week,
+      year: year
+    }, "".concat(year, "\u5E74 \u7B2C").concat(week, "\u5468")] : {
+      week: week,
+      year: year
+    };
   },
 
   /**
@@ -7353,11 +7367,11 @@ var util = {
    * @return {Date[]|String[]}
    */
   getDateRange: function getDateRange(date, beginOffset, endOffset, option) {
-    var _this = this;
+    var _this2 = this;
 
-    var _ref = option || {},
-        time = _ref.time,
-        format = _ref.format;
+    var _ref3 = option || {},
+        time = _ref3.time,
+        format = _ref3.format;
 
     var begin = this.offsetDate(date, beginOffset);
     var end = this.offsetDate(date, endOffset);
@@ -7368,7 +7382,7 @@ var util = {
 
     var range = [begin, end];
     return format ? range.map(function (d) {
-      return _this.format(d, format);
+      return _this2.format(d, format);
     }) : range;
   },
 
@@ -7383,7 +7397,7 @@ var util = {
    * @return {Date[]|String[]}
    */
   getWeekRange: function getWeekRange(date, option) {
-    var _this2 = this;
+    var _this3 = this;
 
     var _start$offset$option = _objectSpread2({
       start: 0,
@@ -7425,7 +7439,7 @@ var util = {
 
     var range = [begin, end];
     return format ? range.map(function (d) {
-      return _this2.format(d, format);
+      return _this3.format(d, format);
     }) : range;
   },
 
@@ -7439,7 +7453,7 @@ var util = {
    * @return {Date[]|String[]}
    */
   getMonthRange: function getMonthRange(date, option) {
-    var _this3 = this;
+    var _this4 = this;
 
     var _offset$option = _objectSpread2({
       offset: 0
@@ -7459,7 +7473,7 @@ var util = {
 
     var range = [begin, end];
     return format ? range.map(function (d) {
-      return _this3.format(d, format);
+      return _this4.format(d, format);
     }) : range;
   },
 
@@ -7473,7 +7487,7 @@ var util = {
    * @return {Date[]|String[]}
    */
   getSeasonRange: function getSeasonRange(date, option) {
-    var _this4 = this;
+    var _this5 = this;
 
     var _offset$option2 = _objectSpread2({
       offset: 0
@@ -7501,7 +7515,7 @@ var util = {
 
     var range = [begin, end];
     return format ? range.map(function (d) {
-      return _this4.format(d, format);
+      return _this5.format(d, format);
     }) : range;
   },
 
@@ -7612,6 +7626,8 @@ var util = {
         if (!format) {
           format = 'yyyy-MM-dd HH:mm:ss';
         }
+      } else if (!format) {
+        format = 'yyyy-MM-dd';
       }
     }
 

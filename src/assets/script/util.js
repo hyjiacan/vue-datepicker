@@ -187,53 +187,63 @@ const util = {
    * @param {Date|Date[]} date
    * @param {object} [option]
    * @param {number} [option.start=0] 周的偏移值
-   * @param {boolean} [option.format=false] 是否格式化，设置为 true 时会格式化为 xxxx年 第xx周
-   * @param {string} [option.boundary=null] 遇到跨年的情况时，周应该放置在前一年(prev)还是当年(留空)或者下一年(next)
-   * @return {[{year: Number, week: Number}, string]|{year: Number, week: Number}}
+   * @return {{year: Number, week: Number}}
    */
   getWeekOfYear(date, option) {
     option = {
       start: 0,
-      format: false,
-      boundary: null,
       ...option
     }
-    const [start, end] = Array.isArray(date) ? date.map(d => this.parse(d)) :
+    const [start] = Array.isArray(date) ? date.map(d => this.parse(d)) :
       this.getWeekRange(date, {start: option.start})
 
-    // date + 3 ，表示一周中间的那一天
-    let currentYear = this.offsetDate(start, {date: 3}).getFullYear()
-    let week
-    let year = currentYear
-    let startYear = start.getFullYear()
-    let endYear = end.getFullYear()
+    // 当传入的是日期范围时，date + 3 ，表示一周中间的那一天
+    // 得到周所在的日期
+    const weekDate = Array.isArray(date) ? this.offsetDate(start, {date: 3}) : date
 
-    // 处理跨年的情况
-    if (startYear < endYear) {
-      if (currentYear === endYear) {
-        // 上一年与今年
-        if (option.boundary === 'prev') {
-          year = startYear
-          week = Math.ceil(this.getDayOfYear(start) / 7)
-        } else {
-          year = currentYear
-          week = Math.ceil(this.getDayOfYear(end) / 7)
-        }
-      } else {
-        // 今年与下一年
-        if (option.boundary === 'next') {
-          year = endYear
-          week = Math.ceil(this.getDayOfYear(end) / 7)
-        } else {
-          year = currentYear
-          week = Math.ceil(this.getDayOfYear(start) / 7)
-        }
-      }
-    } else {
-      // 未跨年
-      week = Math.ceil(this.getDayOfYear(start) / 7)
+    // 当年的第一天是星期几
+    const weekDayOfFirstDay = this.setDate(weekDate, {month: 0, date: 1}).getDay()
+
+    // 周日期所在年的第一天的星期数 + 周日期所在其年的天数 - 起始日期 / 7
+    // 得到周数
+    const offset = weekDayOfFirstDay > option.start ? option.start : option.start - 7
+    const days = weekDayOfFirstDay + this.getDayOfYear(weekDate) - offset
+    return {
+      year: weekDate.getFullYear(),
+      week: Math.ceil(Math.abs(days) / 7)
     }
-    return option.format ? [{week, year}, `${year}年 第${week}周`] : {week, year}
+  },
+  /**
+   * 获取传入日期处于一月中的第多少周
+   * @param {Date|Date[]} date
+   * @param {object} [option]
+   * @param {number} [option.start=0] 周的偏移值
+   * @return {{year: Number, month: Number, week: Number}}
+   */
+  getWeekOfMonth(date, option) {
+    option = {
+      start: 0,
+      ...option
+    }
+    const [start] = Array.isArray(date) ? date.map(d => this.parse(d)) :
+      this.getWeekRange(date, {start: option.start})
+
+    // 当传入的是日期范围时，date + 3 ，表示一周中间的那一天
+    // 得到周所在的日期
+    const weekDate = Array.isArray(date) ? this.offsetDate(start, {date: 3}) : date
+
+    // 当月的第一天是星期几
+    const weekDayOfFirstDay = this.setDate(weekDate, {date: 1}).getDay()
+
+    // 周日期所在月的第一天的星期数 + 周日期所在其月的天数 - 起始日期 / 7
+    // 得到周数
+    const offset = weekDayOfFirstDay > option.start ? option.start : option.start - 7
+    const days = weekDayOfFirstDay + weekDate.getDate() - offset
+    return {
+      year: weekDate.getFullYear(),
+      month: weekDate.getMonth(),
+      week: Math.ceil(Math.abs(days) / 7)
+    }
   },
   /**
    * 根据传入日期生成日期所在月的日历视图

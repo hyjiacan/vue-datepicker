@@ -11,6 +11,7 @@ DatePicker.$util = {
   getMonthRange: util.getMonthRange.bind(util),
   getSeasonRange: util.getSeasonRange.bind(util),
   getWeekOfYear: util.getWeekOfYear.bind(util),
+  getWeekOfMonth: util.getWeekOfMonth.bind(util),
   getDateRange: util.getDateRange.bind(util),
   offsetDate: util.offsetDate.bind(util)
 }

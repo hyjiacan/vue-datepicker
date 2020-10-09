@@ -2,7 +2,7 @@ export default {
   year: '选择年',
   month: '选择月',
   week: '选择周',
-  season: '选择季度',
+  quarter: '选择季度',
   date: '选择日期',
   time: '选择时间',
   datetime: '选择时间',

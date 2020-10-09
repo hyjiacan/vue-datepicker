@@ -89,7 +89,7 @@ export default {
 
 - `year` 日期选择，选择 **年** 为结果
 - `month` 日期选择，选择 **月** 为结果
-- `season` 日期选择，选择 **季度** 为结果
+- `quarter` 日期选择，选择 **季度** 为结果
 - `date` 日期选择，选择 **天** 为结果
 - `week` 日期选择，选择 **周** 为结果
 - `datetime` 日期时间选择，选择 **天和时间** 为结果
@@ -101,7 +101,7 @@ export default {
 {
   "year": "yyyy",
   "month": "yyyy-MM-dd",
-  "season": "yyyy-MM-dd",
+  "quarter": "yyyy-MM-dd",
   "date": "yyyy-MM-dd",
   "time": "HH:mm:ss",
   "datetime": "yyyy-MM-dd HH:mm:ss",
@@ -247,7 +247,7 @@ export default {
 - default: 见下方
 
 指定 `placeholder` 文本。
-当未指定 `range` 属性，或 `type` 为 `week/season`时，应该指定为单个字符串；
+当未指定 `range` 属性，或 `type` 为 `week/quarter`时，应该指定为单个字符串；
 否则，应该指定为包含两个字符串的数组。
 
 默认值如下:
@@ -257,7 +257,7 @@ const placeholders = {
     year: '选择年',
     month: '选择月',
     week: '选择周',
-    season: '选择季度',
+    quarter: '选择季度',
     date: '选择日期',
     time: '选择时间',
     datetime: '选择时间',
@@ -392,7 +392,7 @@ export interface MonthRangeOption {
   format: String;
 }
 
-export interface SeasonRangeOption {
+export interface QuarterRangeOption {
   /**
    * 季度偏移量，可以是任意整数
    */
@@ -483,13 +483,13 @@ export interface $util {
   /**
    * 根据一个日期，谋算出其所在季度的起止日期
    * @param {Date} date
-   * @param {SeasonRangeOption} [option]
+   * @param {QuarterRangeOption} [option]
    * @param {number} [option.offset=0] 季度偏移量，可以是任意整数
    * @param {boolean} [option.time=false] 是否附带时间串
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getSeasonRange(date: Date, option?: SeasonRangeOption): Date[] | String[];
+  getQuarterRange(date: Date, option?: QuarterRangeOption): Date[] | String[];
 
   /**
    * 获取传入日期处于一年中的第多少周
@@ -556,6 +556,10 @@ date.setDate(date.getDate() + 3)
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 2.0.0
+
+- 修复 `season` 词义错误，使用 `quarter` 作为季度名称
 
 ### 1.1.2
 
@@ -630,7 +634,7 @@ date.setDate(date.getDate() + 3)
 
 ### 0.4.0
 
-- 修改 `geWeek(Month/Season)Range` 参数
+- 修改 `geWeek(Month/Quarter)Range` 参数
 - 添加 日历图标
 - 优化 样式
 - 移除 `split` 属性
@@ -648,7 +652,7 @@ date.setDate(date.getDate() + 3)
 
 ### 0.2.6
 
-- 优化 `range` 属性，当设置 `type` 为 `week`或`season`时， `range` 自动变更为 `true`
+- 优化 `range` 属性，当设置 `type` 为 `week`或`quarter`时， `range` 自动变更为 `true`
 - 优化 `v-model` 属性，当设置的值为空(即未设置)时，使用当前日期
 
 ### 0.2.5

@@ -150,7 +150,7 @@ export default {
     },
     onMonthPicked(e) {
       const value = util.setDate(this.viewValue, e)
-      if (this.type === this.types.MONTH || this.type === this.types.SEASON) {
+      if (this.type === this.types.MONTH || this.type === this.types.QUARTER) {
         this.changeValue(value)
         return
       }
@@ -207,7 +207,7 @@ export default {
       return this.type === this.types.DATE || this.type === this.types.DATETIME || this.type === this.types.WEEK
     },
     renderMonthPanel() {
-      return this.type === this.types.MONTH || this.type === this.types.SEASON
+      return this.type === this.types.MONTH || this.type === this.types.QUARTER
     },
     showTimePanel() {
       return this.currentType === this.types.TIME
@@ -216,7 +216,7 @@ export default {
       return this.currentType === this.types.DATE || this.currentType === this.types.DATETIME || this.currentType === this.types.WEEK
     },
     showMonthPanel() {
-      return this.currentType === this.types.MONTH || this.currentType === this.types.SEASON
+      return this.currentType === this.types.MONTH || this.currentType === this.types.QUARTER
     },
     minValue() {
       return this.min ? new Date(this.min) : null

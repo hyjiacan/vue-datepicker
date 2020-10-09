@@ -399,7 +399,7 @@ const util = {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getSeasonRange(date, option) {
+  getQuarterRange(date, option) {
     const {offset, time, format} = {
       offset: 0,
       ...option

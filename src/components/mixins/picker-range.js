@@ -43,8 +43,8 @@ export default {
           }
           commit = true
           break
-        case this.types.SEASON:
-          temp = util.getSeasonRange(v)
+        case this.types.QUARTER:
+          temp = util.getQuarterRange(v)
           if (util.format(temp[1], this.finalFormat) !== this.endValue) {
             this.endValue = util.format(temp[1], this.finalFormat)
           }
@@ -71,7 +71,7 @@ export default {
       }
       const value = util.parse(v, this.finalFormat)
       switch (this.type) {
-        // case this.types.SEASON:
+        // case this.types.QUARTER:
         case this.types.MONTH:
           // eslint-disable-next-line no-case-declarations
           const temp = util.setDate(value, {date: 0, month: value.getMonth() + 1})
@@ -103,8 +103,8 @@ export default {
         case this.types.WEEK:
           [beginValue, endValue] = util.getWeekRange(beginValue, {start: this.weekStart})
           break
-        case this.types.SEASON:
-          [beginValue, endValue] = util.getSeasonRange(beginValue)
+        case this.types.QUARTER:
+          [beginValue, endValue] = util.getQuarterRange(beginValue)
           break
         case this.types.MONTH:
           temp = util.getMonthRange(beginValue)
@@ -133,7 +133,7 @@ export default {
   },
   computed: {
     isRange() {
-      return this.range || [this.types.SEASON, this.types.WEEK].indexOf(this.type) !== -1
+      return this.range || [this.types.QUARTER, this.types.WEEK].indexOf(this.type) !== -1
     },
     formattedRangeValue() {
       return [

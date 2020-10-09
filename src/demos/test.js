@@ -120,7 +120,7 @@ function run() {
     }
   }
   console.info('Test completed. %d in total, %c%d passed, %c%d failed',
-    pass + fail, 'color: green', pass, 'color: red', fail)
+    pass + fail, 'color: green', pass, fail ? 'color: red' : 'color: gray', fail)
 }
 
 export default {

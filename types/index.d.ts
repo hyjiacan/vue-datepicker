@@ -32,7 +32,7 @@ export interface MonthRangeOption {
   format: String;
 }
 
-export interface SeasonRangeOption {
+export interface QuarterRangeOption {
   /**
    * 季度偏移量，可以是任意整数
    */
@@ -115,13 +115,13 @@ export interface $util {
   /**
    * 根据一个日期，谋算出其所在季度的起止日期
    * @param {Date} date
-   * @param {SeasonRangeOption} [option]
+   * @param {QuarterRangeOption} [option]
    * @param {number} [option.offset=0] 季度偏移量，可以是任意整数
    * @param {boolean} [option.time=false] 是否附带时间串
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getSeasonRange(date: Date, option?: SeasonRangeOption): Date[] | String[];
+  getQuarterRange(date: Date, option?: QuarterRangeOption): Date[] | String[];
 
   /**
    * 获取传入日期处于一年中的第多少周
@@ -130,7 +130,7 @@ export interface $util {
    * @param {number} [option.start=0] 周的偏移值
    * @return {{year: Number, week: Number}}
    */
-  getWeekOfYear(date: Date|Date[], option?: WeekOfOption): {year: Number, week: Number};
+  getWeekOfYear(date: Date | Date[], option?: WeekOfOption): { year: Number, week: Number };
 
   /**
    * 获取传入日期处于一月中的第多少周
@@ -139,7 +139,7 @@ export interface $util {
    * @param {number} [option.start=0] 周的偏移值
    * @return {{year: Number, month: Number, week: Number}}
    */
-  getWeekOfYear(date: Date|Date[], option?: WeekOfOption): {year: Number, month: Number, week: Number};
+  getWeekOfYear(date: Date | Date[], option?: WeekOfOption): { year: Number, month: Number, week: Number };
 
   /**
    * 根据一个日期以及偏移参数获取日期范围

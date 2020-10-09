@@ -9,7 +9,7 @@ DatePicker.$util = {
   parse: util.parse.bind(util),
   getWeekRange: util.getWeekRange.bind(util),
   getMonthRange: util.getMonthRange.bind(util),
-  getSeasonRange: util.getSeasonRange.bind(util),
+  getQuarterRange: util.getQuarterRange.bind(util),
   getWeekOfYear: util.getWeekOfYear.bind(util),
   getWeekOfMonth: util.getWeekOfMonth.bind(util),
   getDateRange: util.getDateRange.bind(util),

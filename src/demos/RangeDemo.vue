@@ -22,8 +22,8 @@
         <div>(min="2020-05-10 09:00" max="2020-10-20 20:30")</div>
         <div class="date-value">{{rdatetime}}</div>
       <div class="date-label">年-季度</div>
-      <date-picker range :week-start="weekStart" v-model="rseason" type="season" />
-      <div class="date-value">{{rseason}}</div>
+      <date-picker range :week-start="weekStart" v-model="rquarter" type="quarter" />
+      <div class="date-value">{{rquarter}}</div>
       <div class="date-label">年-周</div>
       <date-picker range :week-start="weekStart" v-model="rweek" type="week" />
       <div class="date-value">{{rweek}}</div>

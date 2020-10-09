@@ -251,7 +251,7 @@ export default {
         return this.renderSinglePicker()
       }
 
-      if (this.type === this.types.WEEK || this.type === this.types.SEASON) {
+      if (this.type === this.types.WEEK || this.type === this.types.QUARTER) {
         return this.renderSpecialPicker()
       }
 

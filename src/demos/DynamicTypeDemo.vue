@@ -8,7 +8,7 @@
     </div>
     <div>
       <date-picker v-model="date" :type="currentType"/>
-      <code>`v-model` 不是数组，所以不支持 `week` 和 `season`</code>
+      <code>`v-model` 不是数组，所以不支持 `week` 和 `quarter`</code>
       <p>{{date}}</p>
     </div>
     <div>
@@ -27,7 +27,7 @@ export default {
         'date',
         'week',
         'month',
-        'season',
+        'quarter',
         'year',
         'time',
         'datetime'

@@ -14,8 +14,8 @@ export default {
   get MONTH () {
     return 'month'
   },
-  get SEASON () {
-    return 'season'
+  get QUARTER () {
+    return 'quarter'
   },
   get YEAR () {
     return 'year'

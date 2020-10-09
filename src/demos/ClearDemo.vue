@@ -46,8 +46,8 @@
     <div class="date-value">{{rdatetime}}</div>
 
     <div class="date-label">季度</div>
-    <date-picker type="season" v-model="rseason" clearable/>
-    <div class="date-value">{{rseason}}</div>
+    <date-picker type="quarter" v-model="rquarter" clearable/>
+    <div class="date-value">{{rquarter}}</div>
 
     <div class="date-label">周</div>
     <date-picker type="week" v-model="rweek" hide-icon clearable/>

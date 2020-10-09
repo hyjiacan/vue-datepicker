@@ -41,7 +41,7 @@ export default {
             disabled: this.isDisabled(year, month - 1),
             highlight: this.isHighlight(year, month - 1)
           }
-          if (this.type === this.types.SEASON) {
+          if (this.type === this.types.QUARTER) {
             item.rowActive = year === activeYear && month === activeMonth
           } else {
             item.active = year === activeYear && month === activeMonth
@@ -62,11 +62,11 @@ export default {
     classes() {
       return {
         'date-picker--panel-month': true,
-        'date-picker--panel-season': this.isSeason
+        'date-picker--panel-quarter': this.isQuarter
       }
     },
-    isSeason() {
-      return this.type === this.types.SEASON
+    isQuarter() {
+      return this.type === this.types.QUARTER
     }
   },
   methods: {
@@ -77,20 +77,20 @@ export default {
       this.viewValue = this.getNextYearByViewDate()
     },
     onPickCell({year, value}) {
-      if (this.isSeason) {
+      if (this.isQuarter) {
         return ''
       }
       this.$emit('pick', {year, month: value - 1})
     },
     onPickRow({row}) {
-      if (this.type !== this.types.SEASON) {
+      if (this.type !== this.types.QUARTER) {
         return ''
       }
       const {year, value} = row[0]
       this.$emit('pick', {year, month: value - 1})
     },
     getRowClass({row}) {
-      if (this.type !== this.types.SEASON) {
+      if (this.type !== this.types.QUARTER) {
         return ''
       }
       return {

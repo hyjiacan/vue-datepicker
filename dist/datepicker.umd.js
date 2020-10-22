@@ -7509,7 +7509,7 @@ var util = {
    * @param {string} [option.format] 格式化串，不指定时返回 Date 类型
    * @return {Date[]|String[]}
    */
-  getSeasonRange: function getSeasonRange(date, option) {
+  getQuarterRange: function getQuarterRange(date, option) {
     var _this6 = this;
 
     var _offset$option2 = _objectSpread2({
@@ -7708,7 +7708,7 @@ var util = {
 /* harmony default export */ var formats = ({
   year: 'yyyy',
   month: 'yyyy-MM',
-  season: 'yyyy-MM-dd',
+  quarter: 'yyyy-MM-dd',
   date: 'yyyy-MM-dd',
   time: 'HH:mm:ss',
   datetime: 'yyyy-MM-dd HH:mm:ss',
@@ -7719,7 +7719,7 @@ var util = {
   year: '选择年',
   month: '选择月',
   week: '选择周',
-  season: '选择季度',
+  quarter: '选择季度',
   date: '选择日期',
   time: '选择时间',
   datetime: '选择时间',
@@ -7787,8 +7787,8 @@ var util = {
           commit = true;
           break;
 
-        case this.types.SEASON:
-          temp = script_util.getSeasonRange(v);
+        case this.types.QUARTER:
+          temp = script_util.getQuarterRange(v);
 
           if (script_util.format(temp[1], this.finalFormat) !== this.endValue) {
             this.endValue = script_util.format(temp[1], this.finalFormat);
@@ -7823,7 +7823,7 @@ var util = {
       var value = script_util.parse(v, this.finalFormat);
 
       switch (this.type) {
-        // case this.types.SEASON:
+        // case this.types.QUARTER:
         case this.types.MONTH:
           // eslint-disable-next-line no-case-declarations
           var temp = script_util.setDate(value, {
@@ -7868,13 +7868,13 @@ var util = {
           endValue = _util$getWeekRange2[1];
           break;
 
-        case this.types.SEASON:
-          var _util$getSeasonRange = script_util.getSeasonRange(beginValue);
+        case this.types.QUARTER:
+          var _util$getQuarterRange = script_util.getQuarterRange(beginValue);
 
-          var _util$getSeasonRange2 = _slicedToArray(_util$getSeasonRange, 2);
+          var _util$getQuarterRange2 = _slicedToArray(_util$getQuarterRange, 2);
 
-          beginValue = _util$getSeasonRange2[0];
-          endValue = _util$getSeasonRange2[1];
+          beginValue = _util$getQuarterRange2[0];
+          endValue = _util$getQuarterRange2[1];
           break;
 
         case this.types.MONTH:
@@ -7905,7 +7905,7 @@ var util = {
   },
   computed: {
     isRange: function isRange() {
-      return this.range || [this.types.SEASON, this.types.WEEK].indexOf(this.type) !== -1;
+      return this.range || [this.types.QUARTER, this.types.WEEK].indexOf(this.type) !== -1;
     },
     formattedRangeValue: function formattedRangeValue() {
       return [this.beginValue ? script_util.format(this.beginValue, this.finalFormat) : this.beginValue, this.endValue ? script_util.format(this.endValue, this.finalFormat) : this.endValue];
@@ -8094,12 +8094,12 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var RangeLayout = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"149ba9a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/pickers/Picker.vue?vue&type=template&id=675d1a64&scoped=true&
-var Pickervue_type_template_id_675d1a64_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--box"},[(_vm.renderTimePanel)?_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTimePanel),expression:"showTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel)?_c('date-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDatePanel),expression:"showDatePanel"}],on:{"pick-year":_vm.onPickYear,"pick-month":_vm.onPickMonth,"pick":_vm.onDatePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true},{key:"append",fn:function(){return [_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.renderDateTimePanel),expression:"renderDateTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel || _vm.renderMonthPanel)?_c('month-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMonthPanel),expression:"showMonthPanel"}],on:{"pick-year":_vm.onPickYear,"pick":_vm.onMonthPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),_c('year-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentType === _vm.types.YEAR),expression:"currentType === types.YEAR"}],on:{"pick":_vm.onYearPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})],1)}
-var Pickervue_type_template_id_675d1a64_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"149ba9a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/pickers/Picker.vue?vue&type=template&id=05d4972a&scoped=true&
+var Pickervue_type_template_id_05d4972a_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--box"},[(_vm.renderTimePanel)?_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTimePanel),expression:"showTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel)?_c('date-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDatePanel),expression:"showDatePanel"}],on:{"pick-year":_vm.onPickYear,"pick-month":_vm.onPickMonth,"pick":_vm.onDatePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true},{key:"append",fn:function(){return [_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.renderDateTimePanel),expression:"renderDateTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel || _vm.renderMonthPanel)?_c('month-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMonthPanel),expression:"showMonthPanel"}],on:{"pick-year":_vm.onPickYear,"pick":_vm.onMonthPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),_c('year-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentType === _vm.types.YEAR),expression:"currentType === types.YEAR"}],on:{"pick":_vm.onYearPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})],1)}
+var Pickervue_type_template_id_05d4972a_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/pickers/Picker.vue?vue&type=template&id=675d1a64&scoped=true&
+// CONCATENATED MODULE: ./src/components/pickers/Picker.vue?vue&type=template&id=05d4972a&scoped=true&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"149ba9a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/YearPanel.vue?vue&type=template&id=af2516e0&
 var YearPanelvue_type_template_id_af2516e0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"extra-class":"date-picker--panel-year","view":_vm.data},on:{"prev":_vm.onPrevDecades,"next":_vm.onNextDecades,"pick-cell":_vm.onPick},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('span',[_vm._v(_vm._s(_vm.startYear)+"年 - "+_vm._s(_vm.stopYear)+"年")])]},proxy:true}],null,true)})}
@@ -8272,8 +8272,8 @@ var BasePanel_component = normalizeComponent(
     return 'month';
   },
 
-  get SEASON() {
-    return 'season';
+  get QUARTER() {
+    return 'quarter';
   },
 
   get YEAR() {
@@ -8538,12 +8538,12 @@ var YearPanel_component = normalizeComponent(
 )
 
 /* harmony default export */ var YearPanel = (YearPanel_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"149ba9a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/MonthPanel.vue?vue&type=template&id=a4e0caf8&
-var MonthPanelvue_type_template_id_a4e0caf8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"extra-class":_vm.classes,"view":_vm.data,"row-class-handler":_vm.getRowClass},on:{"prev":_vm.onPrevYear,"next":_vm.onNextYear,"pick-cell":_vm.onPickCell,"pick-row":_vm.onPickRow},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('span',{staticClass:"date-picker--panel-header-year",on:{"click":function($event){return _vm.$emit('pick-year')}}},[_vm._v(_vm._s(_vm.viewValue.getFullYear())+"年")])]},proxy:true}],null,true)})}
-var MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"149ba9a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/MonthPanel.vue?vue&type=template&id=725982e4&
+var MonthPanelvue_type_template_id_725982e4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"extra-class":_vm.classes,"view":_vm.data,"row-class-handler":_vm.getRowClass},on:{"prev":_vm.onPrevYear,"next":_vm.onNextYear,"pick-cell":_vm.onPickCell,"pick-row":_vm.onPickRow},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('span',{staticClass:"date-picker--panel-header-year",on:{"click":function($event){return _vm.$emit('pick-year')}}},[_vm._v(_vm._s(_vm.viewValue.getFullYear())+"年")])]},proxy:true}],null,true)})}
+var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/panels/MonthPanel.vue?vue&type=template&id=a4e0caf8&
+// CONCATENATED MODULE: ./src/components/panels/MonthPanel.vue?vue&type=template&id=725982e4&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/MonthPanel.vue?vue&type=script&lang=js&
 
@@ -8594,7 +8594,7 @@ var MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns = []
             highlight: this.isHighlight(year, month - 1)
           };
 
-          if (this.type === this.types.SEASON) {
+          if (this.type === this.types.QUARTER) {
             item.rowActive = year === activeYear && month === activeMonth;
           } else {
             item.active = year === activeYear && month === activeMonth;
@@ -8618,11 +8618,11 @@ var MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns = []
     classes: function classes() {
       return {
         'date-picker--panel-month': true,
-        'date-picker--panel-season': this.isSeason
+        'date-picker--panel-quarter': this.isQuarter
       };
     },
-    isSeason: function isSeason() {
-      return this.type === this.types.SEASON;
+    isQuarter: function isQuarter() {
+      return this.type === this.types.QUARTER;
     }
   },
   methods: {
@@ -8636,7 +8636,7 @@ var MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns = []
       var year = _ref.year,
           value = _ref.value;
 
-      if (this.isSeason) {
+      if (this.isQuarter) {
         return '';
       }
 
@@ -8648,7 +8648,7 @@ var MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns = []
     onPickRow: function onPickRow(_ref2) {
       var row = _ref2.row;
 
-      if (this.type !== this.types.SEASON) {
+      if (this.type !== this.types.QUARTER) {
         return '';
       }
 
@@ -8663,7 +8663,7 @@ var MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns = []
     getRowClass: function getRowClass(_ref3) {
       var row = _ref3.row;
 
-      if (this.type !== this.types.SEASON) {
+      if (this.type !== this.types.QUARTER) {
         return '';
       }
 
@@ -8690,8 +8690,8 @@ var MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns = []
 
 var MonthPanel_component = normalizeComponent(
   panels_MonthPanelvue_type_script_lang_js_,
-  MonthPanelvue_type_template_id_a4e0caf8_render,
-  MonthPanelvue_type_template_id_a4e0caf8_staticRenderFns,
+  MonthPanelvue_type_template_id_725982e4_render,
+  MonthPanelvue_type_template_id_725982e4_staticRenderFns,
   false,
   null,
   null,
@@ -9596,7 +9596,7 @@ var TimePanel_component = normalizeComponent(
     onMonthPicked: function onMonthPicked(e) {
       var value = script_util.setDate(this.viewValue, e);
 
-      if (this.type === this.types.MONTH || this.type === this.types.SEASON) {
+      if (this.type === this.types.MONTH || this.type === this.types.QUARTER) {
         this.changeValue(value);
         return;
       }
@@ -9655,7 +9655,7 @@ var TimePanel_component = normalizeComponent(
       return this.type === this.types.DATE || this.type === this.types.DATETIME || this.type === this.types.WEEK;
     },
     renderMonthPanel: function renderMonthPanel() {
-      return this.type === this.types.MONTH || this.type === this.types.SEASON;
+      return this.type === this.types.MONTH || this.type === this.types.QUARTER;
     },
     showTimePanel: function showTimePanel() {
       return this.currentType === this.types.TIME;
@@ -9664,7 +9664,7 @@ var TimePanel_component = normalizeComponent(
       return this.currentType === this.types.DATE || this.currentType === this.types.DATETIME || this.currentType === this.types.WEEK;
     },
     showMonthPanel: function showMonthPanel() {
-      return this.currentType === this.types.MONTH || this.currentType === this.types.SEASON;
+      return this.currentType === this.types.MONTH || this.currentType === this.types.QUARTER;
     },
     minValue: function minValue() {
       return this.min ? new Date(this.min) : null;
@@ -9713,11 +9713,11 @@ var TimePanel_component = normalizeComponent(
 
 var Picker_component = normalizeComponent(
   pickers_Pickervue_type_script_lang_js_,
-  Pickervue_type_template_id_675d1a64_scoped_true_render,
-  Pickervue_type_template_id_675d1a64_scoped_true_staticRenderFns,
+  Pickervue_type_template_id_05d4972a_scoped_true_render,
+  Pickervue_type_template_id_05d4972a_scoped_true_staticRenderFns,
   false,
   null,
-  "675d1a64",
+  "05d4972a",
   null
   
 )
@@ -10193,7 +10193,7 @@ var Shortcuts_component = normalizeComponent(
         return this.renderSinglePicker();
       }
 
-      if (this.type === this.types.WEEK || this.type === this.types.SEASON) {
+      if (this.type === this.types.WEEK || this.type === this.types.QUARTER) {
         return this.renderSpecialPicker();
       }
 
@@ -10464,7 +10464,7 @@ date_picker.$util = {
   parse: script_util.parse.bind(script_util),
   getWeekRange: script_util.getWeekRange.bind(script_util),
   getMonthRange: script_util.getMonthRange.bind(script_util),
-  getSeasonRange: script_util.getSeasonRange.bind(script_util),
+  getQuarterRange: script_util.getQuarterRange.bind(script_util),
   getWeekOfYear: script_util.getWeekOfYear.bind(script_util),
   getWeekOfMonth: script_util.getWeekOfMonth.bind(script_util),
   getDateRange: script_util.getDateRange.bind(script_util),

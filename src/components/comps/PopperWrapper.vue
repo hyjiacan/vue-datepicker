@@ -1,5 +1,5 @@
 <template>
-  <popper trigger="clickToOpen" :forceShow="visible"
+  <popper trigger="clickToOpen" :forceShow="visible" :append-to-body="toBody"
           @show="onShow" @hide="onHide" @documentClick="onHide">
     <div class="popper date-picker--popover">
       <slot/>
@@ -19,7 +19,8 @@ export default {
   components: {Popper},
   props: {
     visible: Boolean,
-    extraClass: String
+    extraClass: String,
+    toBody: Boolean
   },
   computed: {
     option () {

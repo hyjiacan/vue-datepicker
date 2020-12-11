@@ -46,17 +46,20 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 最新版本
 
 ```html
+
 <script src="https://cdn.jsdelivr.net/npm/@hyjiacan/vue-datepicker/dist/datepicker.umd.min.js"></script>
 ```
 
 指定版本
+
 ```html
+
 <script src="https://cdn.jsdelivr.net/npm/@hyjiacan/vue-datepicker@<VERSION>/dist/datepicker.umd.min.js"></script>
 ```
 
 > **unpkg** 也是可用的: 替换 *cdn.jsdelivr.net* 为 *unpkg.com*
 
-> 你也可以替换 *datepicker.umd.min.js* 为 *datepicker.umd.js* 以使用未压缩的版本进行开发调试。 
+> 你也可以替换 *datepicker.umd.min.js* 为 *datepicker.umd.js* 以使用未压缩的版本进行开发调试。
 
 注意：在浏览器环境直接引入时，需要显示引入依赖
 
@@ -75,23 +78,25 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
   其中， `window['vue-popperjs'] = VuePopper` 必须在 `datepicker` 前引入。
 
 ## 使用
+
 ```vue
+
 <template>
-    <date-picker v-model="date" type="date" :min="min" :max="max" />
+  <date-picker v-model="date" type="date" :min="min" :max="max"/>
 </template>
 <script>
 import DatePicker from '@hyjiacan/vue-datepicker'
 import '@hyjiacan/vue-datepicker/dist/datepicker.css'
 
 export default {
-    components: {DatePicker},
-    data(){
-        return {
-            date: new Date(),
-            min: '2012-12-12',
-            max: '2020-12-12'
-        }
+  components: {DatePicker},
+  data() {
+    return {
+      date: new Date(),
+      min: '2012-12-12',
+      max: '2020-12-12'
     }
+  }
 }
 </script>
 ```
@@ -136,17 +141,14 @@ export default {
 
 日期/时间值。
 
-在按范围选择时 (指定 `range`)，需要传入数组。
-例外的是，按**星期**和**季度**选择时，可以仅传入一个值。
-此时会自动根据传入日期所在范围设置值。
+在按范围选择时 (指定 `range`)，需要传入数组。 例外的是，按**星期**和**季度**选择时，可以仅传入一个值。 此时会自动根据传入日期所在范围设置值。
 
-> 若要使用空值时，请传入空字符串 `''`。 
+> 若要使用空值时，请传入空字符串 `''`。
 
 #### `type`
 
 - type: String
 - default: 'date'
-      
 
 选择器显示的类型。可选值见[#类型定义](#类型定义)。
 
@@ -228,6 +230,7 @@ export default {
 - type: Array
 
 快捷按钮的数据，这是一个对象数组。每一项的结构为:
+
 ```json
 {
   "text": "按钮文本",
@@ -235,8 +238,7 @@ export default {
 }
 ```
 
-其中，`value` 在指定了 `range` 时为数组，否则为单个值。`text` 是按钮显示的文字。
-一般最多不超过5个中文字符，超过时会自动显示为省略号。
+其中，`value` 在指定了 `range` 时为数组，否则为单个值。`text` 是按钮显示的文字。 一般最多不超过5个中文字符，超过时会自动显示为省略号。
 
 > `value` 也可以是一个函数(异步支持)，函数内的返回值将作为结果。
 
@@ -262,33 +264,31 @@ export default {
 - type: String, Array
 - default: 见下方
 
-指定 `placeholder` 文本。
-当未指定 `range` 属性，或 `type` 为 `week/quarter`时，应该指定为单个字符串；
-否则，应该指定为包含两个字符串的数组。
+指定 `placeholder` 文本。 当未指定 `range` 属性，或 `type` 为 `week/quarter`时，应该指定为单个字符串； 否则，应该指定为包含两个字符串的数组。
 
 默认值如下:
 
 ```javascript
 const placeholders = {
-    year: '选择年',
-    month: '选择月',
-    week: '选择周',
-    quarter: '选择季度',
-    date: '选择日期',
-    time: '选择时间',
-    datetime: '选择时间',
-    
-    yearRange: ['起始年份', '结束年份'],
-    monthRange: ['起始月份', '结束月份'],
-    dateRange: ['起始日期', '结束日期'],
-    timeRange: ['起始时间', '结束时间'],
-    datetimeRange: ['起始时间', '结束时间']
+  year: '选择年',
+  month: '选择月',
+  week: '选择周',
+  quarter: '选择季度',
+  date: '选择日期',
+  time: '选择时间',
+  datetime: '选择时间',
+
+  yearRange: ['起始年份', '结束年份'],
+  monthRange: ['起始月份', '结束月份'],
+  dateRange: ['起始日期', '结束日期'],
+  timeRange: ['起始时间', '结束时间'],
+  datetimeRange: ['起始时间', '结束时间']
 }
 ```
 
 #### `highlight-range`
 
-> Since 1.1.0 
+> Since 1.1.0
 
 - type: Boolean
 - default: `false`
@@ -311,6 +311,13 @@ const placeholders = {
 
 输入框是否可编辑。设置为`true`以手动输入日期/时间。
 
+#### `to-body`
+
+> since 2.0.3
+
+- type: Boolean
+- default: `true`
+
 ## 事件
 
 #### `change`
@@ -318,12 +325,12 @@ const placeholders = {
 参数: `({type, value, src}, oldValue)`
 
 - type 指定的类型
-- src 事件源，用以区分事件是从何而来: 
-    > Since 1.1.0
-    - `picker` 选择面板
-    - `shortcut` 快捷键
-    - `init` 初始化
-    - `clear` 清空按钮
+- src 事件源，用以区分事件是从何而来:
+  > Since 1.1.0
+  - `picker` 选择面板
+  - `shortcut` 快捷键
+  - `init` 初始化
+  - `clear` 清空按钮
 
 ## 插槽
 
@@ -350,11 +357,12 @@ const placeholders = {
 当指定了 `range` 属性时，插槽需要传入包含两个元素:
 
 ```vue
+
 <date-picker range>
-  <template v-slot:title>
-    <div>左侧的标题</div>
-    <div>右侧的标题</div>
-  </template>
+<template v-slot:title>
+  <div>左侧的标题</div>
+  <div>右侧的标题</div>
+</template>
 </date-picker>
 ```
 
@@ -514,7 +522,7 @@ export interface $util {
    * @param {number} [option.start=0] 周的偏移值
    * @return {{year: Number, week: Number}}
    */
-  getWeekOfYear(date: Date|Date[], option?: WeekOfOption): {year: Number, week: Number};
+  getWeekOfYear(date: Date | Date[], option?: WeekOfOption): { year: Number, week: Number };
 
   /**
    * 获取传入日期处于一月中的第多少周
@@ -523,7 +531,7 @@ export interface $util {
    * @param {number} [option.start=0] 周的偏移值
    * @return {{year: Number, month: Number, week: Number}}
    */
-  getWeekOfYear(date: Date|Date[], option?: WeekOfOption): {year: Number, month: Number, week: Number};
+  getWeekOfYear(date: Date | Date[], option?: WeekOfOption): { year: Number, month: Number, week: Number };
 
   /**
    * 根据一个日期以及偏移参数获取日期范围
@@ -597,7 +605,7 @@ date.setDate(date.getDate() + 3)
 
 ### 0.6.14
 
-- 修复 `outline` 样式范围超出容器宽度的问题 
+- 修复 `outline` 样式范围超出容器宽度的问题
 
 ### 0.6.13
 

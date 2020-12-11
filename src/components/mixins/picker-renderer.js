@@ -109,8 +109,10 @@ export default {
 
       return h(PopperWrapper, {
         props: {
-          visible: this[visibleName]
+          visible: this[visibleName],
+          toBody: this.toBody
         },
+        ref: 'popper',
         on: {
           toggle: visible => {
             this[visibleName] = visible

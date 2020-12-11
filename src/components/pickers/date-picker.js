@@ -39,6 +39,10 @@ export default {
     },
     placeholder: {
       type: [String, Array]
+    },
+    toBody: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

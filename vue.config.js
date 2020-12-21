@@ -8,8 +8,7 @@ if (process.argv.indexOf('--target') === -1 || process.argv.indexOf('lib') === -
 } else {
   config.configureWebpack = {
     externals: [
-      'vue-popperjs',
-      'vue-popperjs/dist/vue-popper.min.css'
+      '@popperjs/core'
     ],
     output: {
       libraryExport: 'default'

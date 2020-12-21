@@ -43,6 +43,15 @@ export default {
     toBody: {
       type: Boolean,
       default: true
+    },
+    popperClass: {
+      type: String,
+      default: ''
+    },
+    // see https://popper.js.org/docs/v2/constructors/#options
+    popperOptions: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {

@@ -1,11 +1,11 @@
 import RangeLayout from '../pickers/RangeLayout'
 import Picker from '../pickers/Picker'
-import PopperWrapper from '../comps/PopperWrapper'
+import Popper from '../comps/Popper'
 import ClearButton from '../comps/ClearButton'
 import Shortcuts from '../comps/Shortcuts'
 
 export default {
-  components: {RangeLayout, Picker, PopperWrapper},
+  components: {RangeLayout, Picker, Popper},
   data() {
     return {
       h: null,
@@ -13,12 +13,31 @@ export default {
       hideTimerHandle: -1
     }
   },
+  mounted() {
+    document.addEventListener('click', this.onDocumentClick)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.onDocumentClick)
+  },
   computed: {
     valueSlot() {
       return this.$slots.value || this.$scopedSlots.value
     }
   },
   methods: {
+    onDocumentClick(e) {
+      if (!this.isVisible) {
+        return
+      }
+      const eventPath = e.path
+      if (eventPath.indexOf(this.$el) !== -1) {
+        return
+      }
+      if (eventPath.indexOf(this.$refs.popper.$refs.body) !== -1) {
+        return
+      }
+      this.isVisible = false
+    },
     renderValueSlot() {
       if (!this.valueSlot) {
         return null
@@ -95,10 +114,9 @@ export default {
      *
      * @param {Object}content
      * @param {Object}trigger
-     * @param {String}visibleName
      * @return {*}
      */
-    renderPopper(content, trigger, visibleName) {
+    renderPopper(content, trigger) {
       const h = this.h
 
       const slots = Array.isArray(content) ? content : [content]
@@ -107,15 +125,17 @@ export default {
         slots.unshift(this.renderShortcuts(this.$slots.shortcut))
       }
 
-      return h(PopperWrapper, {
+      return h(Popper, {
         props: {
-          visible: this[visibleName],
-          toBody: this.toBody
+          visible: this.isVisible,
+          popperClass: this.popperClass,
+          toBody: this.toBody,
+          options: this.popperOptions
         },
         ref: 'popper',
         on: {
-          toggle: visible => {
-            this[visibleName] = visible
+          focus: () => {
+            this.isVisible = true
           }
         },
         scopedSlots: {
@@ -201,8 +221,7 @@ export default {
         this.renderValueSlot() || this.renderLayout(
         this.renderInput('formattedBeginValue', this.placeholderBeginText),
         this.renderInput('formattedEndValue', this.placeholderEndText)
-        ),
-        'isVisible'
+        )
       )
     },
     // 针对季度与周单独渲染
@@ -212,8 +231,7 @@ export default {
         this.renderValueSlot() || this.renderLayout(
         this.renderInput('formattedBeginValue', this.placeholderText),
         this.renderInput('formattedEndValue')
-        ),
-        'isVisible'
+        )
       )
     },
     // 渲染单个日期选择
@@ -236,8 +254,7 @@ export default {
             'class': 'date-picker--container'
           }
         },
-        content),
-        'isVisible'
+        content)
       )
     },
     renderIcon() {
@@ -283,16 +300,6 @@ export default {
       on: {
         focus: () => {
           this.isVisible = true
-        },
-        click: () => {
-          // 点击时取消关闭
-          clearTimeout(this.hideTimerHandle)
-          this.hideTimerHandle = -1
-        },
-        blur: () => {
-          this.hideTimerHandle = setTimeout(() => {
-            this.isVisible = false
-          }, 100)
         },
         keyup: e => {
           if (e.keyCode === 27) {

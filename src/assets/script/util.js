@@ -282,10 +282,43 @@ const util = {
     const newValue = {
       year: date.getFullYear() + (parseInt(offset.year) || 0),
       month: date.getMonth() + (parseInt(offset.month) || 0),
-      date: date.getDate() + (parseInt(offset.date) || 0)
+      date: 1
     }
 
-    return new Date(newValue.year, newValue.month, newValue.date)
+    const newDate = new Date(newValue.year, newValue.month, newValue.date)
+
+    const newLastDate = date.getDate() + (parseInt(offset.date) || 0)
+    if (offset.date) {
+      newDate.setDate(newLastDate)
+      return newDate
+    }
+
+    // 当未指定日期偏移时
+    // 使用原日期的 date
+    // 此处的逻辑是为了防止日期大于本月的最后一天
+    const lastDate = this.getLastDayOfMonth(newDate)
+    if (newLastDate <= lastDate) {
+      newDate.setDate(newLastDate)
+      return newDate
+    }
+
+    newDate.setDate(lastDate)
+    return newDate
+  },
+  /**
+   * 获取指定月份的最后一天是几号
+   * @param {Date} date
+   * @param {number} [month] 不指定时，使用当前日期的月份
+   * @return {number}
+   */
+  getLastDayOfMonth(date, month) {
+    month = arguments.length > 1 ? month : date.getMonth()
+    // 获取当月最后一天
+    const temp = this.setDate(date, {
+      month: month + 1,
+      date: 0
+    })
+    return temp.getDate()
   },
   /**
    * 根据一个日期以及偏移参数获取日期范围

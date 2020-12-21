@@ -149,7 +149,15 @@ export default {
       // this.currentType = this.types.TIME
     },
     onMonthPicked(e) {
+      const date = this.viewValue.getDate()
+      e.date = 1
       const value = util.setDate(this.viewValue, e)
+      const lastDate = util.getLastDayOfMonth(value)
+      if (lastDate < date) {
+        value.setDate(lastDate)
+      } else {
+        value.setDate(date)
+      }
       if (this.type === this.types.MONTH || this.type === this.types.QUARTER) {
         this.changeValue(value)
         return
@@ -159,7 +167,16 @@ export default {
       this.currentType = this.type
     },
     onYearPicked(e) {
+      const date = this.viewValue.getDate()
+      e.date = 1
+      e.month = this.viewValue.getMonth()
       const value = util.setDate(this.viewValue, e)
+      const lastDate = util.getLastDayOfMonth(value)
+      if (lastDate < date) {
+        value.setDate(lastDate)
+      } else {
+        value.setDate(date)
+      }
       if (this.type === this.types.YEAR) {
         this.changeValue(value)
         return

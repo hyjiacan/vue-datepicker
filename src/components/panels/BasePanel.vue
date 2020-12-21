@@ -4,13 +4,17 @@
       <slot name="panelTitle"/>
     </div>
     <div class="date-picker--panel-header">
-      <div class="date-picker--panel-header-prev datepicker-iconfont datepicker--icon-left-d"
-           @click="$emit('prev')"></div>
+      <div class="date-picker--panel-header-prev">
+        <span class="datepicker-iconfont datepicker--icon-left-d"
+              @click="$emit('prev')"></span>
+      </div>
       <div class="date-picker--panel-header-content">
         <slot name="header"/>
       </div>
-      <div class="date-picker--panel-header-next datepicker-iconfont datepicker--icon-right-d"
-           @click="$emit('next')"></div>
+      <div class="date-picker--panel-header-next">
+        <span class="datepicker-iconfont datepicker--icon-right-d"
+              @click="$emit('next')"></span>
+      </div>
     </div>
     <div class="date-picker--panel-body">
       <table @wheel="onWheel">
@@ -22,7 +26,7 @@
             :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
           <td v-for="(cell, cellIndex) in row" :key="cellIndex" :title="cell.tip" @click="onCellClick(cell)"
               :class="{'date-picker--panel-value-highlight': cell.highlight}">
-            <span class="date-picker--panel-value" :class="getCellClass(cell)">{{cell.text || cell.value}}</span>
+            <span class="date-picker--panel-value" :class="getCellClass(cell)">{{ cell.text || cell.value }}</span>
           </td>
         </tr>
         </tbody>

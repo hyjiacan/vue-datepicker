@@ -13,31 +13,12 @@ export default {
       hideTimerHandle: -1
     }
   },
-  mounted() {
-    document.addEventListener('click', this.onDocumentClick)
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.onDocumentClick)
-  },
   computed: {
     valueSlot() {
       return this.$slots.value || this.$scopedSlots.value
     }
   },
   methods: {
-    onDocumentClick(e) {
-      if (!this.isVisible) {
-        return
-      }
-      const eventPath = e.path
-      if (eventPath.indexOf(this.$el) !== -1) {
-        return
-      }
-      if (eventPath.indexOf(this.$refs.popper.$refs.body) !== -1) {
-        return
-      }
-      this.isVisible = false
-    },
     renderValueSlot() {
       if (!this.valueSlot) {
         return null
@@ -136,6 +117,10 @@ export default {
         on: {
           focus: () => {
             this.isVisible = true
+            clearTimeout(this.hideTimerHandle)
+          },
+          blur: () => {
+            this.isVisible = false
           }
         },
         scopedSlots: {
@@ -300,6 +285,11 @@ export default {
       on: {
         focus: () => {
           this.isVisible = true
+        },
+        blur: () => {
+          this.hideTimerHandle = setTimeout(() => {
+            this.isVisible = false
+          }, 200)
         },
         keyup: e => {
           if (e.keyCode === 27) {

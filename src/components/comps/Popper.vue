@@ -3,7 +3,8 @@
     <div class="date-picker--popper-reference" ref="reference">
       <slot name="reference"/>
     </div>
-    <div class="date-picker--popper-dialog" :class="popperClass" tabindex="0" ref="body" v-if="popperVisible">
+    <div class="date-picker--popper-dialog" @focus="$emit('focus')" @blur="$emit('blur')"
+         :class="popperClass" tabindex="0" ref="body" v-if="popperVisible">
       <div class="date-picker--popper-body">
         <slot/>
       </div>

@@ -3,7 +3,8 @@
     <div class="date-picker--popper-reference" ref="reference">
       <slot name="reference"/>
     </div>
-    <div class="date-picker--popper-dialog" @focus="$emit('focus')" @blur="$emit('blur')"
+    <div class="date-picker--popper-dialog"
+         @focus="$emit('focus')" @blur="$emit('blur')" @keyup="$emit('keyup', $event)"
          :class="popperClass" tabindex="0" ref="body" v-if="popperVisible">
       <div class="date-picker--popper-body">
         <slot/>
@@ -76,6 +77,8 @@ export default {
         document.body.appendChild(body)
       }
       this.popperInstance = createPopper(this.$refs.reference, body, this.computedOptions)
+      await this.$nextTick()
+      body.focus()
     },
     async destroyPopper() {
       await this.$nextTick()

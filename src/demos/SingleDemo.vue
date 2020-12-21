@@ -3,7 +3,7 @@
     <h4>选择指定日期</h4>
     <div class="date-label">年</div>
     <date-picker v-model="year" type="year" min="2016" max="2022"
-                 :mousewheel="false" :visible="true" :popper-options="{placement: 'right'}"/>
+                 :mousewheel="false" :popper-options="{placement: 'right'}"/>
     <div>(min="2016" max="2022")</div>
     <div class="date-value">{{ year }}</div>
     <div class="date-label">年-月</div>

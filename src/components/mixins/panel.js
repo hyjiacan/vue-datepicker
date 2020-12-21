@@ -23,7 +23,7 @@ export default {
       }
     },
     active() {
-      return this.picker.dateValue
+      return this.picker.viewValue
     },
     type() {
       return this.picker.type

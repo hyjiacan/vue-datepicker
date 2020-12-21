@@ -19,6 +19,25 @@ export default {
     }
   },
   methods: {
+    showPicker() {
+      clearTimeout(this.hideTimerHandle)
+      this.isVisible = true
+    },
+    hidePicker(e) {
+      if (e && e.type === 'keyup') {
+        if (e.keyCode === 27) {
+          // ESC 关闭
+          this.isVisible = false
+        } else if (e.keyCode === 13) {
+          // Enter 关闭
+          this.isVisible = false
+        }
+        return
+      }
+      this.hideTimerHandle = setTimeout(() => {
+        // this.isVisible = false
+      }, 200)
+    },
     renderValueSlot() {
       if (!this.valueSlot) {
         return null
@@ -115,13 +134,9 @@ export default {
         },
         ref: 'popper',
         on: {
-          focus: () => {
-            this.isVisible = true
-            clearTimeout(this.hideTimerHandle)
-          },
-          blur: () => {
-            this.isVisible = false
-          }
+          focus: this.showPicker,
+          blur: this.hidePicker,
+          keyup: this.hidePicker
         },
         scopedSlots: {
           default: () => slots,
@@ -283,23 +298,9 @@ export default {
         tabindex: '0'
       },
       on: {
-        focus: () => {
-          this.isVisible = true
-        },
-        blur: () => {
-          this.hideTimerHandle = setTimeout(() => {
-            this.isVisible = false
-          }, 200)
-        },
-        keyup: e => {
-          if (e.keyCode === 27) {
-            // ESC 关闭
-            this.isVisible = false
-          } else if (e.keyCode === 13) {
-            // Enter 关闭
-            this.isVisible = false
-          }
-        }
+        focus: this.showPicker,
+        blur: this.hidePicker,
+        keyup: this.hidePicker
       }
     }, content)
   }

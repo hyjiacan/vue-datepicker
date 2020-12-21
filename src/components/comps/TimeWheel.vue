@@ -4,13 +4,13 @@
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
     <div class="date-picker--panel-time-wheel-prev">
       <span :class="getCellClass(getPrevValue(prevValue))">{{getPrevValue(prevValue)}}</span>
-      <span :class="getCellClass(prevValue)">{{prevValue}}</span>
+      <span :class="getCellClass(prevValue)" @click="goPrev">{{prevValue}}</span>
     </div>
     <div class="date-picker--panel-time-wheel-value">
       <span :class="getCellClass(viewValue)">{{viewValue}}</span>
     </div>
     <div class="date-picker--panel-time-wheel-next">
-      <span :class="getCellClass(nextValue)">{{nextValue}}</span>
+      <span :class="getCellClass(nextValue)" @click="goNext">{{nextValue}}</span>
       <span :class="getCellClass(getNextValue(nextValue))">{{getNextValue(nextValue)}}</span>
     </div>
     <div class="date-picker--panel-time-wheel-next-button datepicker-iconfont datepicker--icon-bottom"

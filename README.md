@@ -1,6 +1,6 @@
 # vue-datepicker
 
-基于 Vue 的日期/时间选择组件。
+适用于 Vue2 的日期/时间选择组件。
 
 [![NPM](https://img.shields.io/npm/l/@hyjiacan/vue-datepicker?style=flat-square)](https://github.com/hyjiacan/vue-datepicker/blob/master/LICENSE)
 [![Travis (.org)](https://img.shields.io/travis/hyjiacan/vue-datepicker?style=flat-square)](https://www.travis-ci.org/hyjiacan/vue-datepicker)
@@ -9,6 +9,8 @@
 [![npm](https://img.shields.io/npm/dm/@hyjiacan/vue-datepicker?style=flat-square)](https://npmcharts.com/compare/@hyjiacan/vue-datepicker?minimal=true)
 [![Coverage Status](https://coveralls.io/repos/github/hyjiacan/vue-datepicker/badge.svg?branch=master)](https://coveralls.io/github/hyjiacan/vue-datepicker?branch=master)
 [![](https://data.jsdelivr.com/v1/package/npm/@hyjiacan/vue-datepicker/badge)](https://www.jsdelivr.com/package/npm/@hyjiacan/vue-datepicker)
+
+Powered by [popper.js V2](https://popper.js.org/docs/v2/)
 
 ## 安装
 
@@ -134,7 +136,7 @@ export default {
 
 ## props
 
-#### `v-model`
+#### v-model
 
 - type: Array, String, Number, Date
 - required: true
@@ -145,14 +147,14 @@ export default {
 
 > 若要使用空值时，请传入空字符串 `''`。
 
-#### `type`
+#### type
 
 - type: String
 - default: 'date'
 
 选择器显示的类型。可选值见[#类型定义](#类型定义)。
 
-#### `format`
+#### format
 
 - type: String
 
@@ -160,26 +162,26 @@ export default {
 
 此处设置的格式会应用到 `v-model`, `min`, `max` 上。
 
-#### `min`
+#### min
 
 - type: Number, String, Date
 
 设置允许的日期/时间最小值。
 
-#### `max`
+#### max
 
 - type: Number, String, Date
 
 设置允许的日期/时间最大值。
 
-#### `range`
+#### range
 
 - type: Boolean
 - default: false
 
 是否按范围选择。
 
-#### `split`
+#### split
 
 - type: Boolean
 - default: false
@@ -193,14 +195,14 @@ export default {
 
 控制日期值框的尺寸，可选值: `mini`, `small`, `normal`, `large`
 
-#### `mousewheel`
+#### mousewheel
 
 - type: Boolean
 - default: true
 
 是否允许鼠标滚轮操作，当设置为 `true` 时，可以使用滚轮快速切换年/月翻页。
 
-#### `week-start`
+#### week-start
 
 > Since 0.2.0
 
@@ -217,13 +219,13 @@ export default {
 - `5` 星期五
 - `6` 星期六
 
-#### `visible`
+#### visible
 
 - type: Boolean
 
 控制弹出框是否可见。设置为`true`以显示。
 
-#### `shortcuts`
+#### shortcuts
 
 > Since 0.3.0
 
@@ -242,13 +244,13 @@ export default {
 
 > `value` 也可以是一个函数(异步支持)，函数内的返回值将作为结果。
 
-#### `clearable`
+#### clearable
 
 - type: Boolean
 
 控制清除功能是否可用。可用时会显示清除按钮。
 
-#### `hide-icon`
+#### hide-icon
 
 > Since 0.4.0
 
@@ -257,7 +259,7 @@ export default {
 
 是否隐藏左侧的日历图标
 
-#### `placeholder`
+#### placeholder
 
 > Since 0.4.0
 
@@ -286,7 +288,7 @@ const placeholders = {
 }
 ```
 
-#### `highlight-range`
+#### highlight-range
 
 > Since 1.1.0
 
@@ -295,7 +297,7 @@ const placeholders = {
 
 是否高亮选中范围。(仅在指定了 `range` 时有效)
 
-#### `readonly`
+#### readonly
 
 > (未实现)
 
@@ -303,7 +305,7 @@ const placeholders = {
 
 组件是否只读。
 
-#### `editable`
+#### editable
 
 > (未实现)
 
@@ -311,16 +313,43 @@ const placeholders = {
 
 输入框是否可编辑。设置为`true`以手动输入日期/时间。
 
-#### `to-body`
+#### to-body
 
 > since 2.0.3
 
 - type: Boolean
 - default: `true`
 
+#### popper-class
+
+> since 2.1.0
+
+- type: String
+- default: `''`
+
+指定附加到弹出框的样式名称(这个名称应该是全局的，而不是局部(`scoped`)的)。
+
+#### value-class
+
+> since 2.1.0
+
+- type: String
+- default: `''`
+
+指定附加到值显示部分的样式名称(这个名称应该是全局的，而不是局部(`scoped`)的)。
+
+#### popper-options
+
+> since 2.1.0
+
+- type: Object
+- default: `{}`
+
+传递给 `popperjs` 的初始化选项。详见 [popper.js#options](https://popper.js.org/docs/v2/constructors/#options)
+
 ## 事件
 
-#### `change`
+#### change
 
 参数: `({type, value, src}, oldValue)`
 
@@ -334,13 +363,13 @@ const placeholders = {
 
 ## 插槽
 
-#### `shortcut`
+#### shortcut
 
 放置自定义的快捷按钮。
 
 > 注意：由于在设计上通过 `blur` 事件关闭弹框，所以应该尽量避免在此插槽中使用会获得焦点的元素(e.g. `button/input/select`)，以防止弹框意外关闭。
 
-#### `value`
+#### value
 
 > since 0.5.0
 
@@ -348,7 +377,7 @@ const placeholders = {
 
 参数: `{value, type, format, visible}`
 
-#### `title`
+#### title
 
 > since 0.6.0
 
@@ -580,6 +609,14 @@ date.setDate(date.getDate() + 3)
 ### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
 
 ## 更新日志
+
+### 2.1.0
+
+- 移除 `vue-popperjs`，直接使用 `popper.js`，以避免前者过多处理导致不可预料的问题
+- 添加 `popper-class` 和 `value-class` ，以深度自定义样式
+- 添加 `popper-options`，以自定义 `popper.js` 组件的行为
+- 添加 `to-body` 属性，以支持将弹框渲染至 `body` 元素下，以解决某些情况下弹框被其它元素挡住的问题
+- 修复 某些情况下选中值后无法关闭弹框的问题
 
 ### 2.0.0
 

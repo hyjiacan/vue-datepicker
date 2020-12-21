@@ -1,6 +1,6 @@
 <template>
   <div class="date-picker--popper">
-    <div class="date-picker--popper-reference" ref="reference">
+    <div class="date-picker--popper-reference" :class="valueClass" ref="reference">
       <slot name="reference"/>
     </div>
     <div class="date-picker--popper-dialog"
@@ -22,6 +22,7 @@ export default {
   props: {
     visible: Boolean,
     popperClass: String,
+    valueClass: String,
     toBody: Boolean,
     options: Object
   },
@@ -61,7 +62,7 @@ export default {
             // 这个 9 是空出箭头所占用的空间
             // 9: 箭头大小 8 + 1
             // 1: 间隔
-            offset: [9, 9]
+            offset: [0, 9]
           }
         })
       }

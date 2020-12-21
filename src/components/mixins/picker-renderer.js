@@ -35,7 +35,7 @@ export default {
         return
       }
       this.hideTimerHandle = setTimeout(() => {
-        // this.isVisible = false
+        this.isVisible = false
       }, 200)
     },
     renderValueSlot() {
@@ -129,6 +129,7 @@ export default {
         props: {
           visible: this.isVisible,
           popperClass: this.popperClass,
+          valueClass: this.valueClass,
           toBody: this.toBody,
           options: this.popperOptions
         },

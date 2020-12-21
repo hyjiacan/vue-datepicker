@@ -48,6 +48,10 @@ export default {
       type: String,
       default: ''
     },
+    valueClass: {
+      type: String,
+      default: ''
+    },
     // see https://popper.js.org/docs/v2/constructors/#options
     popperOptions: {
       type: Object,

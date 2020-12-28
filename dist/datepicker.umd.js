@@ -10000,12 +10000,12 @@ var Picker_component = normalizeComponent(
 )
 
 /* harmony default export */ var Picker = (Picker_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"aea97982-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Popper.vue?vue&type=template&id=2d07d769&scoped=true&
-var Poppervue_type_template_id_2d07d769_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--popper"},[_c('div',{ref:"reference",staticClass:"date-picker--popper-reference",class:_vm.valueClass},[_vm._t("reference")],2),(_vm.popperVisible)?_c('div',{ref:"body",staticClass:"date-picker--popper-dialog",class:_vm.popperClass,attrs:{"tabindex":"0"},on:{"focus":function($event){return _vm.$emit('focus')},"blur":function($event){return _vm.$emit('blur')},"keyup":function($event){return _vm.$emit('keyup', $event)}}},[_c('div',{staticClass:"date-picker--popper-body"},[_vm._t("default")],2),_c('div',{staticClass:"date-picker--popper-arrow",attrs:{"data-popper-arrow":""}})]):_vm._e()])}
-var Poppervue_type_template_id_2d07d769_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"aea97982-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Popper.vue?vue&type=template&id=a7501df6&scoped=true&
+var Poppervue_type_template_id_a7501df6_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--popper"},[_c('div',{ref:"reference",staticClass:"date-picker--popper-reference",class:_vm.valueClass},[_vm._t("reference")],2),(_vm.popperVisible)?_c('div',{ref:"body",staticClass:"date-picker--popper-dialog",class:_vm.popperClass,attrs:{"tabindex":"0"},on:{"focus":function($event){return _vm.$emit('focus')},"blur":function($event){return _vm.$emit('blur')},"keyup":function($event){return _vm.$emit('keyup', $event)}}},[_c('div',{staticClass:"date-picker--popper-body"},[_vm._t("default")],2),_c('div',{staticClass:"date-picker--popper-arrow",attrs:{"data-popper-arrow":""}})]):_vm._e()])}
+var Poppervue_type_template_id_a7501df6_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/comps/Popper.vue?vue&type=template&id=2d07d769&scoped=true&
+// CONCATENATED MODULE: ./src/components/comps/Popper.vue?vue&type=template&id=a7501df6&scoped=true&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.some.js
 var es_array_some = __webpack_require__("45fc");
@@ -10143,6 +10143,7 @@ var core_ = __webpack_require__("a5c7");
               case 2:
                 if (_this2.toBody && _this2.dialogElement) {
                   document.body.removeChild(_this2.dialogElement);
+                  _this2.dialogElement = null;
                 }
 
                 if (_this2.popperInstance) {
@@ -10175,11 +10176,11 @@ var core_ = __webpack_require__("a5c7");
 
 var Popper_component = normalizeComponent(
   comps_Poppervue_type_script_lang_js_,
-  Poppervue_type_template_id_2d07d769_scoped_true_render,
-  Poppervue_type_template_id_2d07d769_scoped_true_staticRenderFns,
+  Poppervue_type_template_id_a7501df6_scoped_true_render,
+  Poppervue_type_template_id_a7501df6_scoped_true_staticRenderFns,
   false,
   null,
-  "2d07d769",
+  "a7501df6",
   null
   
 )

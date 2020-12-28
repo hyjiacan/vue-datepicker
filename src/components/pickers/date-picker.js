@@ -72,6 +72,10 @@ export default {
     this.updateValue(this.value)
     this.isVisible = this.visible
   },
+  beforeDestroy() {
+    this.isVisible = false
+    this.$emit('update:visible', false)
+  },
   watch: {
     visible(v) {
       if (v === this.isVisible) {

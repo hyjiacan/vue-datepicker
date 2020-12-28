@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       popperVisible: false,
-      popperInstance: null
+      popperInstance: null,
+      dialogElement: null
     }
   },
   watch: {
@@ -73,7 +74,7 @@ export default {
     async createPopper() {
       this.popperVisible = true
       await this.$nextTick()
-      const body = this.$refs.body
+      const body = this.dialogElement = this.$refs.body
       if (this.toBody) {
         document.body.appendChild(body)
       }
@@ -83,12 +84,12 @@ export default {
     },
     async destroyPopper() {
       await this.$nextTick()
+      if (this.toBody && this.dialogElement) {
+        document.body.removeChild(this.dialogElement)
+      }
       if (this.popperInstance) {
         this.popperInstance.destroy()
         this.popperInstance = null
-      }
-      if (this.toBody && this.$refs.body) {
-        document.body.removeChild(this.$refs.body)
       }
       this.popperVisible = false
     }

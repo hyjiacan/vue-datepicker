@@ -86,6 +86,7 @@ export default {
       await this.$nextTick()
       if (this.toBody && this.dialogElement) {
         document.body.removeChild(this.dialogElement)
+        this.dialogElement = null
       }
       if (this.popperInstance) {
         this.popperInstance.destroy()

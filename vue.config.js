@@ -11,6 +11,7 @@ if (process.argv.indexOf('--target') === -1 || process.argv.indexOf('lib') === -
       '@popperjs/core'
     ],
     output: {
+      library: 'Datepicker',
       libraryExport: 'default'
     }
   }

@@ -43,7 +43,7 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 
 > Since 2.4.0
 
-与 NodeJS 环境不同的是，会暴露一个小写的全局 `datepicker`。
+与 NodeJS 环境相同，会暴露一个全局的 `DatePicker`。
 
 最新版本
 

@@ -65,19 +65,13 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 
 注意：在浏览器环境直接引入时，需要显示引入依赖
 
-- [popper.js](https://popper.js.org/)
-  ```html
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper.min.js"></script>
-  ```
-- [vue-popperjs](https://github.com/RobinCK/vue-popper)
-  ```html
-  <script src="https://cdn.jsdelivr.net/npm/vue-popperjs@2/dist/vue-popper.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-popperjs@2.3.0/dist/vue-popper.min.css" />
-  <script>
-  window['vue-popperjs'] = VuePopper
-  </script>
-  ```
-  其中， `window['vue-popperjs'] = VuePopper` 必须在 `datepicker` 前引入。
+[popper.js](https://popper.js.org/)
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper.min.js"></script>
+```
+
+必须在 `datepicker` 前引入。
 
 ## 使用
 

@@ -7,11 +7,11 @@ const config = {
 if (process.argv.indexOf('--target') === -1 || process.argv.indexOf('lib') === -1) {
 } else {
   config.configureWebpack = {
-    externals: [
-      '@popperjs/core'
-    ],
+    externals: {
+      '@popperjs/core': 'Popper'
+    },
     output: {
-      library: 'Datepicker',
+      library: 'DatePicker',
       libraryExport: 'default'
     }
   }

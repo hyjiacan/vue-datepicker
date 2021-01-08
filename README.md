@@ -69,6 +69,10 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper.min.js"></script>
+<script>
+// 必须执行此设置
+window['@popperjs/core'] = Popper
+</script>
 ```
 
 必须在 `datepicker` 前引入。

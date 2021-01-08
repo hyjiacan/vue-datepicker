@@ -40,6 +40,8 @@
   ],
   "types": "types/index.d.ts",
   "dependencies": {
+  },
+  "peerDependencies": {
     "@popperjs/core": "^2.6.0"
   },
   "devDependencies": {

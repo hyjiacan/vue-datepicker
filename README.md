@@ -41,7 +41,7 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 
 ### 浏览器环境 (umd)
 
-> Since 2.4.0
+> Since 2.2.0
 
 与 NodeJS 环境相同，会暴露一个全局的 `DatePicker`。
 

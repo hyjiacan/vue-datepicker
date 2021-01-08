@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import {createPopper} from '@popperjs/core'
-
 export default {
   name: 'Popper',
   props: {
@@ -78,6 +76,7 @@ export default {
       if (this.toBody) {
         document.body.appendChild(body)
       }
+      const {createPopper} = await import(/* webpackChunkName: "popperjs" */ '@popperjs/core')
       this.popperInstance = createPopper(this.$refs.reference, body, this.computedOptions)
       await this.$nextTick()
       body.focus()

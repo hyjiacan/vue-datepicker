@@ -48,23 +48,74 @@ export default {
     },
     highlightRange() {
       return this.picker.highlightValueRange
+    },
+    showLunar() {
+      return this.picker.showLunar
     }
   },
   methods: {
+    isYearDisabled(year) {
+      const {minYear, maxYear} = this
+      if (minYear === -1 && maxYear === -1) {
+        return false
+      }
+      if (minYear !== -1 && maxYear !== -1) {
+        return minYear > year || maxYear < year
+      }
+      if (minYear !== -1) {
+        return minYear > year
+      }
+      if (maxYear !== -1) {
+        return maxYear < year
+      }
+      return false
+    },
+    isMonthDisabled(year, month) {
+      const {minYear, maxYear, minMonth, maxMonth} = this
+      if (minMonth === -1 && maxMonth === -1) {
+        return false
+      }
+      if (minMonth !== -1 && maxMonth !== -1) {
+        return (minYear === year && minMonth !== -1 && minMonth > month) &&
+          (maxYear === year && maxMonth !== -1 && maxMonth < month)
+      }
+      if (minMonth !== -1) {
+        return minYear === year && minMonth > month
+      }
+      if (maxMonth !== -1) {
+        return maxYear === year && maxMonth < month
+      }
+      return false
+    },
+    isDateDisabled(year, month, date) {
+      const {minYear, maxYear, minMonth, maxMonth, minDate, maxDate} = this
+      if (minDate === -1 && maxDate === -1) {
+        return false
+      }
+      if (minDate !== -1 && maxDate !== -1) {
+        return (minYear === year && minMonth === month && minDate !== -1 && minDate > date) &&
+          (minYear === year && maxMonth === month && maxDate !== -1 && maxDate < date)
+      }
+      if (minDate !== -1) {
+        return minYear === year && minMonth === month && minDate > date
+      }
+      if (maxDate !== -1) {
+        return maxYear === year && maxMonth === month && maxDate < date
+      }
+      return false
+    },
     isDisabled(year, month, date) {
       // TODO 何时限制临界值？ 是否包含在内
-      if ((this.minYear !== -1 && this.minYear > year) || (this.maxYear !== -1 && this.maxYear < year)) {
+      if (this.isYearDisabled(year)) {
         return true
       }
       if (month !== undefined) {
-        if ((this.minYear === year && this.minMonth !== -1 && this.minMonth > month) ||
-          (this.maxYear === year && this.maxMonth !== -1 && this.maxMonth < month)) {
+        if (this.isMonthDisabled(year, month)) {
           return true
         }
       }
       if (date !== undefined) {
-        if ((this.minYear === year && this.minMonth === month && this.minDate !== -1 && this.minDate > date) ||
-          (this.minYear === year && this.maxMonth === month && this.maxDate !== -1 && this.maxDate < date)) {
+        if (this.isDateDisabled(year, month, date)) {
           return true
         }
       }

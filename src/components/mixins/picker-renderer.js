@@ -116,8 +116,7 @@ export default {
         },
         ref: 'popper',
         on: {
-          focus: this.onPopperFocus,
-          blur: this.onPopperBlur
+          blur: this.onBlur
         },
         scopedSlots: {
           default: () => slots,

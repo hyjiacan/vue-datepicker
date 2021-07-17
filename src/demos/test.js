@@ -39,6 +39,7 @@ class T {
         JSON.stringify(value))
       if (!this.isDebugger) {
         this.isDebugger = true
+        // eslint-disable-next-line
         debugger
         this.run()
       }

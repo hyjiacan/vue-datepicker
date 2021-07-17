@@ -1,7 +1,5 @@
 import util from "../../assets/script/util";
 
-/* eslint-disable */
-
 export default {
   created() {
     document.addEventListener('click', this.onDocumentClick)
@@ -30,7 +28,7 @@ export default {
         this.isVisible = true
       }
     },
-    onFocus(e) {
+    onFocus() {
       if (this.trigger !== 'focus') {
         return
       }
@@ -60,35 +58,6 @@ export default {
       //   // Enter 关闭
       //   this.isVisible = false
       // }
-    },
-    onPopperFocus(e) {
-    },
-    onPopperBlur(e) {
-      if (this.trigger !== 'focus') {
-        return
-      }
-      this.$nextTick(() => {
-        const activeElement = document.activeElement
-        console.log(activeElement, e.target)
-        if (util.isParent(activeElement, this.$el) || util.isParent(activeElement, this.$refs.popper.$refs.body)) {
-          return
-        }
-        this.isVisible = false
-      })
-    },
-    showPicker() {
-      clearTimeout(this.hideTimerHandle)
-      this.isVisible = true
-    },
-    hidePicker(e) {
-
-      // 如果当前得到焦点的元素是子元素，那么就忽略操作
-      if (util.isParent(document.activeElement, this.$el)) {
-        return
-      }
-      this.hideTimerHandle = setTimeout(() => {
-        this.isVisible = false
-      }, 200)
-    },
+    }
   }
 }

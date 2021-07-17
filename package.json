@@ -1,6 +1,6 @@
 {
   "name": "@hyjiacan/vue-datepicker",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "main": "dist/datepicker.common.js",
   "unpkg": "dist/datepicker.umd.js",
   "jsdelivr": "dist/datepicker.umd.js",

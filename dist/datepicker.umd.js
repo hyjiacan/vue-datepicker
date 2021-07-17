@@ -379,6 +379,148 @@ if (NATIVE_WEAK_MAP && IS_IE11) {
 
 /***/ }),
 
+/***/ "1276":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var fixRegExpWellKnownSymbolLogic = __webpack_require__("d784");
+var isRegExp = __webpack_require__("44e7");
+var anObject = __webpack_require__("825a");
+var requireObjectCoercible = __webpack_require__("1d80");
+var speciesConstructor = __webpack_require__("4840");
+var advanceStringIndex = __webpack_require__("8aa5");
+var toLength = __webpack_require__("50c4");
+var callRegExpExec = __webpack_require__("14c3");
+var regexpExec = __webpack_require__("9263");
+var fails = __webpack_require__("d039");
+
+var arrayPush = [].push;
+var min = Math.min;
+var MAX_UINT32 = 0xFFFFFFFF;
+
+// babel-minify transpiles RegExp('x', 'y') -> /x/y and it causes SyntaxError
+var SUPPORTS_Y = !fails(function () { return !RegExp(MAX_UINT32, 'y'); });
+
+// @@split logic
+fixRegExpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCallNative) {
+  var internalSplit;
+  if (
+    'abbc'.split(/(b)*/)[1] == 'c' ||
+    'test'.split(/(?:)/, -1).length != 4 ||
+    'ab'.split(/(?:ab)*/).length != 2 ||
+    '.'.split(/(.?)(.?)/).length != 4 ||
+    '.'.split(/()()/).length > 1 ||
+    ''.split(/.?/).length
+  ) {
+    // based on es5-shim implementation, need to rework it
+    internalSplit = function (separator, limit) {
+      var string = String(requireObjectCoercible(this));
+      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
+      if (lim === 0) return [];
+      if (separator === undefined) return [string];
+      // If `separator` is not a regex, use native split
+      if (!isRegExp(separator)) {
+        return nativeSplit.call(string, separator, lim);
+      }
+      var output = [];
+      var flags = (separator.ignoreCase ? 'i' : '') +
+                  (separator.multiline ? 'm' : '') +
+                  (separator.unicode ? 'u' : '') +
+                  (separator.sticky ? 'y' : '');
+      var lastLastIndex = 0;
+      // Make `global` and avoid `lastIndex` issues by working with a copy
+      var separatorCopy = new RegExp(separator.source, flags + 'g');
+      var match, lastIndex, lastLength;
+      while (match = regexpExec.call(separatorCopy, string)) {
+        lastIndex = separatorCopy.lastIndex;
+        if (lastIndex > lastLastIndex) {
+          output.push(string.slice(lastLastIndex, match.index));
+          if (match.length > 1 && match.index < string.length) arrayPush.apply(output, match.slice(1));
+          lastLength = match[0].length;
+          lastLastIndex = lastIndex;
+          if (output.length >= lim) break;
+        }
+        if (separatorCopy.lastIndex === match.index) separatorCopy.lastIndex++; // Avoid an infinite loop
+      }
+      if (lastLastIndex === string.length) {
+        if (lastLength || !separatorCopy.test('')) output.push('');
+      } else output.push(string.slice(lastLastIndex));
+      return output.length > lim ? output.slice(0, lim) : output;
+    };
+  // Chakra, V8
+  } else if ('0'.split(undefined, 0).length) {
+    internalSplit = function (separator, limit) {
+      return separator === undefined && limit === 0 ? [] : nativeSplit.call(this, separator, limit);
+    };
+  } else internalSplit = nativeSplit;
+
+  return [
+    // `String.prototype.split` method
+    // https://tc39.github.io/ecma262/#sec-string.prototype.split
+    function split(separator, limit) {
+      var O = requireObjectCoercible(this);
+      var splitter = separator == undefined ? undefined : separator[SPLIT];
+      return splitter !== undefined
+        ? splitter.call(separator, O, limit)
+        : internalSplit.call(String(O), separator, limit);
+    },
+    // `RegExp.prototype[@@split]` method
+    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@split
+    //
+    // NOTE: This cannot be properly polyfilled in engines that don't support
+    // the 'y' flag.
+    function (regexp, limit) {
+      var res = maybeCallNative(internalSplit, regexp, this, limit, internalSplit !== nativeSplit);
+      if (res.done) return res.value;
+
+      var rx = anObject(regexp);
+      var S = String(this);
+      var C = speciesConstructor(rx, RegExp);
+
+      var unicodeMatching = rx.unicode;
+      var flags = (rx.ignoreCase ? 'i' : '') +
+                  (rx.multiline ? 'm' : '') +
+                  (rx.unicode ? 'u' : '') +
+                  (SUPPORTS_Y ? 'y' : 'g');
+
+      // ^(? + rx + ) is needed, in combination with some S slicing, to
+      // simulate the 'y' flag.
+      var splitter = new C(SUPPORTS_Y ? rx : '^(?:' + rx.source + ')', flags);
+      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
+      if (lim === 0) return [];
+      if (S.length === 0) return callRegExpExec(splitter, S) === null ? [S] : [];
+      var p = 0;
+      var q = 0;
+      var A = [];
+      while (q < S.length) {
+        splitter.lastIndex = SUPPORTS_Y ? q : 0;
+        var z = callRegExpExec(splitter, SUPPORTS_Y ? S : S.slice(q));
+        var e;
+        if (
+          z === null ||
+          (e = min(toLength(splitter.lastIndex + (SUPPORTS_Y ? 0 : q)), S.length)) === p
+        ) {
+          q = advanceStringIndex(S, q, unicodeMatching);
+        } else {
+          A.push(S.slice(p, q));
+          if (A.length === lim) return A;
+          for (var i = 1; i <= z.length - 1; i++) {
+            A.push(z[i]);
+            if (A.length === lim) return A;
+          }
+          q = p = e;
+        }
+      }
+      A.push(S.slice(p));
+      return A;
+    }
+  ];
+}, !SUPPORTS_Y);
+
+
+/***/ }),
+
 /***/ "131a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3945,6 +4087,32 @@ exports.BROKEN_CARET = fails(function () {
 
 /***/ }),
 
+/***/ "a15b":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__("23e7");
+var IndexedObject = __webpack_require__("44ad");
+var toIndexedObject = __webpack_require__("fc6a");
+var arrayMethodIsStrict = __webpack_require__("a640");
+
+var nativeJoin = [].join;
+
+var ES3_STRINGS = IndexedObject != Object;
+var STRICT_METHOD = arrayMethodIsStrict('join', ',');
+
+// `Array.prototype.join` method
+// https://tc39.github.io/ecma262/#sec-array.prototype.join
+$({ target: 'Array', proto: true, forced: ES3_STRINGS || !STRICT_METHOD }, {
+  join: function join(separator) {
+    return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
+  }
+});
+
+
+/***/ }),
+
 /***/ "a4d3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6440,7 +6608,68 @@ var es_number_constructor = __webpack_require__("a9e3");
     },
     format: String,
     min: [Number, String, Date],
-    max: [Number, String, Date]
+    max: [Number, String, Date],
+    value: {
+      type: [Array, String, Number, Date],
+      required: true
+    },
+    size: {
+      type: String,
+      default: 'normal'
+    },
+
+    /**
+     * 是否允许鼠标滚轮操作
+     */
+    mousewheel: {
+      type: Boolean,
+      default: true
+    },
+    visible: Boolean,
+    readonly: Boolean,
+    editable: Boolean,
+    clearable: Boolean,
+    shortcuts: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
+    hideIcon: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: [String, Array]
+    },
+    toBody: {
+      type: Boolean,
+      default: true
+    },
+    popperClass: {
+      type: String,
+      default: ''
+    },
+    valueClass: {
+      type: String,
+      default: ''
+    },
+    // see https://popper.js.org/docs/v2/constructors/#options
+    popperOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // 是否展示农历信息
+    showLunar: {
+      type: Boolean,
+      default: false
+    },
+    trigger: {
+      type: String,
+      default: 'click'
+    }
   }
 });
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.index-of.js
@@ -7374,7 +7603,8 @@ function getPrevMonthDays(date, weekStart) {
     date.setDate(value);
     days.push({
       overflow: true,
-      value: value,
+      date: value,
+      value: date,
       year: year,
       month: month,
       day: date.getDay()
@@ -7407,7 +7637,8 @@ function getCurrentMonthDays(date) {
   for (var i = 1; i <= day; i++) {
     date.setDate(i);
     days.push({
-      value: i,
+      date: i,
+      value: date,
       year: year,
       month: month,
       day: date.getDay()
@@ -7439,7 +7670,8 @@ function getNextMonthDays(date, remain) {
     date.setDate(i);
     days.push({
       overflow: true,
-      value: i,
+      date: i,
+      value: date,
       year: year,
       month: month,
       day: date.getDay()
@@ -8002,6 +8234,37 @@ var util = {
     }
 
     return val;
+  },
+
+  /**
+   *
+   * @param {HTMLElement} element
+   * @param {HTMLElement} test
+   */
+  isParent: function isParent(element, test) {
+    if (!element || !test) {
+      return false;
+    }
+
+    if (element === test) {
+      return true;
+    }
+
+    if (element === document.body) {
+      return false;
+    }
+
+    var parentElement = element.parentElement;
+
+    if (parentElement === test) {
+      return true;
+    }
+
+    if (parentElement === document.body) {
+      return false;
+    }
+
+    return this.isParent(parentElement, test);
   }
 };
 /* harmony default export */ var script_util = (util);
@@ -8400,28 +8663,721 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var RangeLayout = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/pickers/Picker.vue?vue&type=template&id=6bf223aa&scoped=true&
-var Pickervue_type_template_id_6bf223aa_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--box"},[(_vm.renderTimePanel)?_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTimePanel),expression:"showTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel)?_c('date-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDatePanel),expression:"showDatePanel"}],on:{"pick-year":_vm.onPickYear,"pick-month":_vm.onPickMonth,"pick":_vm.onDatePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true},{key:"append",fn:function(){return [_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.renderDateTimePanel),expression:"renderDateTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel || _vm.renderMonthPanel)?_c('month-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMonthPanel),expression:"showMonthPanel"}],on:{"pick-year":_vm.onPickYear,"pick":_vm.onMonthPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),_c('year-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentType === _vm.types.YEAR),expression:"currentType === types.YEAR"}],on:{"pick":_vm.onYearPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})],1)}
-var Pickervue_type_template_id_6bf223aa_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/pickers/Picker.vue?vue&type=template&id=3d089d6e&scoped=true&
+var Pickervue_type_template_id_3d089d6e_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--box"},[(_vm.renderTimePanel)?_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showTimePanel),expression:"showTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel)?_c('date-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDatePanel),expression:"showDatePanel"}],on:{"pick-year":_vm.onPickYear,"pick-month":_vm.onPickMonth,"pick":_vm.onDatePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true},{key:"append",fn:function(){return [_c('time-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.renderDateTimePanel),expression:"renderDateTimePanel"}],on:{"pick-date":_vm.onPickDate,"pick":_vm.onTimePicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})]},proxy:true}],null,true)}):_vm._e(),(_vm.renderDatePanel || _vm.renderMonthPanel)?_c('month-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMonthPanel),expression:"showMonthPanel"}],on:{"pick-year":_vm.onPickYear,"pick":_vm.onMonthPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)}):_vm._e(),_c('year-panel',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentType === _vm.types.YEAR),expression:"currentType === types.YEAR"}],on:{"pick":_vm.onYearPicked},scopedSlots:_vm._u([{key:"title",fn:function(){return [_vm._t("title")]},proxy:true}],null,true)})],1)}
+var Pickervue_type_template_id_3d089d6e_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/pickers/Picker.vue?vue&type=template&id=6bf223aa&scoped=true&
+// CONCATENATED MODULE: ./src/components/pickers/Picker.vue?vue&type=template&id=3d089d6e&scoped=true&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/YearPanel.vue?vue&type=template&id=af2516e0&
-var YearPanelvue_type_template_id_af2516e0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"extra-class":"date-picker--panel-year","view":_vm.data},on:{"prev":_vm.onPrevDecades,"next":_vm.onNextDecades,"pick-cell":_vm.onPick},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('span',[_vm._v(_vm._s(_vm.startYear)+"年 - "+_vm._s(_vm.stopYear)+"年")])]},proxy:true}],null,true)})}
-var YearPanelvue_type_template_id_af2516e0_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/panels/YearPanel.vue?vue&type=template&id=af2516e0&
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/BasePanel.vue?vue&type=template&id=60f327b1&
-var BasePanelvue_type_template_id_60f327b1_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--panel",class:_vm.extraClass || ''},[_c('div',{staticClass:"date-picker--panel-title"},[_vm._t("panelTitle")],2),_c('div',{staticClass:"date-picker--panel-header"},[_c('div',{staticClass:"date-picker--panel-header-prev"},[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-left-d",on:{"click":function($event){return _vm.$emit('prev')}}})]),_c('div',{staticClass:"date-picker--panel-header-content"},[_vm._t("header")],2),_c('div',{staticClass:"date-picker--panel-header-next"},[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-right-d",on:{"click":function($event){return _vm.$emit('next')}}})])]),_c('div',{staticClass:"date-picker--panel-body"},[_c('table',{on:{"wheel":_vm.onWheel}},[_c('thead',[_vm._t("title")],2),_c('tbody',_vm._l((_vm.view),function(row,rowIndex){return _c('tr',{key:rowIndex,staticClass:"date-picker--row",class:_vm.getRowClass(row, rowIndex),attrs:{"title":_vm.getRowTip(row)},on:{"click":function($event){return _vm.onRowClick(row, rowIndex)}}},_vm._l((row),function(cell,cellIndex){return _c('td',{key:cellIndex,class:{'date-picker--panel-value-highlight': cell.highlight},attrs:{"title":cell.tip},on:{"click":function($event){return _vm.onCellClick(cell)}}},[_c('span',{staticClass:"date-picker--panel-value",class:_vm.getCellClass(cell)},[_vm._v(_vm._s(cell.text || cell.value))])])}),0)}),0)]),_vm._t("append")],2)])}
-var BasePanelvue_type_template_id_60f327b1_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/YearPanel.vue?vue&type=template&id=197d26de&
+var YearPanelvue_type_template_id_197d26de_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"extra-class":"date-picker--panel-year","view":_vm.data},on:{"prev":_vm.onPrevDecades,"next":_vm.onNextDecades,"pick-cell":_vm.onPick},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('span',[_vm._v(_vm._s(_vm.startYear)+"年 - "+_vm._s(_vm.stopYear)+"年")])]},proxy:true}],null,true)})}
+var YearPanelvue_type_template_id_197d26de_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/panels/BasePanel.vue?vue&type=template&id=60f327b1&
+// CONCATENATED MODULE: ./src/components/panels/YearPanel.vue?vue&type=template&id=197d26de&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.split.js
+var es_string_split = __webpack_require__("1276");
+
+// CONCATENATED MODULE: ./src/assets/script/calendarCN.js
+
+
+
+
+
+
+
+
+/**
+ * 农历（阴历）万年历
+ * LunarCalendar
+ * vervison : v0.1.4
+ * Github : https://github.com/zzyss86/LunarCalendar
+ * HomePage : http://www.tuijs.com/
+ * Author : JasonZhou
+ * Email : zzyss86@qq.com
+ */
+// ---------------------------------------------
+// 于 2021.01.25 添加
+// 以上为原代码注释
+// 原代码地址: https://github.com/zzyss86/LunarCalendar/blob/master/lib/LunarCalendar.js
+// 感谢此库作者的代码贡献
+// 此项目中，对原代码进行了一些改动，以适应此项目的编码规范
+// ---------------------------------------------
+var calendarCN_extend = function extend(o, c) {
+  if (o && c && _typeof(c) == 'object') {
+    for (var p in c) {
+      o[p] = c[p];
+    }
+  }
+
+  return o;
+};
+
+var creatLenArr = function creatLenArr(year, month, len, start) {
+  var arr = [];
+  start = start || 0;
+  if (len < 1) return arr;
+  var k = start;
+
+  for (var i = 0; i < len; i++) {
+    arr.push({
+      year: year,
+      month: month,
+      day: k
+    });
+    k++;
+  }
+
+  return arr;
+}; //错误码列表
+
+
+var errorCode = {
+  100: '输入的年份超过了可查询范围，仅支持1891至2100年',
+  101: '参数输入错误，请查阅文档'
+}; //某年相同计算进行cache，以加速计算速度
+
+var cache = null; //cache管理工具
+
+var cacheUtil = {
+  current: '',
+  setCurrent: function setCurrent(year) {
+    if (this.current !== year) {
+      this.current = year;
+      this.clear();
+    }
+  },
+  set: function set(key, value) {
+    if (!cache) cache = {};
+    cache[key] = value;
+    return cache[key];
+  },
+  get: function get(key) {
+    if (!cache) cache = {};
+    return cache[key];
+  },
+  clear: function clear() {
+    cache = null;
+  }
+};
+
+var formatDayD4 = function formatDayD4(month, day) {
+  month = month + 1;
+  month = month < 10 ? '0' + month : month;
+  day = day < 10 ? '0' + day : day;
+  return 'd' + month + day;
+};
+
+var minYear = 1890; //最小年限
+
+var maxYear = 2100; //最大年限
+
+var DATA = {
+  heavenlyStems: ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'],
+  //天干
+  earthlyBranches: ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'],
+  //地支
+  zodiac: ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'],
+  //对应地支十二生肖
+  solarTerm: ['小寒', '大寒', '立春', '雨水', '惊蛰', '春分', '清明', '谷雨', '立夏', '小满', '芒种', '夏至', '小暑', '大暑', '立秋', '处暑', '白露', '秋分', '寒露', '霜降', '立冬', '小雪', '大雪', '冬至'],
+  //二十四节气
+  monthCn: ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'],
+  dateCn: ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十', '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十', '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十', '卅一']
+}; //中国节日放假安排，外部设置，0无特殊安排，1工作，2放假
+
+var worktime = {}; //公历节日
+
+var solarFestival = {
+  'd0101': '元旦节',
+  'd0202': '世界湿地日',
+  'd0210': '国际气象节',
+  'd0214': '情人节',
+  'd0301': '国际海豹日',
+  'd0303': '全国爱耳日',
+  'd0305': '学雷锋纪念日',
+  'd0308': '妇女节',
+  'd0312': '植树节 孙中山逝世纪念日',
+  'd0314': '国际警察日',
+  'd0315': '消费者权益日',
+  'd0317': '中国国医节 国际航海日',
+  'd0321': '世界森林日 消除种族歧视国际日 世界儿歌日',
+  'd0322': '世界水日',
+  'd0323': '世界气象日',
+  'd0324': '世界防治结核病日',
+  'd0325': '全国中小学生安全教育日',
+  'd0330': '巴勒斯坦国土日',
+  'd0401': '愚人节 全国爱国卫生运动月(四月) 税收宣传月(四月)',
+  'd0407': '世界卫生日',
+  'd0422': '世界地球日',
+  'd0423': '世界图书和版权日',
+  'd0424': '亚非新闻工作者日',
+  'd0501': '劳动节',
+  'd0504': '青年节',
+  'd0505': '碘缺乏病防治日',
+  'd0508': '世界红十字日',
+  'd0512': '国际护士节',
+  'd0515': '国际家庭日',
+  'd0517': '世界电信日',
+  'd0518': '国际博物馆日',
+  'd0520': '全国学生营养日',
+  'd0522': '国际生物多样性日',
+  'd0523': '国际牛奶日',
+  'd0531': '世界无烟日',
+  'd0601': '国际儿童节',
+  'd0605': '世界环境日',
+  'd0606': '全国爱眼日',
+  'd0617': '防治荒漠化和干旱日',
+  'd0623': '国际奥林匹克日',
+  'd0625': '全国土地日',
+  'd0626': '国际禁毒日',
+  'd0701': '香港回归纪念日 中共诞辰 世界建筑日',
+  'd0702': '国际体育记者日',
+  'd0707': '抗日战争纪念日',
+  'd0711': '世界人口日',
+  'd0730': '非洲妇女日',
+  'd0801': '建军节',
+  'd0808': '中国男子节(爸爸节)',
+  'd0815': '抗日战争胜利纪念',
+  'd0908': '国际扫盲日 国际新闻工作者日',
+  'd0909': '毛泽东逝世纪念',
+  'd0910': '中国教师节',
+  'd0914': '世界清洁地球日',
+  'd0916': '国际臭氧层保护日',
+  'd0918': '九一八事变纪念日',
+  'd0920': '国际爱牙日',
+  'd0927': '世界旅游日',
+  'd0928': '孔子诞辰',
+  'd1001': '国庆节 世界音乐日 国际老人节',
+  'd1002': '国际和平与民主自由斗争日',
+  'd1004': '世界动物日',
+  'd1006': '老人节',
+  'd1008': '全国高血压日 世界视觉日',
+  'd1009': '世界邮政日 万国邮联日',
+  'd1010': '辛亥革命纪念日 世界精神卫生日',
+  'd1013': '世界保健日 国际教师节',
+  'd1014': '世界标准日',
+  'd1015': '国际盲人节(白手杖节)',
+  'd1016': '世界粮食日',
+  'd1017': '世界消除贫困日',
+  'd1022': '世界传统医药日',
+  'd1024': '联合国日 世界发展信息日',
+  'd1031': '世界勤俭日',
+  'd1107': '十月社会主义革命纪念日',
+  'd1108': '中国记者日',
+  'd1109': '全国消防安全宣传教育日',
+  'd1110': '世界青年节',
+  'd1111': '国际科学与和平周(本日所属的一周)',
+  'd1112': '孙中山诞辰纪念日',
+  'd1114': '世界糖尿病日',
+  'd1117': '国际大学生节 世界学生节',
+  'd1121': '世界问候日 世界电视日',
+  'd1129': '国际声援巴勒斯坦人民国际日',
+  'd1201': '世界艾滋病日',
+  'd1203': '世界残疾人日',
+  'd1205': '国际经济和社会发展志愿人员日',
+  'd1208': '国际儿童电视日',
+  'd1209': '世界足球日',
+  'd1210': '世界人权日',
+  'd1212': '西安事变纪念日',
+  'd1213': '南京大屠杀(1937年)纪念日！紧记血泪史！',
+  'd1220': '澳门回归纪念',
+  'd1221': '国际篮球日',
+  'd1224': '平安夜',
+  'd1225': '圣诞节',
+  'd1226': '毛泽东诞辰纪念'
+}; //农历节日
+
+var lunarFestival = {
+  'd0101': '春节',
+  'd0115': '元宵节',
+  'd0202': '龙抬头',
+  'd0323': '妈祖生辰',
+  'd0505': '端午节',
+  'd0707': '七夕',
+  'd0715': '中元节',
+  'd0815': '中秋节',
+  'd0909': '重阳节',
+  'd1015': '下元节',
+  'd1208': '腊八节',
+  'd1223': '小年',
+  'd0100': '除夕'
+};
+/**
+ * 1890 - 2100 年的农历数据
+ * 数据格式：[0,2,9,21936]
+ * [闰月所在月，0为没有闰月; *正月初一对应公历月; *正月初一对应公历日; *农历每月的天数的数组（需转换为二进制,得到每月大小，0=小月(29日),1=大月(30日)）;]
+ */
+
+var lunarInfo = [[2, 1, 21, 22184], [0, 2, 9, 21936], [6, 1, 30, 9656], [0, 2, 17, 9584], [0, 2, 6, 21168], [5, 1, 26, 43344], [0, 2, 13, 59728], [0, 2, 2, 27296], [3, 1, 22, 44368], [0, 2, 10, 43856], [8, 1, 30, 19304], [0, 2, 19, 19168], [0, 2, 8, 42352], [5, 1, 29, 21096], [0, 2, 16, 53856], [0, 2, 4, 55632], [4, 1, 25, 27304], [0, 2, 13, 22176], [0, 2, 2, 39632], [2, 1, 22, 19176], [0, 2, 10, 19168], [6, 1, 30, 42200], [0, 2, 18, 42192], [0, 2, 6, 53840], [5, 1, 26, 54568], [0, 2, 14, 46400], [0, 2, 3, 54944], [2, 1, 23, 38608], [0, 2, 11, 38320], [7, 2, 1, 18872], [0, 2, 20, 18800], [0, 2, 8, 42160], [5, 1, 28, 45656], [0, 2, 16, 27216], [0, 2, 5, 27968], [4, 1, 24, 44456], [0, 2, 13, 11104], [0, 2, 2, 38256], [2, 1, 23, 18808], [0, 2, 10, 18800], [6, 1, 30, 25776], [0, 2, 17, 54432], [0, 2, 6, 59984], [5, 1, 26, 27976], [0, 2, 14, 23248], [0, 2, 4, 11104], [3, 1, 24, 37744], [0, 2, 11, 37600], [7, 1, 31, 51560], [0, 2, 19, 51536], [0, 2, 8, 54432], [6, 1, 27, 55888], [0, 2, 15, 46416], [0, 2, 5, 22176], [4, 1, 25, 43736], [0, 2, 13, 9680], [0, 2, 2, 37584], [2, 1, 22, 51544], [0, 2, 10, 43344], [7, 1, 29, 46248], [0, 2, 17, 27808], [0, 2, 6, 46416], [5, 1, 27, 21928], [0, 2, 14, 19872], [0, 2, 3, 42416], [3, 1, 24, 21176], [0, 2, 12, 21168], [8, 1, 31, 43344], [0, 2, 18, 59728], [0, 2, 8, 27296], [6, 1, 28, 44368], [0, 2, 15, 43856], [0, 2, 5, 19296], [4, 1, 25, 42352], [0, 2, 13, 42352], [0, 2, 2, 21088], [3, 1, 21, 59696], [0, 2, 9, 55632], [7, 1, 30, 23208], [0, 2, 17, 22176], [0, 2, 6, 38608], [5, 1, 27, 19176], [0, 2, 15, 19152], [0, 2, 3, 42192], [4, 1, 23, 53864], [0, 2, 11, 53840], [8, 1, 31, 54568], [0, 2, 18, 46400], [0, 2, 7, 46752], [6, 1, 28, 38608], [0, 2, 16, 38320], [0, 2, 5, 18864], [4, 1, 25, 42168], [0, 2, 13, 42160], [10, 2, 2, 45656], [0, 2, 20, 27216], [0, 2, 9, 27968], [6, 1, 29, 44448], [0, 2, 17, 43872], [0, 2, 6, 38256], [5, 1, 27, 18808], [0, 2, 15, 18800], [0, 2, 4, 25776], [3, 1, 23, 27216], [0, 2, 10, 59984], [8, 1, 31, 27432], [0, 2, 19, 23232], [0, 2, 7, 43872], [5, 1, 28, 37736], [0, 2, 16, 37600], [0, 2, 5, 51552], [4, 1, 24, 54440], [0, 2, 12, 54432], [0, 2, 1, 55888], [2, 1, 22, 23208], [0, 2, 9, 22176], [7, 1, 29, 43736], [0, 2, 18, 9680], [0, 2, 7, 37584], [5, 1, 26, 51544], [0, 2, 14, 43344], [0, 2, 3, 46240], [4, 1, 23, 46416], [0, 2, 10, 44368], [9, 1, 31, 21928], [0, 2, 19, 19360], [0, 2, 8, 42416], [6, 1, 28, 21176], [0, 2, 16, 21168], [0, 2, 5, 43312], [4, 1, 25, 29864], [0, 2, 12, 27296], [0, 2, 1, 44368], [2, 1, 22, 19880], [0, 2, 10, 19296], [6, 1, 29, 42352], [0, 2, 17, 42208], [0, 2, 6, 53856], [5, 1, 26, 59696], [0, 2, 13, 54576], [0, 2, 3, 23200], [3, 1, 23, 27472], [0, 2, 11, 38608], [11, 1, 31, 19176], [0, 2, 19, 19152], [0, 2, 8, 42192], [6, 1, 28, 53848], [0, 2, 15, 53840], [0, 2, 4, 54560], [5, 1, 24, 55968], [0, 2, 12, 46496], [0, 2, 1, 22224], [2, 1, 22, 19160], [0, 2, 10, 18864], [7, 1, 30, 42168], [0, 2, 17, 42160], [0, 2, 6, 43600], [5, 1, 26, 46376], [0, 2, 14, 27936], [0, 2, 2, 44448], [3, 1, 23, 21936], [0, 2, 11, 37744], [8, 2, 1, 18808], [0, 2, 19, 18800], [0, 2, 8, 25776], [6, 1, 28, 27216], [0, 2, 15, 59984], [0, 2, 4, 27424], [4, 1, 24, 43872], [0, 2, 12, 43744], [0, 2, 2, 37600], [3, 1, 21, 51568], [0, 2, 9, 51552], [7, 1, 29, 54440], [0, 2, 17, 54432], [0, 2, 5, 55888], [5, 1, 26, 23208], [0, 2, 14, 22176], [0, 2, 3, 42704], [4, 1, 23, 21224], [0, 2, 11, 21200], [8, 1, 31, 43352], [0, 2, 19, 43344], [0, 2, 7, 46240], [6, 1, 27, 46416], [0, 2, 15, 44368], [0, 2, 5, 21920], [4, 1, 24, 42448], [0, 2, 12, 42416], [0, 2, 2, 21168], [3, 1, 22, 43320], [0, 2, 9, 26928], [7, 1, 29, 29336], [0, 2, 17, 27296], [0, 2, 6, 44368], [5, 1, 26, 19880], [0, 2, 14, 19296], [0, 2, 3, 42352], [4, 1, 24, 21104], [0, 2, 10, 53856], [8, 1, 30, 59696], [0, 2, 18, 54560], [0, 2, 7, 55968], [6, 1, 27, 27472], [0, 2, 15, 22224], [0, 2, 5, 19168], [4, 1, 25, 42216], [0, 2, 12, 42192], [0, 2, 1, 53584], [2, 1, 21, 55592], [0, 2, 9, 54560]];
+/**
+ * 二十四节气数据，节气点时间（单位是分钟）
+ * 从0小寒起算
+ */
+
+var termInfo = [0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758];
+/**
+ * 判断农历年闰月数
+ * @param {Number} year 农历年
+ * return 闰月数 （月份从1开始）
+ */
+
+function getLunarLeapYear(year) {
+  var yearData = lunarInfo[year - minYear];
+  return yearData[0];
+}
+/**
+ * 获取农历年份一年的每月的天数及一年的总天数
+ * @param {Number} year 农历年
+ */
+
+
+function getLunarYearDays(year) {
+  var yearData = lunarInfo[year - minYear];
+  var leapMonth = yearData[0]; //闰月
+
+  var monthData = yearData[3].toString(2);
+  var monthDataArr = monthData.split('').map(function (item) {
+    return parseInt(item);
+  }); //还原数据至16位,少于16位的在前面插入0（二进制存储时前面的0被忽略）
+
+  for (var i = 0; i < 16 - monthDataArr.length; i++) {
+    monthDataArr.unshift(0);
+  }
+
+  var len = leapMonth ? 13 : 12; //该年有几个月
+
+  var yearDays = 0;
+  var monthDays = [];
+
+  for (var _i = 0; _i < len; _i++) {
+    if (monthDataArr[_i] === 0) {
+      yearDays += 29;
+      monthDays.push(29);
+    } else {
+      yearDays += 30;
+      monthDays.push(30);
+    }
+  }
+
+  return {
+    yearDays: yearDays,
+    monthDays: monthDays
+  };
+}
+/**
+ * 通过间隔天数查找农历日期
+ * @param {Number} year,between 农历年，间隔天数
+ * @param between
+ */
+
+
+function getLunarDateByBetween(year, between) {
+  var lunarYearDays = getLunarYearDays(year);
+  var end = between > 0 ? between : lunarYearDays.yearDays - Math.abs(between);
+  var monthDays = lunarYearDays.monthDays;
+  var tempDays = 0;
+  var month = 0;
+
+  for (var i = 0; i < monthDays.length; i++) {
+    tempDays += monthDays[i];
+
+    if (tempDays > end) {
+      month = i;
+      tempDays = tempDays - monthDays[i];
+      break;
+    }
+  }
+
+  return [year, month, end - tempDays + 1];
+}
+/**
+ * 根据距离正月初一的天数计算农历日期
+ * @param {Number} year 公历年，月，日
+ * @param month
+ * @param day
+ */
+
+
+function getLunarByBetween(year, month, day) {
+  var yearData = lunarInfo[year - minYear];
+  var zenMonth = yearData[1];
+  var zenDay = yearData[2];
+  var between = getDaysBetweenSolar(year, zenMonth - 1, zenDay, year, month, day);
+
+  if (between === 0) {
+    //正月初一
+    return [year, 0, 1];
+  } else {
+    var lunarYear = between > 0 ? year : year - 1;
+    return getLunarDateByBetween(lunarYear, between);
+  }
+}
+/**
+ * 两个公历日期之间的天数
+ */
+
+
+function getDaysBetweenSolar(year, month, day, year1, month1, day1) {
+  var date = new Date(year, month, day).getTime();
+  var date1 = new Date(year1, month1, day1).getTime();
+  return (date1 - date) / 86400000;
+}
+/**
+ * 计算农历日期离正月初一有多少天
+ * @param {Number} year,month,day 农年，月(0-12，有闰月)，日
+ * @param month
+ * @param day
+ */
+
+
+function getDaysBetweenZheng(year, month, day) {
+  var lunarYearDays = getLunarYearDays(year);
+  var monthDays = lunarYearDays.monthDays;
+  var days = 0;
+
+  for (var i = 0; i < monthDays.length; i++) {
+    if (i < month) {
+      days += monthDays[i];
+    } else {
+      break;
+    }
+  }
+
+  return days + day - 1;
+}
+/**
+ * 某年的第n个节气为几日
+ * 31556925974.7为地球公转周期，是毫秒
+ * 1890年的正小寒点：01-05 16:02:31，1890年为基准点
+ * @param {Number} y 公历年
+ * @param {Number} n 第几个节气，从0小寒起算
+ * 由于农历24节气交节时刻采用近似算法，可能存在少量误差(30分钟内)
+ */
+
+
+function getTerm(y, n) {
+  var offDate = new Date(31556925974.7 * (y - 1890) + termInfo[n] * 60000 + Date.UTC(1890, 0, 5, 16, 2, 31));
+  return offDate.getUTCDate();
+}
+/**
+ * 获取公历年一年的二十四节气
+ * 返回key:日期，value:节气中文名
+ */
+
+
+function getYearTerm(year) {
+  var res = {};
+  var month = 0;
+
+  for (var i = 0; i < 24; i++) {
+    var day = getTerm(year, i);
+    if (i % 2 === 0) month++;
+    res[formatDayD4(month - 1, day)] = DATA.solarTerm[i];
+  }
+
+  return res;
+}
+/**
+ * 获取生肖
+ * @param {Number} year 干支所在年（默认以立春前的公历年作为基数）
+ */
+
+
+function getYearZodiac(year) {
+  var num = year - 1890 + 25; //参考干支纪年的计算，生肖对应地支
+
+  return DATA.zodiac[num % 12];
+}
+/**
+ * 计算天干地支
+ * @param {Number} num 60进制中的位置(把60个天干地支，当成一个60进制的数)
+ */
+
+
+function cyclical(num) {
+  return DATA.heavenlyStems[num % 10] + DATA.earthlyBranches[num % 12];
+}
+/**
+ * 获取干支纪年
+ * @param {Number} year 干支所在年
+ * @param {Number} offset 偏移量，默认为0，便于查询一个年跨两个干支纪年（以立春为分界线）
+ */
+
+
+function getLunarYearName(year, offset) {
+  offset = offset || 0; //1890年1月小寒（小寒一般是1月5或6日）以前为己丑年，在60进制中排25
+
+  return cyclical(year - 1890 + 25 + offset);
+}
+/**
+ * 获取干支纪月
+ * @param {Number} year,month 公历年，干支所在月
+ * @param month
+ * @param {Number} offset 偏移量，默认为0，便于查询一个月跨两个干支纪月（有立春的2月）
+ */
+
+
+function getLunarMonthName(year, month, offset) {
+  offset = offset || 0; //1890年1月小寒以前为丙子月，在60进制中排12
+
+  return cyclical((year - 1890) * 12 + month + 12 + offset);
+}
+/**
+ * 获取干支纪日
+ * @param {Number} year,month,day 公历年，月，日
+ * @param month
+ * @param day
+ */
+
+
+function getLunarDayName(year, month, day) {
+  //当日与1890/1/1 相差天数
+  //1890/1/1与 1970/1/1 相差29219日, 1890/1/1 日柱为壬午日(60进制18)
+  var dayCyclical = Date.UTC(year, month, day) / 86400000 + 29219 + 18;
+  return cyclical(dayCyclical);
+}
+/**
+ * 获取公历月份的天数
+ * @param {Number} year 公历年
+ * @param {Number} month 公历月
+ */
+
+
+function getSolarMonthDays(year, month) {
+  var monthDays = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  return monthDays[month];
+}
+/**
+ * 判断公历年是否是闰年
+ * @param {Number} year 公历年
+ */
+
+
+function isLeapYear(year) {
+  return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
+}
+/*
+ * 统一日期输入参数（输入月份从1开始，内部月份统一从0开始）
+ */
+
+
+function formatDate(year, month, day, _minYear) {
+  var argsLen = arguments.length;
+  var now = new Date();
+  year = argsLen ? parseInt(year, 10) : now.getFullYear();
+  month = argsLen ? parseInt(month - 1, 10) : now.getMonth();
+  day = argsLen ? parseInt(day, 10) || now.getDate() : now.getDate();
+  if (year < (_minYear ? _minYear : minYear + 1) || year > maxYear) return {
+    error: 100,
+    msg: errorCode[100]
+  };
+  return {
+    year: year,
+    month: month,
+    day: day
+  };
+}
+/**
+ * 将农历转换为公历
+ * @param {Number} _year,_month,_day 农历年，月(1-13，有闰月)，日
+ * @param _month
+ * @param _day
+ */
+
+
+function lunarToSolar(_year, _month, _day) {
+  var inputDate = formatDate(_year, _month, _day);
+  if (inputDate.error) return inputDate;
+  var year = inputDate.year;
+  var month = inputDate.month;
+  var day = inputDate.day;
+  var between = getDaysBetweenZheng(year, month, day); //离正月初一的天数
+
+  var yearData = lunarInfo[year - minYear];
+  var zenMonth = yearData[1];
+  var zenDay = yearData[2];
+  var offDate = new Date(year, zenMonth - 1, zenDay).getTime() + between * 86400000;
+  offDate = new Date(offDate);
+  return {
+    year: offDate.getFullYear(),
+    month: offDate.getMonth() + 1,
+    day: offDate.getDate()
+  };
+}
+/**
+ * 将公历转换为农历
+ * @param {Number} _year,_month,_day 公历年，月，日
+ * @param _month
+ * @param _day
+ */
+
+
+function solarToLunar(_year, _month, _day) {
+  var inputDate = formatDate(_year, _month, _day, minYear);
+  if (inputDate.error) return inputDate;
+  var year = inputDate.year;
+  var month = inputDate.month;
+  var day = inputDate.day;
+  cacheUtil.setCurrent(year); //立春日期
+
+  var term2 = cacheUtil.get('term2') ? cacheUtil.get('term2') : cacheUtil.set('term2', getTerm(year, 2)); //二十四节气
+
+  var termList = cacheUtil.get('termList') ? cacheUtil.get('termList') : cacheUtil.set('termList', getYearTerm(year));
+  var firstTerm = getTerm(year, month * 2); //某月第一个节气开始日期
+
+  var GanZhiYear = month > 1 || month === 1 && day >= term2 ? year + 1 : year; //干支所在年份
+
+  var GanZhiMonth = day >= firstTerm ? month + 1 : month; //干支所在月份（以节气为界）
+
+  var lunarDate = getLunarByBetween(year, month, day);
+  var lunarLeapMonth = getLunarLeapYear(lunarDate[0]);
+  var lunarMonthName;
+
+  if (lunarLeapMonth > 0 && lunarLeapMonth === lunarDate[1]) {
+    lunarMonthName = '闰' + DATA.monthCn[lunarDate[1] - 1] + '月';
+  } else if (lunarLeapMonth > 0 && lunarDate[1] > lunarLeapMonth) {
+    lunarMonthName = DATA.monthCn[lunarDate[1] - 1] + '月';
+  } else {
+    lunarMonthName = DATA.monthCn[lunarDate[1]] + '月';
+  } //农历节日判断
+
+
+  var lunarFtv;
+  var lunarMonthDays = getLunarYearDays(lunarDate[0]).monthDays; //除夕
+
+  if (lunarDate[1] === lunarMonthDays.length - 1 && lunarDate[2] === lunarMonthDays[lunarMonthDays.length - 1]) {
+    lunarFtv = lunarFestival['d0100'];
+  } else if (lunarLeapMonth > 0 && lunarDate[1] > lunarLeapMonth) {
+    lunarFtv = lunarFestival[formatDayD4(lunarDate[1] - 1, lunarDate[2])];
+  } else {
+    lunarFtv = lunarFestival[formatDayD4(lunarDate[1], lunarDate[2])];
+  }
+
+  return {
+    zodiac: getYearZodiac(GanZhiYear),
+    GanZhiYear: getLunarYearName(GanZhiYear),
+    GanZhiMonth: getLunarMonthName(year, GanZhiMonth),
+    GanZhiDay: getLunarDayName(year, month, day),
+    //放假安排：0无特殊安排，1工作，2放假
+    worktime: worktime['y' + year] && worktime['y' + year][formatDayD4(month, day)] ? worktime['y' + year][formatDayD4(month, day)] : 0,
+    term: termList[formatDayD4(month, day)],
+    lunarYear: lunarDate[0],
+    lunarMonth: lunarDate[1] + 1,
+    lunarDay: lunarDate[2],
+    lunarMonthName: lunarMonthName,
+    lunarDayName: DATA.dateCn[lunarDate[2] - 1],
+    lunarLeapMonth: lunarLeapMonth,
+    solarFestival: solarFestival[formatDayD4(month, day)],
+    lunarFestival: lunarFtv,
+    // 是否是大月
+    isBigMonth: lunarMonthDays[lunarDate[1]] === 30
+  };
+}
+/**
+ * 获取指定公历月份的农历数据
+ * return res{Object}
+ * @param {Number} _year,month 公历年，月
+ * @param _month
+ * @param {Boolean} fill 是否用上下月数据补齐首尾空缺，首例数据从周日开始
+ */
+
+
+function calendar(_year, _month, fill) {
+  var inputDate = formatDate(_year, _month);
+  if (inputDate.error) return inputDate;
+  var year = inputDate.year;
+  var month = inputDate.month;
+  var calendarData = solarCalendar(year, month + 1, fill);
+
+  for (var i = 0; i < calendarData.monthData.length; i++) {
+    var cData = calendarData.monthData[i];
+    var lunarData = solarToLunar(cData.year, cData.month, cData.day);
+    calendarCN_extend(calendarData.monthData[i], lunarData);
+  }
+
+  return calendarData;
+}
+/**
+ * 公历某月日历
+ * return res{Object}
+ * @param {Number} _year,month 公历年，月
+ * @param _month
+ * @param {Boolean} fill 是否用上下月数据补齐首尾空缺，首例数据从周日开始 (7*6阵列)
+ */
+
+
+function solarCalendar(_year, _month, fill) {
+  var inputDate = formatDate(_year, _month);
+  if (inputDate.error) return inputDate;
+  var year = inputDate.year;
+  var month = inputDate.month;
+  var firstDate = new Date(year, month, 1);
+  var preMonthDays, preMonthData, nextMonthData;
+  var res = {
+    firstDay: firstDate.getDay(),
+    //该月1号星期几
+    monthDays: getSolarMonthDays(year, month),
+    //该月天数
+    monthData: []
+  };
+  res.monthData = creatLenArr(year, month + 1, res.monthDays, 1);
+
+  if (fill) {
+    if (res.firstDay > 0) {
+      //前补
+      var preYear = month - 1 < 0 ? year - 1 : year;
+      var preMonth = month - 1 < 0 ? 11 : month - 1;
+      preMonthDays = getSolarMonthDays(preYear, preMonth);
+      preMonthData = creatLenArr(preYear, preMonth + 1, res.firstDay, preMonthDays - res.firstDay + 1);
+      res.monthData = preMonthData.concat(res.monthData);
+    }
+
+    if (7 * 6 - res.monthData.length !== 0) {
+      //后补
+      var nextYear = month + 1 > 11 ? year + 1 : year;
+      var nextMonth = month + 1 > 11 ? 0 : month + 1;
+      var fillLen = 7 * 6 - res.monthData.length;
+      nextMonthData = creatLenArr(nextYear, nextMonth + 1, fillLen, 1);
+      res.monthData = res.monthData.concat(nextMonthData);
+    }
+  }
+
+  return res;
+}
+/**
+ * 设置放假安排【对外暴露接口】
+ * @param {Object} workData
+ */
+
+
+function setWorktime(workData) {
+  calendarCN_extend(worktime, workData);
+}
+
+var LunarCalendar = {
+  solarToLunar: solarToLunar,
+  lunarToSolar: lunarToSolar,
+  calendar: calendar,
+  solarCalendar: solarCalendar,
+  setWorktime: setWorktime,
+  getSolarMonthDays: getSolarMonthDays
+};
+/* harmony default export */ var calendarCN = (LunarCalendar);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/BasePanel.vue?vue&type=template&id=6158cde2&
+var BasePanelvue_type_template_id_6158cde2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--panel",class:_vm.extraClass || ''},[_c('div',{staticClass:"date-picker--panel-title"},[_vm._t("panelTitle")],2),_c('div',{staticClass:"date-picker--panel-header"},[_c('div',{staticClass:"date-picker--panel-header-prev"},[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-left-d",on:{"click":function($event){return _vm.$emit('prev')}}})]),_c('div',{staticClass:"date-picker--panel-header-content"},[_vm._t("header")],2),_c('div',{staticClass:"date-picker--panel-header-next"},[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-right-d",on:{"click":function($event){return _vm.$emit('next')}}})])]),_c('div',{staticClass:"date-picker--panel-body"},[_c('table',{on:{"wheel":_vm.onWheel}},[_c('thead',[_vm._t("title")],2),_c('tbody',_vm._l((_vm.view),function(row,rowIndex){return _c('tr',{key:rowIndex,staticClass:"date-picker--row",class:_vm.getRowClass(row, rowIndex),attrs:{"title":_vm.getRowTip(row)},on:{"click":function($event){return _vm.onRowClick(row, rowIndex)}}},_vm._l((row),function(cell,cellIndex){return _c('td',{key:cellIndex,class:{'date-picker--panel-value-highlight': cell.highlight},attrs:{"title":_vm.getCellTitle(cell)},on:{"click":function($event){return _vm.onCellClick(cell)}}},[_c('span',{staticClass:"date-picker--panel-value",class:_vm.getCellClass(cell),domProps:{"innerHTML":_vm._s(_vm.renderCell(cell))}})])}),0)}),0)]),_vm._t("append")],2)])}
+var BasePanelvue_type_template_id_6158cde2_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/panels/BasePanel.vue?vue&type=template&id=6158cde2&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.join.js
+var es_array_join = __webpack_require__("a15b");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/BasePanel.vue?vue&type=script&lang=js&
+
+
 
 //
 //
@@ -8535,6 +9491,63 @@ var BasePanelvue_type_template_id_60f327b1_staticRenderFns = []
     },
     getRowTip: function getRowTip(row) {
       return row[0].rowTip || '';
+    },
+    getCellTitle: function getCellTitle(cell) {
+      var title = cell.tip;
+
+      if (!this.picker.showLunar) {
+        return title;
+      }
+
+      var lunar = cell.lunar;
+      var festival = lunar.lunarFestival || '';
+      var lunarTitle;
+
+      switch (cell.type) {
+        case 'year':
+          lunarTitle = "".concat(lunar.lunarYear, "(").concat(lunar.GanZhiYear, ")\u5E74");
+          break;
+
+        case 'month':
+          lunarTitle = "".concat(lunar.lunarYear, "(").concat(lunar.GanZhiYear, ")\u5E74").concat(lunar.lunarMonthName);
+          break;
+
+        case 'date':
+          lunarTitle = "".concat(lunar.lunarYear, "(").concat(lunar.GanZhiYear, ")\u5E74").concat(lunar.lunarMonthName).concat(lunar.lunarDayName, " ").concat(festival);
+          break;
+      }
+
+      if (lunarTitle) {
+        title += ' 农历' + lunarTitle;
+      }
+
+      return title;
+    },
+    renderCell: function renderCell(cell) {
+      var result = ["<span>".concat(cell.text, "</span>")];
+
+      if (this.picker.showLunar) {
+        var lunar = cell.lunar;
+        var content;
+
+        switch (cell.type) {
+          case 'year':
+            content = lunar.GanZhiYear;
+            break;
+
+          case 'month':
+            content = lunar.lunarMonthName;
+            break;
+
+          case 'date':
+            content = lunar.lunarFestival || (lunar.lunarDay === 1 ? lunar.lunarMonthName : lunar.lunarDayName);
+            break;
+        }
+
+        result.push("<span class=\"date-picker--panel-value--lunar\">".concat(content, "</span>"));
+      }
+
+      return result.join('');
     }
   }
 });
@@ -8550,8 +9563,8 @@ var BasePanelvue_type_template_id_60f327b1_staticRenderFns = []
 
 var BasePanel_component = normalizeComponent(
   panels_BasePanelvue_type_script_lang_js_,
-  BasePanelvue_type_template_id_60f327b1_render,
-  BasePanelvue_type_template_id_60f327b1_staticRenderFns,
+  BasePanelvue_type_template_id_6158cde2_render,
+  BasePanelvue_type_template_id_6158cde2_staticRenderFns,
   false,
   null,
   null,
@@ -8593,7 +9606,7 @@ var BasePanel_component = normalizeComponent(
 });
 // CONCATENATED MODULE: ./src/assets/script/option.js
 var MIN_YEAR = 1900;
-var MAX_YEAR = 2999;
+var MAX_YEAR = 2099;
 
 // CONCATENATED MODULE: ./src/components/mixins/panel.js
 
@@ -8645,23 +9658,98 @@ var MAX_YEAR = 2999;
     },
     highlightRange: function highlightRange() {
       return this.picker.highlightValueRange;
+    },
+    showLunar: function showLunar() {
+      return this.picker.showLunar;
     }
   },
   methods: {
+    isYearDisabled: function isYearDisabled(year) {
+      var minYear = this.minYear,
+          maxYear = this.maxYear;
+
+      if (minYear === -1 && maxYear === -1) {
+        return false;
+      }
+
+      if (minYear !== -1 && maxYear !== -1) {
+        return minYear > year || maxYear < year;
+      }
+
+      if (minYear !== -1) {
+        return minYear > year;
+      }
+
+      if (maxYear !== -1) {
+        return maxYear < year;
+      }
+
+      return false;
+    },
+    isMonthDisabled: function isMonthDisabled(year, month) {
+      var minYear = this.minYear,
+          maxYear = this.maxYear,
+          minMonth = this.minMonth,
+          maxMonth = this.maxMonth;
+
+      if (minMonth === -1 && maxMonth === -1) {
+        return false;
+      }
+
+      if (minMonth !== -1 && maxMonth !== -1) {
+        return minYear === year && minMonth !== -1 && minMonth > month || maxYear === year && maxMonth !== -1 && maxMonth < month;
+      }
+
+      if (minMonth !== -1) {
+        return minYear === year && minMonth > month;
+      }
+
+      if (maxMonth !== -1) {
+        return maxYear === year && maxMonth < month;
+      }
+
+      return false;
+    },
+    isDateDisabled: function isDateDisabled(year, month, date) {
+      var minYear = this.minYear,
+          maxYear = this.maxYear,
+          minMonth = this.minMonth,
+          maxMonth = this.maxMonth,
+          minDate = this.minDate,
+          maxDate = this.maxDate;
+
+      if (minDate === -1 && maxDate === -1) {
+        return false;
+      }
+
+      if (minDate !== -1 && maxDate !== -1) {
+        return minYear === year && minMonth === month && minDate !== -1 && minDate > date || minYear === year && maxMonth === month && maxDate !== -1 && maxDate < date;
+      }
+
+      if (minDate !== -1) {
+        return minYear === year && minMonth === month && minDate > date;
+      }
+
+      if (maxDate !== -1) {
+        return maxYear === year && maxMonth === month && maxDate < date;
+      }
+
+      return false;
+    },
     isDisabled: function isDisabled(year, month, date) {
       // TODO 何时限制临界值？ 是否包含在内
-      if (this.minYear !== -1 && this.minYear > year || this.maxYear !== -1 && this.maxYear < year) {
+      if (this.isYearDisabled(year)) {
         return true;
       }
 
       if (month !== undefined) {
-        if (this.minYear === year && this.minMonth !== -1 && this.minMonth > month || this.maxYear === year && this.maxMonth !== -1 && this.maxMonth < month) {
+        if (this.isMonthDisabled(year, month)) {
           return true;
         }
       }
 
       if (date !== undefined) {
-        if (this.minYear === year && this.minMonth === month && this.minDate !== -1 && this.minDate > date || this.minYear === year && this.maxMonth === month && this.maxDate !== -1 && this.maxDate < date) {
+        if (this.isDateDisabled(year, month, date)) {
           return true;
         }
       }
@@ -8726,6 +9814,7 @@ var MAX_YEAR = 2999;
 
 
 
+
 /* harmony default export */ var YearPanelvue_type_script_lang_js_ = ({
   name: 'YearPanel',
   components: {
@@ -8751,7 +9840,7 @@ var MAX_YEAR = 2999;
     stopYear: function stopYear() {
       var len = this.data.length;
       var temp = this.data[len - 1];
-      return temp[temp.length - 1].value;
+      return temp[temp.length - 1].year;
     },
     data: function data() {
       var data = [];
@@ -8772,14 +9861,24 @@ var MAX_YEAR = 2999;
           }
 
           var isCurrent = year === date.year;
-          row.push({
+          var item = {
+            type: 'year',
             active: year === activeYear,
             current: isCurrent,
             tip: isCurrent ? '今年' : '',
+            year: year,
             value: year,
+            text: year,
             disabled: this.isDisabled(year),
             highlight: this.isHighlight(year)
-          });
+          };
+
+          if (this.showLunar) {
+            // 设置6每年的7月，此时得到的甲子肯定是当年的，不会因为年首产生错误
+            item.lunar = calendarCN.solarToLunar(year, 6);
+          }
+
+          row.push(item);
           year++;
           years--;
         }
@@ -8819,9 +9918,9 @@ var MAX_YEAR = 2999;
       });
     },
     onPick: function onPick(_ref) {
-      var value = _ref.value;
+      var year = _ref.year;
       this.$emit('pick', {
-        year: value
+        year: year
       });
     }
   }
@@ -8838,8 +9937,8 @@ var MAX_YEAR = 2999;
 
 var YearPanel_component = normalizeComponent(
   panels_YearPanelvue_type_script_lang_js_,
-  YearPanelvue_type_template_id_af2516e0_render,
-  YearPanelvue_type_template_id_af2516e0_staticRenderFns,
+  YearPanelvue_type_template_id_197d26de_render,
+  YearPanelvue_type_template_id_197d26de_staticRenderFns,
   false,
   null,
   null,
@@ -8848,12 +9947,12 @@ var YearPanel_component = normalizeComponent(
 )
 
 /* harmony default export */ var YearPanel = (YearPanel_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/MonthPanel.vue?vue&type=template&id=725982e4&
-var MonthPanelvue_type_template_id_725982e4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"extra-class":_vm.classes,"view":_vm.data,"row-class-handler":_vm.getRowClass},on:{"prev":_vm.onPrevYear,"next":_vm.onNextYear,"pick-cell":_vm.onPickCell,"pick-row":_vm.onPickRow},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('span',{staticClass:"date-picker--panel-header-year",on:{"click":function($event){return _vm.$emit('pick-year')}}},[_vm._v(_vm._s(_vm.viewValue.getFullYear())+"年")])]},proxy:true}],null,true)})}
-var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/MonthPanel.vue?vue&type=template&id=2149bb9d&
+var MonthPanelvue_type_template_id_2149bb9d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"extra-class":_vm.classes,"view":_vm.data,"row-class-handler":_vm.getRowClass},on:{"prev":_vm.onPrevYear,"next":_vm.onNextYear,"pick-cell":_vm.onPickCell,"pick-row":_vm.onPickRow},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('span',{staticClass:"date-picker--panel-header-year",on:{"click":function($event){return _vm.$emit('pick-year')}}},[_vm._v(_vm._s(_vm.viewValue.getFullYear())+"年")])]},proxy:true}],null,true)})}
+var MonthPanelvue_type_template_id_2149bb9d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/panels/MonthPanel.vue?vue&type=template&id=725982e4&
+// CONCATENATED MODULE: ./src/components/panels/MonthPanel.vue?vue&type=template&id=2149bb9d&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/MonthPanel.vue?vue&type=script&lang=js&
 
@@ -8870,6 +9969,7 @@ var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
 //
 //
 //
+
 
 
 /* harmony default export */ var MonthPanelvue_type_script_lang_js_ = ({
@@ -8896,8 +9996,9 @@ var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
 
         for (var j = 0; j < 3; j++) {
           var item = {
+            type: 'month',
             year: year,
-            value: month,
+            month: month,
             text: "".concat(month, "\u6708"),
             tip: "".concat(year, "\u5E74").concat(month, "\u6708"),
             disabled: this.isDisabled(year, month - 1),
@@ -8910,10 +10011,14 @@ var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
             item.active = year === activeYear && month === activeMonth;
           }
 
-          item.current = item.year === date.year && item.value === date.month;
+          item.current = item.year === date.year && item.month === date.month;
 
           if (item.current) {
             item.tip = '本月';
+          }
+
+          if (this.showLunar) {
+            item.lunar = calendarCN.solarToLunar(item.year, item.month, 1);
           }
 
           row.push(item);
@@ -8944,7 +10049,7 @@ var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
     },
     onPickCell: function onPickCell(_ref) {
       var year = _ref.year,
-          value = _ref.value;
+          month = _ref.month;
 
       if (this.isQuarter) {
         return '';
@@ -8952,7 +10057,7 @@ var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
 
       this.$emit('pick', {
         year: year,
-        month: value - 1
+        month: month - 1
       });
     },
     onPickRow: function onPickRow(_ref2) {
@@ -8964,10 +10069,10 @@ var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
 
       var _row$ = row[0],
           year = _row$.year,
-          value = _row$.value;
+          month = _row$.month;
       this.$emit('pick', {
         year: year,
-        month: value - 1
+        month: month - 1
       });
     },
     getRowClass: function getRowClass(_ref3) {
@@ -9000,8 +10105,8 @@ var MonthPanelvue_type_template_id_725982e4_staticRenderFns = []
 
 var MonthPanel_component = normalizeComponent(
   panels_MonthPanelvue_type_script_lang_js_,
-  MonthPanelvue_type_template_id_725982e4_render,
-  MonthPanelvue_type_template_id_725982e4_staticRenderFns,
+  MonthPanelvue_type_template_id_2149bb9d_render,
+  MonthPanelvue_type_template_id_2149bb9d_staticRenderFns,
   false,
   null,
   null,
@@ -9010,12 +10115,12 @@ var MonthPanel_component = normalizeComponent(
 )
 
 /* harmony default export */ var MonthPanel = (MonthPanel_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/DatePanel.vue?vue&type=template&id=0b4fff28&
-var DatePanelvue_type_template_id_0b4fff28_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"view":_vm.view,"extra-class":_vm.classes,"row-class-handler":_vm.getRowClass},on:{"prev":_vm.onPrevYear,"next":_vm.onNextYear,"pick-cell":_vm.onPickCell,"pick-row":_vm.onPickRow},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('div',{staticClass:"date-picker--panel-header-container"},[_c('div',[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-left",on:{"click":_vm.onPrevMonth}})]),_c('div',[_c('span',{staticClass:"date-picker--panel-header-year",on:{"click":function($event){return _vm.$emit('pick-year')}}},[_vm._v(_vm._s(_vm.viewValue.getFullYear())+"年")]),_c('span',{staticClass:"date-picker--panel-header-month",on:{"click":function($event){return _vm.$emit('pick-month')}}},[_vm._v(_vm._s(_vm.viewValue.getMonth() + 1)+"月")])]),_c('div',[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-right",on:{"click":_vm.onNextMonth}})])])]},proxy:true},{key:"title",fn:function(){return [_c('tr',_vm._l((_vm.header),function(t){return _c('th',{key:t.day},[_vm._v(_vm._s(_vm.weekDays[t.day]))])}),0)]},proxy:true},{key:"append",fn:function(){return [_vm._t("append")]},proxy:true}],null,true)})}
-var DatePanelvue_type_template_id_0b4fff28_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/DatePanel.vue?vue&type=template&id=559b78d4&
+var DatePanelvue_type_template_id_559b78d4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('base-panel',{attrs:{"view":_vm.view,"extra-class":_vm.classes,"row-class-handler":_vm.getRowClass},on:{"prev":_vm.onPrevYear,"next":_vm.onNextYear,"pick-cell":_vm.onPickCell,"pick-row":_vm.onPickRow},scopedSlots:_vm._u([{key:"panelTitle",fn:function(){return [_vm._t("title")]},proxy:true},{key:"header",fn:function(){return [_c('div',{staticClass:"date-picker--panel-header-container"},[_c('div',[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-left",on:{"click":_vm.onPrevMonth}})]),_c('div',[_c('span',{staticClass:"date-picker--panel-header-year",on:{"click":function($event){return _vm.$emit('pick-year')}}},[_vm._v(_vm._s(_vm.viewValue.getFullYear())+"年")]),_c('span',{staticClass:"date-picker--panel-header-month",on:{"click":function($event){return _vm.$emit('pick-month')}}},[_vm._v(_vm._s(_vm.viewValue.getMonth() + 1)+"月")])]),_c('div',[_c('span',{staticClass:"datepicker-iconfont datepicker--icon-right",on:{"click":_vm.onNextMonth}})])])]},proxy:true},{key:"title",fn:function(){return [_c('tr',_vm._l((_vm.header),function(t){return _c('th',{key:t.day},[_vm._v(_vm._s(_vm.weekDays[t.day]))])}),0)]},proxy:true},{key:"append",fn:function(){return [_vm._t("append")]},proxy:true}],null,true)})}
+var DatePanelvue_type_template_id_559b78d4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/panels/DatePanel.vue?vue&type=template&id=0b4fff28&
+// CONCATENATED MODULE: ./src/components/panels/DatePanel.vue?vue&type=template&id=559b78d4&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panels/DatePanel.vue?vue&type=script&lang=js&
 
@@ -9052,6 +10157,7 @@ var DatePanelvue_type_template_id_0b4fff28_staticRenderFns = []
 //
 //
 //
+
 
 
 
@@ -9106,24 +10212,31 @@ var DatePanelvue_type_template_id_0b4fff28_staticRenderFns = []
             continue;
           }
 
+          item.type = 'date';
+          item.text = item.date;
+
           if (this.isWeek) {
-            item.rowActive = item.year === active.year && item.month === active.month && item.value === active.date; // let result = util.getWeekOfYear(new Date(item.year, item.month - 1, item.value),
+            item.rowActive = item.year === active.year && item.month === active.month && item.date === active.date; // let result = util.getWeekOfYear(new Date(item.year, item.month - 1, item.date),
             // {start: this.weekStart, format: true})
             // item.week = result[0]
             // item.rowTip = result[1]
           } else {
-            item.active = item.year === active.year && item.month === active.month && item.value === active.date;
-            item.tip = "".concat(item.year, "\u5E74").concat(item.month, "\u6708").concat(item.value, "\u65E5");
+            item.active = item.year === active.year && item.month === active.month && item.date === active.date;
+            item.tip = "".concat(item.year, "\u5E74").concat(item.month, "\u6708").concat(item.date, "\u65E5");
           }
 
-          item.current = item.year === date.year && item.month === date.month && item.value === date.date;
+          item.current = item.year === date.year && item.month === date.month && item.date === date.date;
 
           if (item.current) {
             item.tip = '今天';
           }
 
-          item.disabled = this.isDisabled(item.year, item.month - 1, item.value);
-          item.highlight = this.isHighlight(item.year, item.month - 1, item.value);
+          if (this.showLunar) {
+            item.lunar = calendarCN.solarToLunar(item.year, item.month, item.date);
+          }
+
+          item.disabled = this.isDisabled(item.year, item.month - 1, item.date);
+          item.highlight = this.isHighlight(item.year, item.month - 1, item.date);
           row.push(item);
         }
 
@@ -9181,7 +10294,7 @@ var DatePanelvue_type_template_id_0b4fff28_staticRenderFns = []
     onPickCell: function onPickCell(_ref) {
       var year = _ref.year,
           month = _ref.month,
-          value = _ref.value;
+          date = _ref.date;
 
       if (this.isWeek) {
         return;
@@ -9190,7 +10303,7 @@ var DatePanelvue_type_template_id_0b4fff28_staticRenderFns = []
       this.$emit('pick', {
         year: year,
         month: month - 1,
-        date: value
+        date: date
       });
     },
     onPickRow: function onPickRow(_ref2) {
@@ -9203,11 +10316,11 @@ var DatePanelvue_type_template_id_0b4fff28_staticRenderFns = []
       var _row$ = row[0],
           year = _row$.year,
           month = _row$.month,
-          value = _row$.value;
+          date = _row$.date;
       this.$emit('pick', {
         year: year,
         month: month - 1,
-        date: value
+        date: date
       });
     },
     getRowClass: function getRowClass(_ref3) {
@@ -9240,8 +10353,8 @@ var DatePanelvue_type_template_id_0b4fff28_staticRenderFns = []
 
 var DatePanel_component = normalizeComponent(
   panels_DatePanelvue_type_script_lang_js_,
-  DatePanelvue_type_template_id_0b4fff28_render,
-  DatePanelvue_type_template_id_0b4fff28_staticRenderFns,
+  DatePanelvue_type_template_id_559b78d4_render,
+  DatePanelvue_type_template_id_559b78d4_staticRenderFns,
   false,
   null,
   null,
@@ -9840,6 +10953,10 @@ var TimePanel_component = normalizeComponent(
     },
     highlightRange: {
       type: Array
+    },
+    // 是否展示农历信息
+    showLunar: {
+      type: Boolean
     }
   },
   provide: function provide() {
@@ -9949,7 +11066,7 @@ var TimePanel_component = normalizeComponent(
       this.currentType = this.types.MONTH;
     },
     changeValue: function changeValue(value) {
-      this.isVisible = false;
+      // this.isVisible = false
       var oldValue = this.value ? script_util.format(this.value, this.format) : this.value;
       var newValue = script_util.format(value, this.format);
       this.$emit('input', newValue);
@@ -10044,22 +11161,22 @@ var TimePanel_component = normalizeComponent(
 
 var Picker_component = normalizeComponent(
   pickers_Pickervue_type_script_lang_js_,
-  Pickervue_type_template_id_6bf223aa_scoped_true_render,
-  Pickervue_type_template_id_6bf223aa_scoped_true_staticRenderFns,
+  Pickervue_type_template_id_3d089d6e_scoped_true_render,
+  Pickervue_type_template_id_3d089d6e_scoped_true_staticRenderFns,
   false,
   null,
-  "6bf223aa",
+  "3d089d6e",
   null
   
 )
 
 /* harmony default export */ var Picker = (Picker_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Popper.vue?vue&type=template&id=34c6b9ea&scoped=true&
-var Poppervue_type_template_id_34c6b9ea_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--popper"},[_c('div',{ref:"reference",staticClass:"date-picker--popper-reference",class:_vm.valueClass},[_vm._t("reference")],2),(_vm.popperVisible)?_c('div',{ref:"body",staticClass:"date-picker--popper-dialog",class:_vm.popperClass,attrs:{"tabindex":"0"},on:{"focus":function($event){return _vm.$emit('focus')},"blur":function($event){return _vm.$emit('blur')},"keyup":function($event){return _vm.$emit('keyup', $event)}}},[_c('div',{staticClass:"date-picker--popper-body"},[_vm._t("default")],2),_c('div',{staticClass:"date-picker--popper-arrow",attrs:{"data-popper-arrow":""}})]):_vm._e()])}
-var Poppervue_type_template_id_34c6b9ea_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Popper.vue?vue&type=template&id=0615f3e5&scoped=true&
+var Poppervue_type_template_id_0615f3e5_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--popper"},[_c('div',{ref:"reference",staticClass:"date-picker--popper-reference",class:_vm.valueClass},[_vm._t("reference")],2),(_vm.popperVisible)?_c('div',{ref:"body",staticClass:"date-picker--popper-dialog",class:_vm.popperClass,attrs:{"tabindex":"0"},on:{"focus":function($event){$event.stopPropagation();return _vm.$emit('focus', $event)},"blur":function($event){return _vm.$emit('blur', $event)}}},[_c('div',{staticClass:"date-picker--popper-body"},[_vm._t("default")],2),_c('div',{staticClass:"date-picker--popper-footer",style:(_vm.footerStyle)},[_vm._t("footer")],2),_c('div',{staticClass:"date-picker--popper-arrow",attrs:{"data-popper-arrow":""}})]):_vm._e()])}
+var Poppervue_type_template_id_0615f3e5_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/comps/Popper.vue?vue&type=template&id=34c6b9ea&scoped=true&
+// CONCATENATED MODULE: ./src/components/comps/Popper.vue?vue&type=template&id=0615f3e5&scoped=true&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.some.js
 var es_array_some = __webpack_require__("45fc");
@@ -10071,6 +11188,9 @@ var es_array_some = __webpack_require__("45fc");
 
 
 
+//
+//
+//
 //
 //
 //
@@ -10100,7 +11220,8 @@ var es_array_some = __webpack_require__("45fc");
     return {
       popperVisible: false,
       popperInstance: null,
-      dialogElement: null
+      dialogElement: null,
+      footerStyle: {}
     };
   },
   watch: {
@@ -10179,8 +11300,12 @@ var es_array_some = __webpack_require__("45fc");
 
               case 12:
                 body.focus();
+                _this.footerStyle = {
+                  display: 'block',
+                  width: _this.$refs.body.getClientRects()[0].width + 'px'
+                };
 
-              case 13:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -10212,8 +11337,9 @@ var es_array_some = __webpack_require__("45fc");
                 }
 
                 _this2.popperVisible = false;
+                _this2.footerStyle = {};
 
-              case 5:
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -10235,11 +11361,11 @@ var es_array_some = __webpack_require__("45fc");
 
 var Popper_component = normalizeComponent(
   comps_Poppervue_type_script_lang_js_,
-  Poppervue_type_template_id_34c6b9ea_scoped_true_render,
-  Poppervue_type_template_id_34c6b9ea_scoped_true_staticRenderFns,
+  Poppervue_type_template_id_0615f3e5_scoped_true_render,
+  Poppervue_type_template_id_0615f3e5_scoped_true_staticRenderFns,
   false,
   null,
-  "34c6b9ea",
+  "0615f3e5",
   null
   
 )
@@ -10286,12 +11412,12 @@ var ClearButton_component = normalizeComponent(
 )
 
 /* harmony default export */ var ClearButton = (ClearButton_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Shortcuts.vue?vue&type=template&id=f9107688&scoped=true&
-var Shortcutsvue_type_template_id_f9107688_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--shortcuts"},[_vm._t("default",_vm._l((_vm.data),function(item,index){return _c('button',{key:index,staticClass:"date-picker--shortcuts-button",on:{"click":function($event){return _vm.onClick(item)}}},[_vm._v(" "+_vm._s(item.text)+" ")])}))],2)}
-var Shortcutsvue_type_template_id_f9107688_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b8079c54-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Shortcuts.vue?vue&type=template&id=1a01466e&scoped=true&
+var Shortcutsvue_type_template_id_1a01466e_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"date-picker--shortcuts"},[_vm._t("default",_vm._l((_vm.data),function(item,index){return _c('span',{key:index,staticClass:"date-picker--shortcuts-button",on:{"click":function($event){return _vm.onClick(item)}}},[_vm._v(" "+_vm._s(item.text)+" ")])}))],2)}
+var Shortcutsvue_type_template_id_1a01466e_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/comps/Shortcuts.vue?vue&type=template&id=f9107688&scoped=true&
+// CONCATENATED MODULE: ./src/components/comps/Shortcuts.vue?vue&type=template&id=1a01466e&scoped=true&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/comps/Shortcuts.vue?vue&type=script&lang=js&
 
@@ -10331,18 +11457,17 @@ var Shortcutsvue_type_template_id_f9107688_scoped_true_staticRenderFns = []
 
       value = value(script_util);
 
-      if (!(value instanceof Promise)) {
+      if (value instanceof Promise) {
+        value.then(function (val) {
+          _this.$emit('change', {
+            value: val
+          });
+        });
+      } else {
         this.$emit('change', {
           value: value
         });
-        return;
       }
-
-      value.then(function (val) {
-        _this.$emit('change', {
-          value: val
-        });
-      });
     }
   }
 });
@@ -10358,11 +11483,11 @@ var Shortcutsvue_type_template_id_f9107688_scoped_true_staticRenderFns = []
 
 var Shortcuts_component = normalizeComponent(
   comps_Shortcutsvue_type_script_lang_js_,
-  Shortcutsvue_type_template_id_f9107688_scoped_true_render,
-  Shortcutsvue_type_template_id_f9107688_scoped_true_staticRenderFns,
+  Shortcutsvue_type_template_id_1a01466e_scoped_true_render,
+  Shortcutsvue_type_template_id_1a01466e_scoped_true_staticRenderFns,
   false,
   null,
-  "f9107688",
+  "1a01466e",
   null
   
 )
@@ -10394,29 +11519,6 @@ var Shortcuts_component = normalizeComponent(
     }
   },
   methods: {
-    showPicker: function showPicker() {
-      clearTimeout(this.hideTimerHandle);
-      this.isVisible = true;
-    },
-    hidePicker: function hidePicker(e) {
-      var _this = this;
-
-      if (e && e.type === 'keyup') {
-        if (e.keyCode === 27) {
-          // ESC 关闭
-          this.isVisible = false;
-        } else if (e.keyCode === 13) {
-          // Enter 关闭
-          this.isVisible = false;
-        }
-
-        return;
-      }
-
-      this.hideTimerHandle = setTimeout(function () {
-        _this.isVisible = false;
-      }, 200);
-    },
     renderValueSlot: function renderValueSlot() {
       if (!this.valueSlot) {
         return null;
@@ -10470,13 +11572,13 @@ var Shortcuts_component = normalizeComponent(
       });
     },
     renderClearButton: function renderClearButton(handler) {
-      var _this2 = this;
+      var _this = this;
 
       return this.h(ClearButton, {
         on: {
           clear: function clear() {
-            _this2._eventSrc = 'clear';
-            _this2.isVisible = false;
+            _this._eventSrc = 'clear';
+            _this.isVisible = false;
             handler();
           }
         }
@@ -10490,7 +11592,7 @@ var Shortcuts_component = normalizeComponent(
      * @return {*|void}
      */
     renderInput: function renderInput(valueName, placeholder) {
-      var _this3 = this;
+      var _this2 = this;
 
       return this.h('input', {
         attrs: {
@@ -10502,7 +11604,7 @@ var Shortcuts_component = normalizeComponent(
         },
         on: {
           input: function input(e) {
-            _this3[valueName] = e.target.value;
+            _this2[valueName] = e.target.value;
           }
         }
       });
@@ -10515,6 +11617,8 @@ var Shortcuts_component = normalizeComponent(
      * @return {*}
      */
     renderPopper: function renderPopper(content, trigger) {
+      var _this3 = this;
+
       var h = this.h;
       var slots = Array.isArray(content) ? content : [content];
 
@@ -10532,9 +11636,7 @@ var Shortcuts_component = normalizeComponent(
         },
         ref: 'popper',
         on: {
-          focus: this.showPicker,
-          blur: this.hidePicker,
-          keyup: this.hidePicker
+          blur: this.onBlur
         },
         scopedSlots: {
           default: function _default() {
@@ -10542,6 +11644,9 @@ var Shortcuts_component = normalizeComponent(
           },
           reference: function reference() {
             return [trigger];
+          },
+          footer: function footer() {
+            return _this3.$slots.footer;
           }
         }
       });
@@ -10588,7 +11693,8 @@ var Shortcuts_component = normalizeComponent(
         max: this[limitName][1],
         visible: this[visibleName],
         mousewheel: this.mousewheel,
-        weekStart: this.weekStart
+        weekStart: this.weekStart,
+        showLunar: this.showLunar
       };
 
       if (this.highlightRange && this.isRange) {
@@ -10681,16 +11787,89 @@ var Shortcuts_component = normalizeComponent(
     return createElement('div', {
       'class': (_class = {
         'date-picker': true
-      }, _defineProperty(_class, "date-picker--".concat(this.type), true), _defineProperty(_class, "date-picker--".concat(this.size), true), _defineProperty(_class, 'date-picker--range', this.isRange), _defineProperty(_class, 'date-picker--clearable', this.clearable), _defineProperty(_class, 'date-picker--show-icon', this.isIconVisible), _defineProperty(_class, 'date-picker--empty', this.isEmpty), _defineProperty(_class, 'date-picker--custom-render', this.valueSlot), _class),
+      }, _defineProperty(_class, "date-picker--".concat(this.type), true), _defineProperty(_class, "date-picker--".concat(this.size), true), _defineProperty(_class, 'date-picker--range', this.isRange), _defineProperty(_class, 'date-picker--clearable', this.clearable), _defineProperty(_class, 'date-picker--show-icon', this.isIconVisible), _defineProperty(_class, 'date-picker--show-lunar', this.showLunar), _defineProperty(_class, 'date-picker--empty', this.isEmpty), _defineProperty(_class, 'date-picker--custom-render', this.valueSlot), _class),
       attrs: {
         tabindex: '0'
       },
       on: {
-        focus: this.showPicker,
-        blur: this.hidePicker,
-        keyup: this.hidePicker
+        focus: this.onFocus,
+        blur: this.onBlur
       }
     }, content);
+  }
+});
+// CONCATENATED MODULE: ./src/components/mixins/picker-triggers.js
+
+/* harmony default export */ var picker_triggers = ({
+  created: function created() {
+    document.addEventListener('click', this.onDocumentClick);
+    document.addEventListener('keyup', this.onKeyup);
+  },
+  beforeDestroy: function beforeDestroy() {
+    document.removeEventListener('keyup', this.onKeyup);
+    document.removeEventListener('click', this.onDocumentClick);
+  },
+  computed: {},
+  methods: {
+    onDocumentClick: function onDocumentClick(_ref) {
+      var target = _ref.target;
+
+      if (this.trigger !== 'click') {
+        return;
+      }
+
+      var elClicked = script_util.isParent(target, this.$el) || script_util.isParent(target, this.$refs.popper.$refs.body);
+
+      if (this.isVisible) {
+        if (!elClicked) {
+          this.isVisible = false;
+        }
+
+        return;
+      }
+
+      if (elClicked) {
+        this.isVisible = true;
+      }
+    },
+    onFocus: function onFocus() {
+      var _this = this;
+
+      if (this.trigger !== 'focus') {
+        return;
+      }
+
+      this.$nextTick(function () {
+        _this.isVisible = true;
+      });
+    },
+    onBlur: function onBlur() {
+      var _this2 = this;
+
+      if (this.trigger !== 'focus') {
+        return;
+      }
+
+      this.$nextTick(function () {
+        var activeElement = document.activeElement;
+
+        if (script_util.isParent(activeElement, _this2.$el) || script_util.isParent(activeElement, _this2.$refs.popper.$refs.body)) {
+          return;
+        }
+
+        _this2.isVisible = false;
+      });
+    },
+    onKeyup: function onKeyup(e) {
+      if (e.keyCode === 27) {
+        // ESC 关闭
+        this.isVisible = false; // return;
+      } // if (e.keyCode === 13) {
+      //   // Enter 关闭
+      //   this.isVisible = false
+      // }
+
+    }
   }
 });
 // CONCATENATED MODULE: ./src/components/pickers/date-picker.js
@@ -10706,61 +11885,7 @@ var Shortcuts_component = normalizeComponent(
 
 /* harmony default export */ var date_picker = ({
   name: 'DatePicker',
-  mixins: [picker_props, picker_range, picker_renderer],
-  props: {
-    value: {
-      type: [Array, String, Number, Date],
-      required: true
-    },
-    size: {
-      type: String,
-      default: 'normal'
-    },
-
-    /**
-     * 是否允许鼠标滚轮操作
-     */
-    mousewheel: {
-      type: Boolean,
-      default: true
-    },
-    visible: Boolean,
-    readonly: Boolean,
-    editable: Boolean,
-    clearable: Boolean,
-    shortcuts: {
-      type: Array,
-      default: function _default() {
-        return [];
-      }
-    },
-    hideIcon: {
-      type: Boolean,
-      default: false
-    },
-    placeholder: {
-      type: [String, Array]
-    },
-    toBody: {
-      type: Boolean,
-      default: true
-    },
-    popperClass: {
-      type: String,
-      default: ''
-    },
-    valueClass: {
-      type: String,
-      default: ''
-    },
-    // see https://popper.js.org/docs/v2/constructors/#options
-    popperOptions: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    }
-  },
+  mixins: [picker_props, picker_range, picker_renderer, picker_triggers],
   data: function data() {
     return {
       types: types,
@@ -10781,23 +11906,14 @@ var Shortcuts_component = normalizeComponent(
   },
   watch: {
     visible: function visible(v) {
-      var _this = this;
-
       if (v === this.isVisible) {
         return;
       }
 
       this.isVisible = v;
-      this.$nextTick(function () {
-        if (v) {
-          _this.$el.focus();
-        } else {
-          _this.$el.blur();
-        }
-      });
     },
     isVisible: function isVisible(v) {
-      var _this2 = this;
+      var _this = this;
 
       // 在关闭时触发更新
       if (!v && this.isRange) {
@@ -10810,9 +11926,9 @@ var Shortcuts_component = normalizeComponent(
 
       this.$nextTick(function () {
         if (v) {
-          _this2.$el.focus();
+          _this.$el.focus();
         } else {
-          _this2.$el.blur();
+          _this.$el.blur();
         }
       });
     },
@@ -10851,10 +11967,10 @@ var Shortcuts_component = normalizeComponent(
       this.singleValue = value ? script_util.format(value, this.finalFormat) : value;
     },
     commitChanges: function commitChanges() {
-      var _this3 = this;
+      var _this2 = this;
 
       var oldValue = this.isRange ? this.value.map(function (v) {
-        return v ? script_util.format(v, _this3.finalFormat) : v;
+        return v ? script_util.format(v, _this2.finalFormat) : v;
       }) : this.value ? script_util.format(this.value, this.finalFormat) : this.value;
       var newValue = this.isRange ? this.formattedRangeValue : this.formattedValue;
 

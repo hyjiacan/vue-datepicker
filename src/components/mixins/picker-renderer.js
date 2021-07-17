@@ -19,25 +19,6 @@ export default {
     }
   },
   methods: {
-    showPicker() {
-      clearTimeout(this.hideTimerHandle)
-      this.isVisible = true
-    },
-    hidePicker(e) {
-      if (e && e.type === 'keyup') {
-        if (e.keyCode === 27) {
-          // ESC 关闭
-          this.isVisible = false
-        } else if (e.keyCode === 13) {
-          // Enter 关闭
-          this.isVisible = false
-        }
-        return
-      }
-      this.hideTimerHandle = setTimeout(() => {
-        this.isVisible = false
-      }, 200)
-    },
     renderValueSlot() {
       if (!this.valueSlot) {
         return null
@@ -135,15 +116,15 @@ export default {
         },
         ref: 'popper',
         on: {
-          focus: this.showPicker,
-          blur: this.hidePicker,
-          keyup: this.hidePicker
+          focus: this.onPopperFocus,
+          blur: this.onPopperBlur
         },
         scopedSlots: {
           default: () => slots,
           reference: () => {
             return [trigger]
-          }
+          },
+          footer: () => this.$slots.footer
         }
       })
     },
@@ -183,7 +164,8 @@ export default {
         max: this[limitName][1],
         visible: this[visibleName],
         mousewheel: this.mousewheel,
-        weekStart: this.weekStart
+        weekStart: this.weekStart,
+        showLunar: this.showLunar
       }
       if (this.highlightRange && this.isRange) {
         props.highlightRange = [this.beginValue, this.endValue]
@@ -299,9 +281,8 @@ export default {
         tabindex: '0'
       },
       on: {
-        focus: this.showPicker,
-        blur: this.hidePicker,
-        keyup: this.hidePicker
+        focus: this.onFocus,
+        blur: this.onBlur
       }
     }, content)
   }

@@ -14,11 +14,11 @@
     <date-picker type="date" v-model="date">
       <template v-slot:shortcut>
         <div class="b1">
-          <button>这些按钮</button>
-          <button>没有实际意义</button>
-          <button>只是为了演示</button>
-          <button>自定义按钮</button>
-          <button>是这么写的</button>
+          <div>这些按钮</div>
+          <div>没有实际意义</div>
+          <div>只是为了演示</div>
+          <div>自定义按钮</div>
+          <div>是这么写的</div>
         </div>
       </template>
     </date-picker>
@@ -27,11 +27,11 @@
     <date-picker type="date" v-model="rdate" range>
       <template v-slot:shortcut>
         <div class="b1">
-          <button>这些按钮</button>
-          <button>没有实际意义</button>
-          <button>只是为了演示</button>
-          <button>自定义按钮</button>
-          <button>是这么写的</button>
+          <div>这些按钮</div>
+          <div>没有实际意义</div>
+          <div>只是为了演示</div>
+          <div>自定义按钮</div>
+          <div>是这么写的</div>
         </div>
       </template>
     </date-picker>
@@ -41,10 +41,10 @@
     <date-picker type="date" v-model="date">
       <template v-slot:value="{value, format, type, visible}">
         <ul class="custom-value">
-          <li>visible: {{visible}}</li>
-          <li>type: {{type}}</li>
-          <li>format: {{format}}</li>
-          <li>value: {{value}}</li>
+          <li>visible: {{ visible }}</li>
+          <li>type: {{ type }}</li>
+          <li>format: {{ format }}</li>
+          <li>value: {{ value }}</li>
         </ul>
       </template>
     </date-picker>
@@ -53,10 +53,10 @@
     <date-picker type="date" v-model="rdate" range>
       <template v-slot:value="{value, format, type, visible}">
         <ul class="custom-value">
-          <li>visible: {{visible}}</li>
-          <li>type: {{type}}</li>
-          <li>format: {{format}}</li>
-          <li>value: {{value}}</li>
+          <li>visible: {{ visible }}</li>
+          <li>type: {{ type }}</li>
+          <li>format: {{ format }}</li>
+          <li>value: {{ value }}</li>
         </ul>
       </template>
     </date-picker>
@@ -73,6 +73,24 @@
       <template v-slot:title>
         <div>开始日期</div>
         <div>结束日期</div>
+      </template>
+    </date-picker>
+
+    <div class="date-label">自定义底部内容 - 单个</div>
+    <date-picker type="date" v-model="date">
+      <template v-slot:footer>
+        <span>这里是通过 <code>v-slot:footer</code> 插入的内容</span>
+        <button>点击关闭</button>
+      </template>
+    </date-picker>
+
+    <div class="date-label">自定义底部内容 - 范围</div>
+    <date-picker type="date" v-model="rdate" :visible.sync="visible" range>
+      <template v-slot:footer>
+        <div class="custom-footer">
+          <span>这里是通过 <code>v-slot:footer</code> 插入的内容</span>
+          <span class="btn-ok" @click="onOk">确定</span>
+        </div>
       </template>
     </date-picker>
   </div>
@@ -121,7 +139,13 @@ export default {
       }, {
         text: '最近1个月',
         value: [util.setDate(date, {month: date.getMonth() - 1, date: today}), date]
-      }]
+      }],
+      visible: false
+    }
+  },
+  methods: {
+    onOk() {
+      this.visible = false
     }
   }
 }
@@ -132,8 +156,14 @@ export default {
   padding: 5px;
   width: 100px;
 
-  button {
+  div {
     margin-bottom: 5px;
+    border-bottom: 1px solid red;
+    cursor: pointer;
+
+    &:hover {
+      color: red;
+    }
   }
 }
 
@@ -142,6 +172,24 @@ export default {
 
   &:hover {
     border-color: #126ac4;
+  }
+}
+.custom-footer {
+  padding: 5px 10px;
+  overflow: auto;
+}
+
+.btn-ok {
+  display: inline-block;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  padding: 3px 4px;
+  cursor: pointer;
+  font-size: 14px;
+  float: right;
+
+  &:hover {
+    color: #126ac4;
   }
 }
 </style>

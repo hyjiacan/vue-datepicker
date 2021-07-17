@@ -38,7 +38,7 @@ export default {
     stopYear() {
       let len = this.data.length
       let temp = this.data[len - 1]
-      return temp[temp.length - 1].value
+      return temp[temp.length - 1].year
     },
     data() {
       const data = []
@@ -60,7 +60,9 @@ export default {
             active: year === activeYear,
             current: isCurrent,
             tip: isCurrent ? '今年' : '',
+            year: year,
             value: year,
+            text: year,
             disabled: this.isDisabled(year),
             highlight: this.isHighlight(year)
           })
@@ -94,8 +96,8 @@ export default {
     onNextDecades() {
       this.viewValue = util.setDate(this.viewValue, {year: this.stopYear + 1 + this.offset})
     },
-    onPick({value}) {
-      this.$emit('pick', {year: value})
+    onPick({year}) {
+      this.$emit('pick', {year})
     }
   }
 }

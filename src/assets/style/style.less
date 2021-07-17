@@ -108,15 +108,21 @@
 .date-picker--popper-body {
   position: relative;
   z-index: 0;
-  background-color: @popper-bg;
   text-align: center;
   display: flex;
+}
+
+.date-picker--popper-footer {
+  word-break: break-all;
+  white-space: break-spaces;
+  display: none;
 }
 
 .date-picker--popper-dialog {
   user-select: none;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  background-color: @popper-bg;
   box-shadow: rgba(158, 156, 156, 0.45) 0 0 6px 2px;
   outline: none;
   z-index: 1;
@@ -267,6 +273,7 @@
 }
 
 .date-picker--shortcuts-button {
+  display: block;
   width: 80px;
   border: 1px solid #eaeaea;
   background-color: #ffffff;
@@ -274,6 +281,13 @@
   color: #555555;
   padding: 10px 5px;
   outline: none;
+  margin-bottom: -1px;
+  border-right: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+  white-space: nowrap;
+  font-size: 14px;
 
   &:hover, &:active {
     color: #137DE2;
@@ -284,16 +298,6 @@
   float: left;
   height: 340px;
   border-right: 1px solid #eaeaea;
-}
-
-.date-picker--shortcuts-button {
-  margin-bottom: -1px;
-  display: block;
-  border-right: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: keep-all;
-  white-space: nowrap;
 }
 
 .date-picker--icon {

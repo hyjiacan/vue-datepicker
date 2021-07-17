@@ -1,5 +1,6 @@
 <template>
   <div class="demo">
+    <a-demo/>
     <div class="demo-grid">
       <single-demo/>
       <size-demo/>
@@ -26,11 +27,12 @@ import ClearDemo from './demos/ClearDemo'
 import SlotsDemo from './demos/SlotsDemo'
 import DynamicTypeDemo from './demos/DynamicTypeDemo'
 import OffsetDemo from './demos/OffsetDemo'
+import ADemo from "./demos/ADemo";
 
 export default {
   name: 'Demo',
   // eslint-disable-next-line vue/no-unused-components
-  components: {OffsetDemo, DynamicTypeDemo, SlotsDemo, ClearDemo, SizeDemo, RangeDemo, SingleDemo},
+  components: {ADemo, OffsetDemo, DynamicTypeDemo, SlotsDemo, ClearDemo, SizeDemo, RangeDemo, SingleDemo},
   data() {
     return {
       date: ''

@@ -1,9 +1,9 @@
 <template>
   <div class="date-picker--shortcuts">
     <slot>
-      <button class="date-picker--shortcuts-button" v-for="(item, index) in data" :key="index" @click="onClick(item)">
-        {{item.text}}
-      </button>
+      <span class="date-picker--shortcuts-button" v-for="(item, index) in data" :key="index" @click="onClick(item)">
+        {{ item.text }}
+      </span>
     </slot>
   </div>
 </template>
@@ -29,14 +29,13 @@ export default {
       // 处理函数
       value = value(util)
 
-      if (!(value instanceof Promise)) {
+      if (value instanceof Promise) {
+        value.then(val => {
+          this.$emit('change', {value: val})
+        })
+      } else {
         this.$emit('change', {value})
-        return
-      }
-
-      value.then(val => {
-        this.$emit('change', {value: val})
-      })
+        }
     }
   }
 }

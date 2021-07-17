@@ -1,6 +1,7 @@
 import props from '../mixins/picker-props'
 import range from '../mixins/picker-range'
 import renderer from '../mixins/picker-renderer'
+import triggers from '../mixins/picker-triggers'
 import types from '../../assets/script/types'
 import formats from '../../assets/script/formats'
 import util from '../../assets/script/util'
@@ -8,56 +9,7 @@ import placeholders from '../../assets/script/placeholders'
 
 export default {
   name: 'DatePicker',
-  mixins: [props, range, renderer],
-  props: {
-    value: {
-      type: [Array, String, Number, Date],
-      required: true
-    },
-    size: {
-      type: String,
-      default: 'normal'
-    },
-    /**
-     * 是否允许鼠标滚轮操作
-     */
-    mousewheel: {
-      type: Boolean,
-      default: true
-    },
-    visible: Boolean,
-    readonly: Boolean,
-    editable: Boolean,
-    clearable: Boolean,
-    shortcuts: {
-      type: Array,
-      default: () => []
-    },
-    hideIcon: {
-      type: Boolean,
-      default: false
-    },
-    placeholder: {
-      type: [String, Array]
-    },
-    toBody: {
-      type: Boolean,
-      default: true
-    },
-    popperClass: {
-      type: String,
-      default: ''
-    },
-    valueClass: {
-      type: String,
-      default: ''
-    },
-    // see https://popper.js.org/docs/v2/constructors/#options
-    popperOptions: {
-      type: Object,
-      default: () => ({})
-    }
-  },
+  mixins: [props, range, renderer, triggers],
   data() {
     return {
       types,
@@ -82,13 +34,6 @@ export default {
         return
       }
       this.isVisible = v
-      this.$nextTick(() => {
-        if (v) {
-          this.$el.focus()
-        } else {
-          this.$el.blur()
-        }
-      })
     },
     isVisible(v) {
       // 在关闭时触发更新

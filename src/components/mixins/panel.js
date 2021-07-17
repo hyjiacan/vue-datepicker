@@ -76,7 +76,7 @@ export default {
         return false
       }
       if (minMonth !== -1 && maxMonth !== -1) {
-        return (minYear === year && minMonth !== -1 && minMonth > month) &&
+        return (minYear === year && minMonth !== -1 && minMonth > month) ||
           (maxYear === year && maxMonth !== -1 && maxMonth < month)
       }
       if (minMonth !== -1) {
@@ -93,7 +93,7 @@ export default {
         return false
       }
       if (minDate !== -1 && maxDate !== -1) {
-        return (minYear === year && minMonth === month && minDate !== -1 && minDate > date) &&
+        return (minYear === year && minMonth === month && minDate !== -1 && minDate > date) ||
           (minYear === year && maxMonth === month && maxDate !== -1 && maxDate < date)
       }
       if (minDate !== -1) {

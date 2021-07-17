@@ -34,6 +34,7 @@
 import BasePanel from './BasePanel'
 import mixin from '../mixins/panel'
 import util from '../../assets/script/util'
+import calendarCN from '@/assets/script/calendarCN'
 
 export default {
   name: 'DatePanel',
@@ -82,23 +83,30 @@ export default {
           if (!item) {
             continue
           }
+          item.text = item.date
           if (this.isWeek) {
-            item.rowActive = item.year === active.year && item.month === active.month && item.value === active.date
-            // let result = util.getWeekOfYear(new Date(item.year, item.month - 1, item.value),
+            item.rowActive = item.year === active.year && item.month === active.month && item.date === active.date
+            // let result = util.getWeekOfYear(new Date(item.year, item.month - 1, item.date),
             // {start: this.weekStart, format: true})
             // item.week = result[0]
             // item.rowTip = result[1]
           } else {
-            item.active = item.year === active.year && item.month === active.month && item.value === active.date
-            item.tip = `${item.year}年${item.month}月${item.value}日`
+            item.active = item.year === active.year && item.month === active.month && item.date === active.date
+            item.tip = `${item.year}年${item.month}月${item.date}日`
           }
 
-          item.current = item.year === date.year && item.month === date.month && item.value === date.date
+          item.current = item.year === date.year && item.month === date.month && item.date === date.date
           if (item.current) {
             item.tip = '今天'
           }
-          item.disabled = this.isDisabled(item.year, item.month - 1, item.value)
-          item.highlight = this.isHighlight(item.year, item.month - 1, item.value)
+
+          if (this.showLunar) {
+            const lunar = calendarCN.solarToLunar(item.year, item.month, item.date)
+            item.c2n = lunar.lunarDay === 1 ? lunar.lunarMonthName : lunar.lunarDayName
+            item.lunar = lunar
+          }
+          item.disabled = this.isDisabled(item.year, item.month - 1, item.date)
+          item.highlight = this.isHighlight(item.year, item.month - 1, item.date)
           row.push(item)
         }
         view.push(row)
@@ -145,21 +153,21 @@ export default {
       }
       this.viewValue = this.getNextYearByViewDate()
     },
-    onPickCell({year, month, value}) {
+    onPickCell({year, month, date}) {
       if (this.isWeek) {
         return
       }
       this.$emit('pick', {
-        year, month: month - 1, date: value
+        year, month: month - 1, date
       })
     },
     onPickRow({row}) {
       if (this.type !== this.types.WEEK) {
         return
       }
-      const {year, month, value} = row[0]
+      const {year, month, date} = row[0]
       this.$emit('pick', {
-        year, month: month - 1, date: value
+        year, month: month - 1, date
       })
     },
     getRowClass({row}) {

@@ -92,6 +92,10 @@ export default {
     },
     highlightRange: {
       type: Array
+    },
+    // 是否展示农历信息
+    showLunar: {
+      type: Boolean
     }
   },
   provide() {
@@ -186,7 +190,7 @@ export default {
       this.currentType = this.types.MONTH
     },
     changeValue(value) {
-      this.isVisible = false
+      // this.isVisible = false
       const oldValue = this.value ? util.format(this.value, this.format) : this.value
       const newValue = util.format(value, this.format)
 

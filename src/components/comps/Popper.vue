@@ -4,10 +4,13 @@
       <slot name="reference"/>
     </div>
     <div class="date-picker--popper-dialog"
-         @focus="$emit('focus')" @blur="$emit('blur')" @keyup="$emit('keyup', $event)"
+         @focus.stop="$emit('focus', $event)" @blur="$emit('blur', $event)"
          :class="popperClass" tabindex="0" ref="body" v-if="popperVisible">
       <div class="date-picker--popper-body">
         <slot/>
+      </div>
+      <div class="date-picker--popper-footer" :style="footerStyle">
+        <slot name="footer"/>
       </div>
       <div class="date-picker--popper-arrow" data-popper-arrow></div>
     </div>
@@ -28,7 +31,8 @@ export default {
     return {
       popperVisible: false,
       popperInstance: null,
-      dialogElement: null
+      dialogElement: null,
+      footerStyle: {}
     }
   },
   watch: {
@@ -80,6 +84,11 @@ export default {
       this.popperInstance = createPopper(this.$refs.reference, body, this.computedOptions)
       await this.$nextTick()
       body.focus()
+
+      this.footerStyle = {
+        display: 'block',
+        width: this.$refs.body.getClientRects()[0].width + 'px'
+      }
     },
     async destroyPopper() {
       await this.$nextTick()
@@ -92,6 +101,8 @@ export default {
         this.popperInstance = null
       }
       this.popperVisible = false
+
+      this.footerStyle = {}
     }
   }
 }

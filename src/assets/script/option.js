@@ -1,5 +1,5 @@
 const MIN_YEAR = 1900
-const MAX_YEAR = 2999
+const MAX_YEAR = 2099
 
 export {
   MIN_YEAR,

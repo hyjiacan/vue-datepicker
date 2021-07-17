@@ -26,7 +26,7 @@
             :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
           <td v-for="(cell, cellIndex) in row" :key="cellIndex" :title="cell.tip" @click="onCellClick(cell)"
               :class="{'date-picker--panel-value-highlight': cell.highlight}">
-            <span class="date-picker--panel-value" :class="getCellClass(cell)">{{ cell.text || cell.value }}</span>
+            <span class="date-picker--panel-value" :class="getCellClass(cell)" v-html="renderCell(cell)"></span>
           </td>
         </tr>
         </tbody>
@@ -95,6 +95,18 @@ export default {
     },
     getRowTip(row) {
       return row[0].rowTip || ''
+    },
+    renderCell(cell) {
+      const result = [
+        `<span>${cell.text}</span>`
+      ]
+
+      if (cell.c2n) {
+        const lunar = cell.lunar
+        const title = `${lunar.lunarYear}年${lunar.lunarMonth}月${lunar.lunarDay}日 ${lunar.GanZhiYear}年`
+        result.push(`<span class="date-picker--panel-value--lunar" title="${title}">${cell.c2n}</span>`)
+      }
+      return result.join('')
     }
   }
 }

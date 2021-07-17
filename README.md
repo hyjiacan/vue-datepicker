@@ -186,7 +186,7 @@ export default {
 
 是否将起止日期输入框分开显示。在指定了 `range` 为 `true` 时有效。
 
-### size
+#### size
 
 - type: String
 - default: normal

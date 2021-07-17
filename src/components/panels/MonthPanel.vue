@@ -13,6 +13,7 @@
 <script>
 import BasePanel from './BasePanel'
 import mixin from '../mixins/panel'
+import calendarCN from '@/assets/script/calendarCN'
 
 export default {
   name: 'MonthPanel',
@@ -35,7 +36,7 @@ export default {
         for (let j = 0; j < 3; j++) {
           const item = {
             year,
-            value: month,
+            month,
             text: `${month}月`,
             tip: `${year}年${month}月`,
             disabled: this.isDisabled(year, month - 1),
@@ -47,9 +48,15 @@ export default {
             item.active = year === activeYear && month === activeMonth
           }
 
-          item.current = item.year === date.year && item.value === date.month
+          item.current = item.year === date.year && item.month === date.month
           if (item.current) {
             item.tip = '本月'
+          }
+
+          if (this.showLunar) {
+            const lunar = calendarCN.solarToLunar(item.year, item.month, 1)
+            item.c2n = lunar.lunarMonthName
+            item.lunar = lunar
           }
 
           row.push(item)
@@ -76,18 +83,18 @@ export default {
     onNextYear() {
       this.viewValue = this.getNextYearByViewDate()
     },
-    onPickCell({year, value}) {
+    onPickCell({year, month}) {
       if (this.isQuarter) {
         return ''
       }
-      this.$emit('pick', {year, month: value - 1})
+      this.$emit('pick', {year, month: month - 1})
     },
     onPickRow({row}) {
       if (this.type !== this.types.QUARTER) {
         return ''
       }
-      const {year, value} = row[0]
-      this.$emit('pick', {year, month: value - 1})
+      const {year, month} = row[0]
+      this.$emit('pick', {year, month: month - 1})
     },
     getRowClass({row}) {
       if (this.type !== this.types.QUARTER) {

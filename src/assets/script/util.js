@@ -52,7 +52,8 @@ function getPrevMonthDays(date, weekStart) {
     date.setDate(value)
     days.push({
       overflow: true,
-      value,
+      date: value,
+      value: date,
       year,
       month,
       day: date.getDay()
@@ -84,7 +85,8 @@ function getCurrentMonthDays(date) {
   for (let i = 1; i <= day; i++) {
     date.setDate(i)
     days.push({
-      value: i,
+      date: i,
+      value: date,
       year,
       month,
       day: date.getDay()
@@ -117,7 +119,8 @@ function getNextMonthDays(date, remain) {
     date.setDate(i)
     days.push({
       overflow: true,
-      value: i,
+      date: i,
+      value: date,
       year,
       month,
       day: date.getDay()
@@ -588,6 +591,30 @@ const util = {
       val = fill + val
     }
     return val
+  },
+  /**
+   *
+   * @param {HTMLElement} element
+   * @param {HTMLElement} test
+   */
+  isParent(element, test) {
+    if (!element || !test) {
+      return false
+    }
+    if (element === test) {
+      return true
+    }
+    if (element === document.body) {
+      return false
+    }
+    const parentElement = element.parentElement
+    if (parentElement === test) {
+      return true
+    }
+    if (parentElement === document.body) {
+      return false
+    }
+    return this.isParent(parentElement, test)
   }
 }
 

@@ -18,7 +18,11 @@
   .date-picker--panel-value {
     width: 60px;
     height: 40px;
-    line-height: 40px;
+  }
+
+  .date-picker--panel-value--lunar {
+    transform: scale(0.9);
+    margin-top: 0;
   }
 }
 
@@ -116,13 +120,9 @@
     height: 280px;
   }
 
-  thead tr {
-    border-bottom: 1px solid #e7e7e7;
-  }
-
   th {
     font-weight: normal;
-    padding-bottom: 10px;
+    padding: 10px 0;
     border: none;
   }
 
@@ -137,13 +137,11 @@
 .date-picker--panel-header {
   display: grid;
   grid-template-columns: 48px auto 48px;
-  line-height: 40px;
   font-size: larger;
   color: #555555;
 
   .datepicker-iconfont {
     cursor: pointer;
-    line-height: 24px;
   }
 
   &-prev, &-next {
@@ -167,16 +165,18 @@
 }
 
 .date-picker--panel-value {
-  @size: 30px;
-  border-radius: 8px;
-  display: block;
+  @size: 40px;
   width: @size;
   height: @size;
-  line-height: @size;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
   border: 1px solid transparent;
   margin: 0 auto;
   box-sizing: border-box;
+  border-radius: 8px;
   transition: border-color 618ms, background-color 618ms, color 618ms;
 
   &:not(&-disabled):hover {
@@ -194,20 +194,36 @@
 
   &-current {
     .value-current();
+
+    .date-picker--panel-value--lunar {
+      font-weight: normal;
+    }
   }
 
   &-overflow {
     color: #888888;
+
+    .date-picker--panel-value--lunar {
+      color: #aaaaaa;
+    }
   }
 
   &-disabled {
     color: rgba(255, 255, 255, 0.7) !important;
     text-shadow: 1px 1px 1px #7a7a7a;
     cursor: not-allowed;
+
+    .date-picker--panel-value--lunar {
+      text-shadow: none;
+      color: #cccccc;
+    }
   }
 }
 
 .date-picker--panel-value--lunar {
   font-size: 12px;
   display: block;
+  transform: scale(0.8);
+  margin-top: -5px;
+  color: #888888;
 }

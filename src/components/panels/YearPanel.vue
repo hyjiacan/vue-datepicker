@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import calendarCN from '../../assets/script/calendarCN'
 import BasePanel from './BasePanel'
 import mixin from '../mixins/panel'
 import util from '../../assets/script/util'
@@ -56,7 +57,8 @@ export default {
             break
           }
           const isCurrent = year === date.year
-          row.push({
+          const item = {
+            type: 'year',
             active: year === activeYear,
             current: isCurrent,
             tip: isCurrent ? '今年' : '',
@@ -65,7 +67,12 @@ export default {
             text: year,
             disabled: this.isDisabled(year),
             highlight: this.isHighlight(year)
-          })
+          }
+          if (this.showLunar) {
+            // 设置6每年的7月，此时得到的甲子肯定是当年的，不会因为年首产生错误
+            item.lunar = calendarCN.solarToLunar(year, 6)
+          }
+          row.push(item)
 
           year++
           years--

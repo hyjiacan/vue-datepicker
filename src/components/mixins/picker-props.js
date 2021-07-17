@@ -59,14 +59,9 @@ export default {
       type: Boolean,
       default: false
     },
-    // 是否在选择值后自动关闭
-    autoClose: {
-      type: Boolean,
-      default: true
-    },
     trigger: {
       type: String,
-      default: 'focus'
+      default: 'click'
     }
   }
 }

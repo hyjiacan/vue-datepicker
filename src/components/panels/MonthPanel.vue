@@ -35,6 +35,7 @@ export default {
         const row = []
         for (let j = 0; j < 3; j++) {
           const item = {
+            type: 'month',
             year,
             month,
             text: `${month}月`,
@@ -54,9 +55,7 @@ export default {
           }
 
           if (this.showLunar) {
-            const lunar = calendarCN.solarToLunar(item.year, item.month, 1)
-            item.c2n = lunar.lunarMonthName
-            item.lunar = lunar
+            item.lunar = calendarCN.solarToLunar(item.year, item.month, 1)
           }
 
           row.push(item)

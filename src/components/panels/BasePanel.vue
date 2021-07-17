@@ -24,8 +24,8 @@
         <tbody>
         <tr v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker--row" :title="getRowTip(row)"
             :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
-          <td v-for="(cell, cellIndex) in row" :key="cellIndex" :title="cell.tip" @click="onCellClick(cell)"
-              :class="{'date-picker--panel-value-highlight': cell.highlight}">
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex" @click="onCellClick(cell)"
+              :title="getCellTitle(cell)" :class="{'date-picker--panel-value-highlight': cell.highlight}">
             <span class="date-picker--panel-value" :class="getCellClass(cell)" v-html="renderCell(cell)"></span>
           </td>
         </tr>
@@ -96,15 +96,55 @@ export default {
     getRowTip(row) {
       return row[0].rowTip || ''
     },
+    getCellTitle(cell) {
+      let title = cell.tip
+
+      if (!this.picker.showLunar) {
+        return title
+      }
+
+      const lunar = cell.lunar
+      const festival = lunar.lunarFestival || ''
+      let lunarTitle
+
+      switch (cell.type) {
+        case 'year':
+          lunarTitle = `${lunar.lunarYear}(${lunar.GanZhiYear})年`
+          break
+        case 'month':
+          lunarTitle = `${lunar.lunarYear}(${lunar.GanZhiYear})年${lunar.lunarMonthName}`
+          break
+        case 'date':
+          lunarTitle = `${lunar.lunarYear}(${lunar.GanZhiYear})年${lunar.lunarMonthName}${lunar.lunarDayName} ${festival}`
+          break
+      }
+
+      if (lunarTitle) {
+        title += ' 农历' + lunarTitle
+      }
+
+      return title
+    },
     renderCell(cell) {
       const result = [
         `<span>${cell.text}</span>`
       ]
 
-      if (cell.c2n) {
+      if (this.picker.showLunar) {
         const lunar = cell.lunar
-        const title = `${lunar.lunarYear}年${lunar.lunarMonth}月${lunar.lunarDay}日 ${lunar.GanZhiYear}年`
-        result.push(`<span class="date-picker--panel-value--lunar" title="${title}">${cell.c2n}</span>`)
+        let content
+        switch (cell.type) {
+          case 'year':
+            content = lunar.GanZhiYear
+            break
+          case 'month':
+            content = lunar.lunarMonthName
+            break
+          case 'date':
+            content = lunar.lunarFestival || (lunar.lunarDay === 1 ? lunar.lunarMonthName : lunar.lunarDayName)
+            break
+        }
+        result.push(`<span class="date-picker--panel-value--lunar">${content}</span>`)
       }
       return result.join('')
     }

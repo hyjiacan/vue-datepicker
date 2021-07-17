@@ -83,6 +83,7 @@ export default {
           if (!item) {
             continue
           }
+          item.type = 'date'
           item.text = item.date
           if (this.isWeek) {
             item.rowActive = item.year === active.year && item.month === active.month && item.date === active.date
@@ -101,9 +102,7 @@ export default {
           }
 
           if (this.showLunar) {
-            const lunar = calendarCN.solarToLunar(item.year, item.month, item.date)
-            item.c2n = lunar.lunarDay === 1 ? lunar.lunarMonthName : lunar.lunarDayName
-            item.lunar = lunar
+            item.lunar = calendarCN.solarToLunar(item.year, item.month, item.date)
           }
           item.disabled = this.isDisabled(item.year, item.month - 1, item.date)
           item.highlight = this.isHighlight(item.year, item.month - 1, item.date)

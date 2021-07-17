@@ -274,6 +274,7 @@ export default {
         'date-picker--range': this.isRange,
         'date-picker--clearable': this.clearable,
         'date-picker--show-icon': this.isIconVisible,
+        'date-picker--show-lunar': this.showLunar,
         'date-picker--empty': this.isEmpty,
         'date-picker--custom-render': this.valueSlot
       },

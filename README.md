@@ -345,6 +345,28 @@ const placeholders = {
 
 传递给 `popperjs` 的初始化选项。详见 [popper.js#options](https://popper.js.org/docs/v2/constructors/#options)
 
+#### trigger
+
+> Since 2.2.0
+
+- type: String
+- default: `click`
+
+显示日期选择弹框的触发器，可选值为 `click`, `focus`。
+
+- `click` 此时仅可通过鼠标点击触发
+- `focus` 此时仅可通过获得焦点触发
+- 其它值 暂未处理。此时需要通过指定 `visible` 属性来触发
+
+#### show-lunar
+
+> Since 2.2.0
+
+- type: Boolean
+- default: `false`
+
+是否显示农历信息。
+
 ## 事件
 
 #### change
@@ -386,12 +408,18 @@ const placeholders = {
 ```vue
 
 <date-picker range>
-<template v-slot:title>
-  <div>左侧的标题</div>
-  <div>右侧的标题</div>
-</template>
+  <template v-slot:title>
+    <div>左侧的标题</div>
+    <div>右侧的标题</div>
+  </template>
 </date-picker>
 ```
+
+#### footer
+
+> Since 2.2.0
+
+设置选择器底部的内容。
 
 ## 工具函数
 
@@ -604,9 +632,16 @@ date.setDate(date.getDate() + 3)
 
 ## 支持
 
-### 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
+- 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
+- 感谢 [LunarCalendar](https://github.com/zzyss86/LunarCalendar) 开源的农历算法
 
 ## 更新日志
+
+### 2.2.0
+
+- 添加 农历显示支持 `show-lunar`
+- 添加 弹框的底部插槽 `footer` 支持
+- 添加 自定义触发支持 `trigger`
 
 ### 2.1.0
 

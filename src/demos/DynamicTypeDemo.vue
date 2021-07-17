@@ -44,7 +44,6 @@ export default {
 button {
   width: 64px;
   height: 32px;
-  line-height: 32px;
   border: 1px solid #888888;
 }
 

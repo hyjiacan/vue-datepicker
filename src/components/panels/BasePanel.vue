@@ -37,6 +37,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'BasePanel',
   props: {
@@ -98,41 +99,59 @@ export default {
     },
     getCellTitle(cell) {
       let title = cell.tip
+      const lunar = cell.lunar
+
+      if (this.picker.showFestival && lunar.solarFestival) {
+        title += ' ' + lunar.solarFestival
+      }
 
       if (!this.picker.showLunar) {
         return title
       }
 
-      const lunar = cell.lunar
-      const festival = lunar.lunarFestival || ''
       let lunarTitle
 
       switch (cell.type) {
         case 'year':
-          lunarTitle = `${lunar.lunarYear}(${lunar.GanZhiYear})年`
+          lunarTitle = ` ${lunar.lunarYear}(${lunar.GanZhiYear})年`
           break
         case 'month':
-          lunarTitle = `${lunar.lunarYear}(${lunar.GanZhiYear})年${lunar.lunarMonthName}`
+          lunarTitle = ` ${lunar.lunarYear}(${lunar.GanZhiYear})年${lunar.lunarMonthName}`
           break
         case 'date':
-          lunarTitle = `${lunar.lunarYear}(${lunar.GanZhiYear})年${lunar.lunarMonthName}${lunar.lunarDayName} ${festival}`
+          // 对日的提示信息进行换行
+          title += '\n'
+          lunarTitle = `${lunar.lunarYear}(${lunar.GanZhiYear})年${lunar.lunarMonthName}${lunar.lunarDayName}`
+          if (this.picker.showFestival && lunar.lunarFestival) {
+            lunarTitle += ' ' + lunar.lunarFestival
+          }
           break
       }
 
       if (lunarTitle) {
-        title += ' 农历' + lunarTitle
+        title += '农历' + lunarTitle
       }
 
       return title
     },
     renderCell(cell) {
+
+      const lunar = cell.lunar
+
+      let cls = 'date-picker--panel-value--solar'
+      if (this.picker.showFestival && cell.type === 'date') {
+        // 是否存在公历节日
+        if (lunar.solarFestival) {
+          cls += ' is-festival'
+        }
+      }
       const result = [
-        `<span>${cell.text}</span>`
+        `<span class="${cls}">${cell.text}</span>`
       ]
 
       if (this.picker.showLunar) {
-        const lunar = cell.lunar
         let content
+        let isFestival = false
         switch (cell.type) {
           case 'year':
             content = lunar.GanZhiYear
@@ -141,10 +160,15 @@ export default {
             content = lunar.lunarMonthName
             break
           case 'date':
-            content = lunar.lunarFestival || (lunar.lunarDay === 1 ? lunar.lunarMonthName : lunar.lunarDayName)
+            isFestival = this.picker.showFestival && !!lunar.lunarFestival
+            if (isFestival) {
+              content = lunar.lunarFestival
+            } else {
+              content = lunar.lunarDay === 1 ? lunar.lunarMonthName : lunar.lunarDayName
+            }
             break
         }
-        result.push(`<span class="date-picker--panel-value--lunar">${content}</span>`)
+        result.push(`<span class="date-picker--panel-value--lunar${isFestival ? ' is-festival' : ''}">${content}</span>`)
       }
       return result.join('')
     }

@@ -220,10 +220,32 @@
   }
 }
 
+.date-picker--panel-value--solar {
+  position: relative;
+
+  &.is-festival {
+    &:after {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 3px;
+      background-color: #ffb7b7;
+      position: absolute;
+      right: -5px;
+      top: 0;
+      border-radius: 50%;
+    }
+  }
+}
+
 .date-picker--panel-value--lunar {
   font-size: 12px;
   display: block;
   transform: scale(0.8);
   margin-top: -5px;
   color: #888888;
+
+  &.is-festival {
+    color: #d58237;
+  }
 }

@@ -62,6 +62,10 @@ export default {
     trigger: {
       type: String,
       default: 'click'
+    },
+    showFestival: {
+      type: Boolean,
+      default: false
     }
   }
 }

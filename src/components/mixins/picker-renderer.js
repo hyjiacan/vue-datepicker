@@ -164,7 +164,8 @@ export default {
         visible: this[visibleName],
         mousewheel: this.mousewheel,
         weekStart: this.weekStart,
-        showLunar: this.showLunar
+        showLunar: this.showLunar,
+        showFestival: this.showFestival
       }
       if (this.highlightRange && this.isRange) {
         props.highlightRange = [this.beginValue, this.endValue]

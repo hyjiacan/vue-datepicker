@@ -96,6 +96,9 @@ export default {
     // 是否展示农历信息
     showLunar: {
       type: Boolean
+    },
+    showFestival: {
+      type: Boolean
     }
   },
   provide() {

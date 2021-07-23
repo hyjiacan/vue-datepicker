@@ -1,7 +1,7 @@
 <template>
   <div>
     <span>显示农历: </span>
-    <date-picker type="date" v-model="date" show-lunar/>
+    <date-picker type="date" v-model="date" show-lunar show-festival />
   </div>
 </template>
 

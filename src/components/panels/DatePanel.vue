@@ -101,9 +101,7 @@ export default {
             item.tip = '今天'
           }
 
-          if (this.showLunar) {
-            item.lunar = calendarCN.solarToLunar(item.year, item.month, item.date)
-          }
+          item.lunar = calendarCN.solarToLunar(item.year, item.month, item.date)
           item.disabled = this.isDisabled(item.year, item.month - 1, item.date)
           item.highlight = this.isHighlight(item.year, item.month - 1, item.date)
           row.push(item)

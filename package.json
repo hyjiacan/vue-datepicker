@@ -21,7 +21,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.com"
+    "registry": "https://registry.npmjs.org"
   },
   "homepage": "https://hyjiacan.github.io/vue-datepicker/",
   "keywords": [

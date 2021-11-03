@@ -19,8 +19,11 @@
 </template>
 
 <script>
+import mixin from "@/demos/mixin";
+
 export default {
   name: 'DynamicTypeDemo',
+  mixins: [mixin],
   data () {
     return {
       types: [
@@ -33,8 +36,8 @@ export default {
         'datetime'
       ],
       currentType: 'date',
-      date: new Date(),
-      dateRange: [new Date(), new Date()]
+      date: this.getFixedDate(),
+      dateRange: [this.getFixedDate(), this.getFixedDate()]
     }
   }
 }

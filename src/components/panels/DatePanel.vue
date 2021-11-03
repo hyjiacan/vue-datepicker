@@ -35,6 +35,7 @@ import BasePanel from './BasePanel'
 import mixin from '../mixins/panel'
 import util from '../../assets/script/util'
 import calendarCN from '@/assets/script/calendarCN'
+import fixedDate from "@/assets/script/fixedDate";
 
 export default {
   name: 'DatePanel',
@@ -67,7 +68,7 @@ export default {
         month: this.active.getMonth() + 1,
         date: this.active.getDate()
       }
-      const d = new Date()
+      const d = fixedDate.getDate()
       const date = {
         year: d.getFullYear(),
         month: d.getMonth() + 1,

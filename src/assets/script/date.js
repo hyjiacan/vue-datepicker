@@ -27,6 +27,8 @@
 // 把 YYYY-MM-DD 改成了 yyyy-MM-dd
 'use strict'
 
+import fixedDate from "@/assets/script/fixedDate";
+
 /**
  * Parse or format dates
  * @class fecha
@@ -182,7 +184,7 @@ var parseFlags = {
     d.month = v - 1
   }],
   yy: [twoDigits, function (d, v) {
-    var da = new Date(), cent = +('' + da.getFullYear()).substr(0, 2)
+    var da = fixedDate.getDate(), cent = +('' + da.getFullYear()).substr(0, 2)
     d.year = '' + (v > 68 ? cent - 1 : cent) + v
   }],
   h: [twoDigits, function (d, v) {
@@ -335,7 +337,7 @@ fecha.parse = function (dateStr, format, i18nSettings) {
     parseInfo[i - 1](dateInfo, matches[i], i18n)
   }
 
-  var today = new Date()
+  var today = fixedDate.getDate()
   if (dateInfo.isPm === true && dateInfo.hour != null && +dateInfo.hour !== 12) {
     dateInfo.hour = +dateInfo.hour + 12
   } else if (dateInfo.isPm === false && +dateInfo.hour === 12) {

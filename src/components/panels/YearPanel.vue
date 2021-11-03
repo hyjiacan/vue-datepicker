@@ -15,6 +15,7 @@ import calendarCN from '../../assets/script/calendarCN'
 import BasePanel from './BasePanel'
 import mixin from '../mixins/panel'
 import util from '../../assets/script/util'
+import fixedDate from "@/assets/script/fixedDate";
 
 export default {
   name: 'YearPanel',
@@ -44,7 +45,7 @@ export default {
     data() {
       const data = []
       const date = {
-        year: new Date().getFullYear()
+        year: fixedDate.getDate().getFullYear()
       }
       const activeYear = this.active.getFullYear()
       let year = this.startYear

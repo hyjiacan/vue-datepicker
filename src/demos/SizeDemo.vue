@@ -3,43 +3,43 @@
     <h3>不同的尺寸</h3>
     <div class="demo-label">mini:</div>
     <div>
-      <date-picker :value="new Date()" size="mini"/>
+      <date-picker :value="getFixedDate()" size="mini"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="mini"/>
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="mini"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="mini" />
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="mini" />
     </div>
     <div class="demo-label">small:</div>
     <div>
-      <date-picker :value="new Date()" size="small"/>
+      <date-picker :value="getFixedDate()" size="small"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="small"/>
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="small"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="small" />
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="small" />
     </div>
     <div class="demo-label">normal:</div>
     <div>
-      <date-picker :value="new Date()" size="normal"/>
+      <date-picker :value="getFixedDate()" size="normal"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="normal"/>
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="normal"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="normal" />
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="normal" />
     </div>
     <div class="demo-label">large:</div>
     <div>
-      <date-picker :value="new Date()" size="large"/>
+      <date-picker :value="getFixedDate()" size="large"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="large"/>
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="large"/>
     </div>
     <div>
-      <date-picker range :value="[new Date(), new Date()]" size="large" />
+      <date-picker range :value="[getFixedDate(), getFixedDate()]" size="large" />
     </div>
   </div>
 </template>

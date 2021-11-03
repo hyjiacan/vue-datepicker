@@ -6,6 +6,7 @@ import types from '../../assets/script/types'
 import formats from '../../assets/script/formats'
 import util from '../../assets/script/util'
 import placeholders from '../../assets/script/placeholders'
+import fixedDate from "@/assets/script/fixedDate";
 
 export default {
   name: 'DatePicker',
@@ -13,7 +14,7 @@ export default {
   data() {
     return {
       types,
-      singleValue: util.format(new Date(), formats.date),
+      singleValue: util.format(fixedDate.getDate(), formats.date),
       isVisible: false,
       // 存储选中值更新事件的源信息
       _eventSrc: 'init'

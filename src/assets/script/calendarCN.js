@@ -8,6 +8,8 @@
  * Email : zzyss86@qq.com
  */
 
+import fixedDate from "@/assets/script/fixedDate";
+
 // ---------------------------------------------
 // 于 2021.01.25 添加
 // 以上为原代码注释
@@ -442,7 +444,7 @@ function isLeapYear(year) {
  */
 function formatDate(year, month, day, _minYear) {
   const argsLen = arguments.length
-  const now = new Date()
+  const now = fixedDate.getDate()
   year = argsLen ? parseInt(year, 10) : now.getFullYear()
   month = argsLen ? parseInt(month - 1, 10) : now.getMonth()
   day = argsLen ? parseInt(day, 10) || now.getDate() : now.getDate()

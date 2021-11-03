@@ -1,5 +1,7 @@
+import DatePicker from '@/components/index'
+
 export default {
-  data () {
+  data() {
     return {
       weekStart: 6,
       year: '2020',
@@ -14,6 +16,11 @@ export default {
       rdate: ['2020-01-01', '2022-10-01'],
       rtime: ['12:15', '20:30'],
       rdatetime: ['2020-01-01 12:15', '2022-10-01 20:30']
+    }
+  },
+  methods: {
+    getFixedDate() {
+      return DatePicker.$util.get()
     }
   }
 }

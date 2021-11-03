@@ -1,4 +1,5 @@
 import dateUtil from './date'
+import fixedDate from "@/assets/script/fixedDate";
 
 /**
  * 获取上个月剩下的天数(距离这个月一周内)
@@ -172,7 +173,7 @@ const util = {
    * @return {number}
    */
   getDayOfYear(date, includeCurrentMonth) {
-    date = date ? this.parse(date) : new Date()
+    date = date ? this.parse(date) : fixedDate.getDate()
     let days = 0
     if (includeCurrentMonth !== false) {
       days += date.getDate()
@@ -255,7 +256,7 @@ const util = {
    * @return {*[]}
    */
   makeDateView(date, weekStart) {
-    date = date ? this.parse(date) : new Date()
+    date = date ? this.parse(date) : fixedDate.getDate()
     // 一共是7列5行
     const size = 7 * 5
     const prevMonthDays = getPrevMonthDays(date, weekStart || 0)
@@ -515,7 +516,7 @@ const util = {
     }
 
     if (typeof date === 'string') {
-      let today = this.format(new Date(), 'yyyy-MM-dd')
+      let today = this.format(fixedDate.getDate(), 'yyyy-MM-dd')
       if (/^\d{4}$/.test(date)) {
         // 2018 -> 2018-01-01
         date = `${date}-01-01`

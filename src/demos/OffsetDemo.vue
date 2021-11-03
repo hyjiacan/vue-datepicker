@@ -51,9 +51,11 @@
 
 <script>
 import util from '../assets/script/util'
+import mixin from "@/demos/mixin";
 
 export default {
   name: 'OffsetDemo',
+  mixins: [mixin],
   filters: {
     format(val) {
       return util.format(val, 'yyyy-MM-dd')
@@ -61,7 +63,7 @@ export default {
   },
   data() {
     return {
-      date: new Date(),
+      date: this.getFixedDate(),
       obj: {
         year: 0,
         month: 0,

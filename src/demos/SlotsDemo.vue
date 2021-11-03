@@ -104,7 +104,7 @@ export default {
   name: 'SlotsDemo',
   mixins: [mixin],
   data() {
-    const date = new Date()
+    const date = this.getFixedDate()
     const today = date.getDate()
     return {
       date,
@@ -174,6 +174,7 @@ export default {
     border-color: #126ac4;
   }
 }
+
 .custom-footer {
   padding: 5px 10px;
   overflow: auto;

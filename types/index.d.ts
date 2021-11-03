@@ -160,4 +160,18 @@ export interface $util {
    * @return {Date} 偏移后的日期对象（新对象)
    */
   offsetDate(date: Date, offset: DateOffset | string): Date;
+
+  /**
+   * 获取被修正过的日期对象
+   * 其修正依赖 setDate 接口
+   * @see setDate
+   * @return {Date} 被修正过的日期对象
+   */
+  getDate(): Date;
+
+  /**
+   * 设置当前日期（用于修正当前的错误日期，比如使用服务器时间的情况）
+   * @param timestamp 当前的时间戳，其什可以是 秒 或者 毫秒
+   */
+  setDate(timestamp: Number): void;
 }

@@ -39,6 +39,7 @@ import DatePanel from '../panels/DatePanel'
 import util from '../../assets/script/util'
 import types from '../../assets/script/types'
 import TimePanel from '../panels/TimePanel'
+import fixedDate from "@/assets/script/fixedDate";
 
 export default {
   name: 'Picker',
@@ -109,7 +110,7 @@ export default {
   data() {
     return {
       currentType: '',
-      viewValue: new Date(),
+      viewValue: fixedDate.getDate(),
       types
     }
   },
@@ -219,7 +220,7 @@ export default {
      */
     dateValue() {
       // 为空时使用当前日期
-      return this.value ? util.parse(this.value, this.format) : new Date()
+      return this.value ? util.parse(this.value, this.format) : fixedDate.getDate()
     },
     renderTimePanel() {
       return this.type === this.types.TIME

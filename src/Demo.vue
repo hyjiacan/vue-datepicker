@@ -37,6 +37,8 @@ export default {
     return {
       date: ''
     }
+  },
+  beforeCreate() {
   }
 }
 </script>

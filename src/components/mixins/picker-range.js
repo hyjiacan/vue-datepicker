@@ -1,6 +1,7 @@
 import util from '../../assets/script/util'
 import formats from '../../assets/script/formats'
 import placeholders from '../../assets/script/placeholders'
+import fixedDate from "@/assets/script/fixedDate";
 
 export default {
   props: {
@@ -22,8 +23,8 @@ export default {
   },
   data() {
     return {
-      beginValue: util.format(new Date(), formats.date),
-      endValue: util.format(new Date(), formats.date)
+      beginValue: util.format(fixedDate.getDate(), formats.date),
+      endValue: util.format(fixedDate.getDate(), formats.date)
     }
   },
   watch: {

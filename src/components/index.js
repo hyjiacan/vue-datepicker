@@ -3,6 +3,7 @@ import DatePicker from './pickers/date-picker'
 import '../assets/icons/iconfont.css'
 import '../assets/style/style.less'
 import util from '../assets/script/util'
+import fixedDate from "@/assets/script/fixedDate";
 
 DatePicker.$util = {
   format: util.format.bind(util),
@@ -13,7 +14,9 @@ DatePicker.$util = {
   getWeekOfYear: util.getWeekOfYear.bind(util),
   getWeekOfMonth: util.getWeekOfMonth.bind(util),
   getDateRange: util.getDateRange.bind(util),
-  offsetDate: util.offsetDate.bind(util)
+  offsetDate: util.offsetDate.bind(util),
+  getDate: fixedDate.getDate.bind(fixedDate),
+  setDate: fixedDate.setDate.bind(fixedDate)
 }
 
 export default DatePicker

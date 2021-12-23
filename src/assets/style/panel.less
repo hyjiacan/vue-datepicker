@@ -185,12 +185,13 @@ table + .date-picker--panel-time {
   }
 }
 
-
 .date-picker--panel-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: larger;
   color: #555555;
+  line-height: 25px;
 
   .datepicker-iconfont {
     cursor: pointer;
@@ -204,7 +205,7 @@ table + .date-picker--panel-time {
 
   &-year, &-month {
     cursor: pointer;
-    padding: 2px;
+    padding: 0 2px;
 
     &:hover {
       color: #0084fc;
@@ -213,6 +214,8 @@ table + .date-picker--panel-time {
 
   &-container {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 

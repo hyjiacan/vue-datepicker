@@ -516,7 +516,8 @@ const util = {
     }
 
     if (typeof date === 'string') {
-      let today = this.format(fixedDate.getDate(), 'yyyy-MM-dd')
+      const now = fixedDate.getDate()
+      let today = this.format(now, 'yyyy-MM-dd')
       if (/^\d{4}$/.test(date)) {
         // 2018 -> 2018-01-01
         date = `${date}-01-01`

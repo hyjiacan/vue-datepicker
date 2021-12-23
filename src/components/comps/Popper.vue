@@ -18,6 +18,20 @@
 </template>
 
 <script>
+// PATCH: Array.find
+// Popper JS 中使用了 find 方法
+if (!Array.prototype.find) {
+  // eslint-disable-next-line
+  Array.prototype.find = function (indicator) {
+    for (let i = 0; i < this.length; i++) {
+      const item = this[i];
+      if (indicator(item)) {
+        return item
+      }
+    }
+    return null
+  }
+}
 export default {
   name: 'Popper',
   props: {

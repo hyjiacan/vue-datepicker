@@ -172,6 +172,7 @@ export interface $util {
   /**
    * 设置当前日期（用于修正当前的错误日期，比如使用服务器时间的情况）
    * @param timestamp 当前的时间戳，其什可以是 秒 或者 毫秒
+   * @return {Date} 新的日期对象
    */
-  setDate(timestamp: Number): void;
+  setDate(timestamp: Number): Date;
 }

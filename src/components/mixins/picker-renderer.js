@@ -110,7 +110,6 @@ export default {
       if (this.$slots.shortcut || this.shortcuts.length) {
         slots.unshift(this.renderShortcuts(this.$slots.shortcut))
       }
-      console.log(this.id, slots)
 
       return h(Popper, {
         props: {
@@ -290,8 +289,7 @@ export default {
       },
       attrs: {
         tabindex: '0',
-        'datepicker-id': this.id,
-        title: this.id
+        'datepicker-id': this.id
       },
       on: {
         focus: this.onFocus,

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-// import test from './demos/test'
+import test from './demos/test'
 import Demo from './Demo'
 import Info from './Info'
 
@@ -14,7 +14,7 @@ export default {
   name: 'App',
   components: {Info, Demo},
   mounted() {
-    // test.run()
+    test.run()
   }
 }
 </script>

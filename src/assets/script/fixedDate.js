@@ -11,14 +11,19 @@ class FixedDate {
   /**
    * 指定当前时间戳
    * @param {Number} timestamp 单位为秒或毫秒
+   * @return {Date} 新的日期对象
    */
   setDate(timestamp) {
+    if (!timestamp) {
+      throw new Error(`Invalid timestamp of date: ${timestamp}`)
+    }
     if (timestamp.toString().length === 10) {
       this.timestamp = timestamp * 1000
     } else {
       this.timestamp = timestamp
     }
     this.updateTime = new Date()
+    return this.getDate()
   }
 
   /**

@@ -6,17 +6,13 @@
     </template>
     <template v-slot:header>
       <div class="date-picker--panel-header-container">
-        <div>
-          <span @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></span>
-        </div>
-        <div>
+        <span @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></span>
+        <span>
           <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{ viewValue.getFullYear() }}年</span>
           <span class="date-picker--panel-header-month"
                 @click="$emit('pick-month')">{{ viewValue.getMonth() + 1 }}月</span>
-        </div>
-        <div>
-          <span @click="onNextMonth" class="datepicker-iconfont datepicker--icon-right"></span>
-        </div>
+        </span>
+        <span @click="onNextMonth" class="datepicker-iconfont datepicker--icon-right"></span>
       </div>
     </template>
     <template v-slot:title>

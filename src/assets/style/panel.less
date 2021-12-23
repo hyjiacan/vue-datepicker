@@ -135,17 +135,19 @@
 
 
 .date-picker--panel-header {
-  // display: grid;
-  // grid-template-columns: 48px auto 48px;
+  display: flex;
+  justify-content: space-between;
   font-size: larger;
   color: #555555;
 
   .datepicker-iconfont {
     cursor: pointer;
+    flex-shrink: 0;
   }
 
   &-prev, &-next {
     cursor: default;
+    flex-shrink: 0;
   }
 
   &-year, &-month {
@@ -158,9 +160,7 @@
   }
 
   &-container {
-    // display: grid;
-    // grid-template-columns: 30px auto 30px;
-    grid-auto-flow: column;
+    display: flex;
   }
 }
 

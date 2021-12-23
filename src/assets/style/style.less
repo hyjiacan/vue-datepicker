@@ -4,7 +4,6 @@
   &:before {
     display: inline-block;
     font-size: 22px;
-    //vertical-align: middle;
   }
 
   &:hover {
@@ -225,18 +224,11 @@
   display: flex;
 }
 
-//.date-picker--range-begin input {
-//  text-align: right;
-//}
-//
-//.date-picker--range-end input {
-//  text-align: left;
-//}
-
 .date-picker--range-separator {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 
   &:after {
     content: ' ';
@@ -342,5 +334,5 @@
   position: relative;
 }
 
-@import "width";
+@import "size";
 @import "panel";

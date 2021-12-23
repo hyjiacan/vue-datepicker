@@ -36,15 +36,8 @@
   vertical-align: middle;
   color: #444444;
 
-  &:focus {
+  &:focus, &:active {
     outline: 1px solid #8dc3ee;
-  }
-
-  .date-picker--value-wrapper {
-    display: inline-block;
-    width: 100%;
-    flex-grow: 1;
-    position: relative;
   }
 
   input {
@@ -60,6 +53,17 @@
     background-color: #ffffff;
     cursor: pointer;
     float: left;
+  }
+}
+
+.date-picker--value-wrapper {
+  display: inline-block;
+  width: 100%;
+  flex-grow: 1;
+  position: relative;
+
+  input {
+    pointer-events: none;
   }
 }
 

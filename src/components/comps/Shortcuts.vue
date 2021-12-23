@@ -1,8 +1,10 @@
 <template>
   <div class="date-picker--shortcuts">
-      <span class="date-picker--shortcuts-button" v-for="(item, index) in data" :key="index" @click="onClick(item)">
+    <slot>
+        <span class="date-picker--shortcuts-button" v-for="(item, index) in data" :key="index" @click="onClick(item)">
         {{ item.text }}
       </span>
+    </slot>
   </div>
 </template>
 

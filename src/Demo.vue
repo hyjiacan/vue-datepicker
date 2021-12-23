@@ -1,20 +1,20 @@
 <template>
   <div class="demo">
-    <a-demo/>
     <div class="demo-grid">
-      <single-demo/>
-      <size-demo/>
+      <a-demo/>
+      <offset-demo/>
     </div>
     <div class="demo-grid">
+      <single-demo/>
       <range-demo/>
+    </div>
+    <div class="demo-grid">
+      <size-demo/>
       <clear-demo/>
     </div>
     <div class="demo-grid">
       <slots-demo/>
       <dynamic-type-demo/>
-    </div>
-    <div class="demo-grid">
-      <offset-demo/>
     </div>
   </div>
 </template>

@@ -13,6 +13,7 @@ export default {
   mixins: [props, range, renderer, triggers],
   data() {
     return {
+      id: `${new Date().getTime()}-${Math.round(Math.random() * 1000)}`,
       types,
       singleValue: util.format(fixedDate.getDate(), formats.date),
       isVisible: false,

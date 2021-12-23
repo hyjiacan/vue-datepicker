@@ -86,7 +86,8 @@ export default {
           value: this[valueName],
           readonly: !this.allowEdit,
           disabled: 'disabled',
-          placeholder
+          placeholder,
+          tabindex: -1
         },
         on: {
           input: e => {
@@ -109,6 +110,7 @@ export default {
       if (this.$slots.shortcut || this.shortcuts.length) {
         slots.unshift(this.renderShortcuts(this.$slots.shortcut))
       }
+      console.log(this.id, slots)
 
       return h(Popper, {
         props: {
@@ -132,7 +134,7 @@ export default {
       })
     },
     renderShortcuts(content) {
-      const h = this.h.bind(this, Shortcuts, {
+      const options = {
         props: {
           data: this.shortcuts
         },
@@ -142,13 +144,13 @@ export default {
             this.updateValue(value)
           }
         }
-      })
-
-      if (content && content.length) {
-        return h(Array.isArray(content) ? content : [content])
       }
 
-      return h()
+      if (content && content.length) {
+        return this.h(Shortcuts, options, Array.isArray(content) ? content : [content])
+      }
+
+      return this.h(Shortcuts, options)
     },
     /**
      *
@@ -287,7 +289,9 @@ export default {
         'date-picker--custom-render': this.valueSlot
       },
       attrs: {
-        tabindex: '0'
+        tabindex: '0',
+        'datepicker-id': this.id,
+        title: this.id
       },
       on: {
         focus: this.onFocus,

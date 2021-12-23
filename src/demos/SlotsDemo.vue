@@ -22,6 +22,15 @@
         </div>
       </template>
     </date-picker>
+    <date-picker type="date" v-model="date">
+      <template v-slot:shortcut>
+        <div class="b1">
+          <div @click="onShortcutClick('date', '-1y')">最近一年</div>
+          <div @click="onShortcutClick('date', '-1m')">最近一月</div>
+          <button @click="onShortcutClick('date', '-1d')">最近一天</button>
+        </div>
+      </template>
+    </date-picker>
 
     <div class="date-label">范围 - 自定义</div>
     <date-picker type="date" v-model="rdate" range>
@@ -32,6 +41,15 @@
           <div>只是为了演示</div>
           <div>自定义按钮</div>
           <div>是这么写的</div>
+        </div>
+      </template>
+    </date-picker>
+    <date-picker type="date" v-model="rdate" range>
+      <template v-slot:shortcut>
+        <div class="b1">
+          <div @click="onShortcutClick('rdate','-1y')">最近一年</div>
+          <div @click="onShortcutClick('rdate','-1m')">最近一月</div>
+          <button @click="onShortcutClick('rdate','-1d')">最近一天</button>
         </div>
       </template>
     </date-picker>
@@ -99,6 +117,7 @@
 <script>
 import mixin from './mixin'
 import util from '../assets/script/util'
+import DatePicker from "@/components";
 
 export default {
   name: 'SlotsDemo',
@@ -146,6 +165,18 @@ export default {
   methods: {
     onOk() {
       this.visible = false
+    },
+    onShortcutClick(dateName, offset) {
+      const value = this[dateName]
+      const now = DatePicker.$util.getDate()
+      if (Array.isArray(value)) {
+        this[dateName] = [
+          DatePicker.$util.offsetDate(now, offset),
+          now
+        ]
+      } else {
+        this[dateName] = DatePicker.$util.offsetDate(now, offset)
+      }
     }
   }
 }

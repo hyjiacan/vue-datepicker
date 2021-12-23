@@ -74,25 +74,72 @@
   .date-picker--panel-body {
     padding-top: 5px;
   }
+}
 
-  .date-picker--panel-time-body {
-    width: 240px;
-    height: 160px;
-    margin: 0 auto;
+table + .date-picker--panel-time {
+  border-top: 1px solid #ededed;
+  padding-top: 5px;
 
-    td {
-      padding: 0;
+  .date-picker--panel-time--value {
+    position: relative;
+
+    &:hover {
+      .date-picker--panel-time-wheel {
+        display: block;
+      }
+
+      > span:first-child {
+        color: #0084fc;
+      }
+    }
+  }
+
+  .date-picker--panel-time-wheel {
+    display: none;
+    position: absolute;
+    bottom: 30px;
+    left: -10%;
+    background-color: #ffffff;
+    width: 130%;
+  }
+}
+
+.date-picker--panel-time--body {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  line-height: 30px;
+}
+
+.date-picker--panel-time--value {
+  width: 60px;
+
+  & > span {
+
+    &:first-child {
+      font-size: 18px;
+      color: #444444;
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      display: inline-block;
     }
   }
 }
 
-.date-picker--panel-time-title {
-  font-size: large;
+.date-picker--panel-time--sep {
+  flex-shrink: 0;
+  width: 24px;
+}
+
+.date-picker--panel-time-wheel {
+  border-radius: 2px;
+  box-shadow: 0 0 5px 1px #cccccc;
 }
 
 .date-picker--panel-time-wheel-value {
   color: #126ac4;
   border: 1px solid #cccccc;
+  border-style: solid none;
   padding: 2px 0;
 }
 
@@ -109,6 +156,11 @@
 .date-picker--panel-time-wheel-next > span:last-child {
   color: #cccccc;
   border: 1px solid #f0f0f0;
+}
+
+.date-picker--panel-time-wheel-prev-button,
+.date-picker--panel-time-wheel-next-button {
+  cursor: pointer;
 }
 
 .date-picker--panel-body {

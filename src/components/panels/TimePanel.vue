@@ -4,34 +4,24 @@
       <slot name="title"/>
     </div>
     <div class="date-picker--panel-body">
-      <table class="date-picker--panel-time-body">
-        <thead class="date-picker--panel-time-title">
-        <tr>
-          <td><span>{{this.time.hour | pad}}</span></td>
-          <td style="width: 16px"><span>:</span></td>
-          <td><span>{{this.time.minute | pad}}</span></td>
-          <td style="width: 16px"><span>:</span></td>
-          <td><span>{{this.time.second | pad}}</span></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>
+      <div class="date-picker--panel-time--body">
+          <div class="date-picker--panel-time--value">
+            <span>{{ this.time.hour | pad }}</span>
             <time-wheel class="date-picker--panel-time-h" :value.sync="time.hour" :disabled.sync="disabled.hour"
                         :data="hours"/>
-          </td>
-          <td/>
-          <td>
+          </div>
+          <div class="date-picker--panel-time--sep">:</div>
+          <div class="date-picker--panel-time--value">
+            <span>{{ this.time.minute | pad }}</span>
             <time-wheel class="date-picker--panel-time-m" :value.sync="time.minute" :disabled.sync="disabled.minute"
                         :data="minutes"/>
-          </td>
-          <td/>
-          <td>
+          </div>
+          <div class="date-picker--panel-time--sep">:</div>
+          <div class="date-picker--panel-time--value">
+            <span>{{ this.time.second | pad }}</span>
             <time-wheel class="date-picker--panel-time-s" :value.sync="time.second" :data="seconds"/>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+          </div>
+      </div>
     </div>
   </div>
 </template>

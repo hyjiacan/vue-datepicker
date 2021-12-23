@@ -3,15 +3,15 @@
     <div class="date-picker--panel-time-wheel-prev-button datepicker-iconfont datepicker--icon-top"
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
     <div class="date-picker--panel-time-wheel-prev">
-      <span :class="getCellClass(getPrevValue(prevValue))">{{getPrevValue(prevValue)}}</span>
-      <span :class="getCellClass(prevValue)" @click="goPrev">{{prevValue}}</span>
+      <span :class="getCellClass(getPrevValue(prevValue))">{{ getPrevValue(prevValue) | pad }}</span>
+      <span :class="getCellClass(prevValue)" @click="goPrev">{{ prevValue | pad }}</span>
     </div>
     <div class="date-picker--panel-time-wheel-value">
-      <span :class="getCellClass(viewValue)">{{viewValue}}</span>
+      <span :class="getCellClass(viewValue)">{{ viewValue| pad }}</span>
     </div>
     <div class="date-picker--panel-time-wheel-next">
-      <span :class="getCellClass(nextValue)" @click="goNext">{{nextValue}}</span>
-      <span :class="getCellClass(getNextValue(nextValue))">{{getNextValue(nextValue)}}</span>
+      <span :class="getCellClass(nextValue)" @click="goNext">{{ nextValue| pad }}</span>
+      <span :class="getCellClass(getNextValue(nextValue))">{{ getNextValue(nextValue)| pad }}</span>
     </div>
     <div class="date-picker--panel-time-wheel-next-button datepicker-iconfont datepicker--icon-bottom"
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import util from '@/assets/script/util'
+
 export default {
   name: 'TimeWheel',
   props: {
@@ -33,8 +35,10 @@ export default {
     disabled: {
       type: Boolean
     }
+  }, filters: {
+    pad: util.pad
   },
-  data () {
+  data() {
     return {
       viewValue: 0,
       buttonDownHandle: -1
@@ -43,35 +47,35 @@ export default {
   inject: {
     picker: 'datePicker'
   },
-  mounted () {
+  mounted() {
     this.viewValue = this.value
   },
   watch: {
-    value (v) {
+    value(v) {
       this.viewValue = v
     }
   },
   computed: {
-    prevValue () {
+    prevValue() {
       return this.getPrevValue(this.viewValue)
     },
-    nextValue () {
+    nextValue() {
       return this.getNextValue(this.viewValue)
     },
-    max () {
+    max() {
       return this.data.max
     }
   },
   methods: {
-    isDisabled (val) {
+    isDisabled(val) {
       return !this.data[val]
     },
-    getCellClass (val) {
+    getCellClass(val) {
       return {
         'date-picker--panel-value-disabled': this.isDisabled(val)
       }
     },
-    getPrevValue (v) {
+    getPrevValue(v) {
       let newValue = v - 1
       if (newValue < 0) {
         return this.max
@@ -79,7 +83,7 @@ export default {
 
       return newValue
     },
-    getNextValue (v) {
+    getNextValue(v) {
       let newValue = v + 1
       if (newValue > this.max) {
         return 0
@@ -87,7 +91,7 @@ export default {
 
       return newValue
     },
-    async onWheel (e) {
+    async onWheel(e) {
       if (!this.picker.mousewheel) {
         return
       }
@@ -105,7 +109,7 @@ export default {
         this.goNext()
       }
     },
-    goPrev () {
+    goPrev() {
       this.viewValue = this.prevValue
       if (this.isDisabled(this.viewValue)) {
         this.$emit('update:disabled', true)
@@ -114,7 +118,7 @@ export default {
       this.$emit('update:value', this.viewValue)
       this.$emit('update:disabled', false)
     },
-    goNext () {
+    goNext() {
       this.viewValue = this.nextValue
       if (this.isDisabled(this.viewValue)) {
         this.$emit('update:disabled', true)
@@ -123,17 +127,17 @@ export default {
       this.$emit('update:value', this.viewValue)
       this.$emit('update:disabled', false)
     },
-    onButtonDown (button) {
+    onButtonDown(button) {
       clearInterval(this.buttonDownHandle)
       this.clickButton(button)
       this.buttonDownHandle = setInterval(() => {
         this.clickButton(button)
       }, 160)
     },
-    onButtonUp () {
+    onButtonUp() {
       clearInterval(this.buttonDownHandle)
     },
-    clickButton (button) {
+    clickButton(button) {
       this.$nextTick(() => {
         if (button === 'prev') {
           this.goPrev()
@@ -145,7 +149,7 @@ export default {
       })
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     clearInterval(this.buttonDownHandle)
   }
 }

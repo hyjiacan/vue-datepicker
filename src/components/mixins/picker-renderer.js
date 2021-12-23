@@ -76,7 +76,11 @@ export default {
      * @return {*|void}
      */
     renderInput(valueName, placeholder) {
-      return this.h('input', {
+      return this.h('span', {
+        attrs: {
+          class: 'date-picker--value-wrapper'
+        }
+      }, [this.h('input', {
         attrs: {
           type: 'text',
           value: this[valueName],
@@ -89,7 +93,7 @@ export default {
             this[valueName] = e.target.value
           }
         }
-      })
+      })])
     },
     /**
      *
@@ -128,9 +132,7 @@ export default {
       })
     },
     renderShortcuts(content) {
-      content = content || []
-
-      return this.h(Shortcuts, {
+      const h = this.h.bind(this, Shortcuts, {
         props: {
           data: this.shortcuts
         },
@@ -140,7 +142,13 @@ export default {
             this.updateValue(value)
           }
         }
-      }, Array.isArray(content) ? content : [content])
+      })
+
+      if (content && content.length) {
+        return h(Array.isArray(content) ? content : [content])
+      }
+
+      return h()
     },
     /**
      *
@@ -202,8 +210,8 @@ export default {
       return this.renderPopper(
         content,
         this.renderValueSlot() || this.renderLayout(
-        this.renderInput('formattedBeginValue', this.placeholderBeginText),
-        this.renderInput('formattedEndValue', this.placeholderEndText)
+          this.renderInput('formattedBeginValue', this.placeholderBeginText),
+          this.renderInput('formattedEndValue', this.placeholderEndText)
         )
       )
     },
@@ -212,8 +220,8 @@ export default {
       return this.renderPopper(
         this.renderPicker('beginValue', 'isVisible', 'singleLimit', this.singleTitle),
         this.renderValueSlot() || this.renderLayout(
-        this.renderInput('formattedBeginValue', this.placeholderText),
-        this.renderInput('formattedEndValue')
+          this.renderInput('formattedBeginValue', this.placeholderText),
+          this.renderInput('formattedEndValue')
         )
       )
     },
@@ -232,12 +240,12 @@ export default {
       return this.renderPopper(
         this.renderPicker('singleValue', 'isVisible', 'singleLimit', this.singleTitle),
         this.renderValueSlot() || this.h('div',
-        {
-          attrs: {
-            'class': 'date-picker--container'
-          }
-        },
-        content)
+          {
+            attrs: {
+              'class': 'date-picker--container'
+            }
+          },
+          content)
       )
     },
     renderIcon() {

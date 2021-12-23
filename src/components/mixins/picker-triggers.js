@@ -15,6 +15,10 @@ export default {
       if (this.trigger !== 'click') {
         return
       }
+      // TODO
+      if (!this.$refs.popper) {
+        return
+      }
       const elClicked = util.isParent(target, this.$el) || util.isParent(target, this.$refs.popper.$refs.body)
 
       if (this.isVisible) {

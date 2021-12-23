@@ -1,6 +1,6 @@
-@icon-size: 24px;
+@icon-size: 30px;
 @dash-size: 16px;
-@clear-size: 20px;
+@clear-size: 24px;
 
 
 .date-picker--year:not(.date-picker--custom-render) {
@@ -80,48 +80,48 @@
 }
 
 .date-picker--container {
-  display: grid;
+  display: flex;
   width: 100%;
 }
 
 .date-picker--show-icon {
   .date-picker--container {
-    grid-template-columns: @icon-size auto;
+    // grid-template-columns: @icon-size auto;
   }
 }
 
 .date-picker--clearable {
   .date-picker--container {
-    grid-template-columns: auto @clear-size;
+    // grid-template-columns: auto @clear-size;
   }
 }
 
 .date-picker--show-icon.date-picker--clearable {
   .date-picker--container {
-    grid-template-columns: @icon-size auto @clear-size;
+    // grid-template-columns: @icon-size auto @clear-size;
   }
 }
 
 .date-picker--range {
   .date-picker--container {
-    grid-template-columns: auto @dash-size auto;
+    // grid-template-columns: auto @dash-size auto;
   }
 
   &.date-picker--show-icon {
     .date-picker--container {
-      grid-template-columns: @icon-size auto @dash-size auto;
+      // grid-template-columns: @icon-size auto @dash-size auto;
     }
   }
 
   &.date-picker--clearable {
     .date-picker--container {
-      grid-template-columns: auto @dash-size auto @clear-size;
+      // grid-template-columns: auto @dash-size auto @clear-size;
     }
   }
 
   &.date-picker--show-icon.date-picker--clearable {
     .date-picker--container {
-      grid-template-columns: @icon-size auto @dash-size auto @clear-size;
+      // grid-template-columns: @icon-size auto @dash-size auto @clear-size;
     }
   }
 }

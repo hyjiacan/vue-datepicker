@@ -49,8 +49,8 @@ export default {
 }
 
 .demo-grid {
-  display: grid;
-  grid-template-columns: 50% 50%;
+  // display: grid;
+  // grid-template-columns: 50% 50%;
 }
 
 .date-label {

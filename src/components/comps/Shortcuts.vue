@@ -1,10 +1,8 @@
 <template>
   <div class="date-picker--shortcuts">
-    <slot>
       <span class="date-picker--shortcuts-button" v-for="(item, index) in data" :key="index" @click="onClick(item)">
         {{ item.text }}
       </span>
-    </slot>
   </div>
 </template>
 
@@ -18,6 +16,8 @@ export default {
       type: Array,
       required: true
     }
+  },
+  mounted() {
   },
   methods: {
     onClick(item) {
@@ -35,7 +35,7 @@ export default {
         })
       } else {
         this.$emit('change', {value})
-        }
+      }
     }
   }
 }

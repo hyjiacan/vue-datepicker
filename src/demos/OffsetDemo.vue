@@ -8,7 +8,7 @@
       <div>
         <p>
           <span>偏移对象:</span>
-          <span class="bold">{{formattedObj}}</span>
+          <span class="bold">{{JSON.stringify(formattedObj)}}</span>
         </p>
         <div>
           <span>年</span>

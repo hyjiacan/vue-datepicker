@@ -3,6 +3,7 @@
     <div class="date-label">时间修正</div>
     <date-picker type="datetime" v-model="fixedTime"/>
     <div class="tips">
+      <div><code>DateUtil.setDate(timestamp)</code></div>
       <div>提供时间修正功能，支持在终端界面上使用服务器时间</div>
       <div>修改此值会影响所有的当前日期</div>
     </div>

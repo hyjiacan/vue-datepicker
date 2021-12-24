@@ -174,7 +174,8 @@ export default {
         mousewheel: this.mousewheel,
         weekStart: this.weekStart,
         showLunar: this.showLunar,
-        showFestival: this.showFestival
+        showFestival: this.showFestival,
+        marker: this.marker
       }
       if (this.highlightRange && this.isRange) {
         props.highlightRange = [this.beginValue, this.endValue]

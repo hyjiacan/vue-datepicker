@@ -66,6 +66,11 @@ export default {
     showFestival: {
       type: Boolean,
       default: false
+    },
+    // 判断一个日期是否需要被标记，如果需要，
+    // 则返回 string (表示 html)
+    marker: {
+      type: Function
     }
   }
 }

@@ -68,10 +68,11 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 [popper.js](https://popper.js.org/)
 
 ```html
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper.min.js"></script>
 <script>
-// 必须执行此设置
-window['@popperjs/core'] = Popper
+  // 必须执行此设置
+  window['@popperjs/core'] = Popper
 </script>
 ```
 
@@ -95,6 +96,28 @@ export default {
       date: new Date(),
       min: '2012-12-12',
       max: '2020-12-12'
+    }
+  }
+}
+</script>
+```
+
+作为日历使用
+
+```vue
+
+<template>
+  <picker v-model="date"/>
+</template>
+<script>
+import {Picker} from '@hyjiacan/vue-datepicker'
+import '@hyjiacan/vue-datepicker/dist/datepicker.css'
+
+export default {
+  components: {Picker},
+  data() {
+    return {
+      date: ''
     }
   }
 }
@@ -367,6 +390,27 @@ const placeholders = {
 
 是否显示农历信息。
 
+#### show-festival
+
+> Since 2.2.1
+
+- type: Boolean
+- default: `false`
+
+是否显示节日信息。
+
+#### marker
+
+> Since 2.3.0
+
+- type: Function
+
+标记函数，用于在日历上做标记。
+
+此函数接收一个参数 `e`，其在不同的类型时，结构是不同的。
+
+但是，其始终包含一个 `type` 属性，其标识了当前的类型: `date/month/year`
+
 ## 事件
 
 #### change
@@ -387,7 +431,7 @@ const placeholders = {
 
 放置自定义的快捷按钮。
 
-> 注意：由于在设计上通过 `blur` 事件关闭弹框，所以应该尽量避免在此插槽中使用会获得焦点的元素(e.g. `button/input/select`)，以防止弹框意外关闭。
+> 注意：在指定了 `trigger=blur` 时，应该尽量避免在此插槽中使用会获得焦点的元素(e.g. `button/input/select`)，以防止弹框意外关闭。
 
 #### value
 
@@ -408,10 +452,10 @@ const placeholders = {
 ```vue
 
 <date-picker range>
-  <template v-slot:title>
-    <div>左侧的标题</div>
-    <div>右侧的标题</div>
-  </template>
+<template v-slot:title>
+  <div>左侧的标题</div>
+  <div>右侧的标题</div>
+</template>
 </date-picker>
 ```
 
@@ -430,9 +474,10 @@ const placeholders = {
 ```javascript
 import DatePicker from '@hyjiacan/vue-datepicker'
 // DatePicker.$util.format
+// 或者
+import {DateUtil} from '@hyjiacan/vue-datepicker'
+// DateUtil.format
 ```
-
-导出的工具函数，在属性 `$util` 上，如: `DatePicker.$util.format`
 
 > 所有的格式化串，请参照 [内置格式定义](#内置格式定义) 的写法。
 

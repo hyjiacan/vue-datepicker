@@ -52,6 +52,10 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
+  > div {
+    width: 400px;
+  }
 }
 
 .date-label {

@@ -70,12 +70,6 @@
   }
 }
 
-.date-picker--panel-time {
-  .date-picker--panel-body {
-    padding-top: 5px;
-  }
-}
-
 table + .date-picker--panel-time {
   border-top: 1px solid #ededed;
   padding-top: 5px;
@@ -97,10 +91,22 @@ table + .date-picker--panel-time {
   .date-picker--panel-time-wheel {
     display: none;
     position: absolute;
-    bottom: 30px;
-    left: -10%;
+    bottom: 40px;
+    left: -10px;
     background-color: #ffffff;
-    width: 130%;
+    width: 80px;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 36px;
+      border: 4px solid #ffffff;
+      border-color: transparent #ffffff #ffffff transparent;
+      transform: rotate(45deg);
+      bottom: -4px;
+      box-shadow: 2px 2px 2px 1px #dddddd;
+    }
   }
 }
 
@@ -109,11 +115,12 @@ table + .date-picker--panel-time {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  line-height: 30px;
+  line-height: 24px;
 }
 
 .date-picker--panel-time--value {
   width: 60px;
+  padding: 10px 0;
 
   & > span {
 
@@ -129,6 +136,7 @@ table + .date-picker--panel-time {
 .date-picker--panel-time--sep {
   flex-shrink: 0;
   width: 24px;
+  padding: 10px 0;
 }
 
 .date-picker--panel-time-wheel {
@@ -149,6 +157,12 @@ table + .date-picker--panel-time {
   > span {
     display: block;
     border: 1px solid #EEEEEE;
+
+    &:not(.date-picker--panel-value-disabled) {
+      &:hover {
+        color: #75b4ef;
+      }
+    }
   }
 }
 
@@ -224,6 +238,7 @@ table + .date-picker--panel-time {
   width: @size;
   height: @size;
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -303,4 +318,13 @@ table + .date-picker--panel-time {
   &.is-festival {
     color: #d58237;
   }
+}
+
+.date-picker--panel-value--marker {
+  position: absolute;
+  text-align: left;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }

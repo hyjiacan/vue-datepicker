@@ -1,11 +1,12 @@
 import DatePicker from './pickers/date-picker'
+import Picker from "@/components/pickers/Picker";
 
 import '../assets/icons/iconfont.css'
 import '../assets/style/style.less'
 import util from '../assets/script/util'
 import fixedDate from "@/assets/script/fixedDate";
 
-DatePicker.$util = {
+const DateUtil = DatePicker.$util = {
   format: util.format.bind(util),
   parse: util.parse.bind(util),
   getWeekRange: util.getWeekRange.bind(util),
@@ -20,3 +21,8 @@ DatePicker.$util = {
 }
 
 export default DatePicker
+
+export {
+  DateUtil,
+  Picker
+}

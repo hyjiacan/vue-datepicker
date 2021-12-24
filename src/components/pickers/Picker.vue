@@ -47,15 +47,15 @@ export default {
   props: {
     value: {
       type: [Number, String, Date],
-      required: true
+      default: () => new Date()
     },
     type: {
       type: String,
-      required: true
+      default: 'date'
     },
     format: {
       type: String,
-      required: true
+      default: 'yyyy-MM-dd'
     },
     /**
      * 限制的最小值，其值应该是一个数值类型的时间戳
@@ -63,7 +63,7 @@ export default {
      */
     min: {
       type: Number,
-      required: true
+      default: 0
     },
     /**
      * 限制的最小值，其值应该是一个数值类型的时间戳
@@ -71,14 +71,14 @@ export default {
      */
     max: {
       type: Number,
-      required: true
+      default: 0
     },
     /**
      * 标记组件是否可见
      */
     visible: {
       type: Boolean,
-      required: true
+      default: false
     },
     /**
      * 是否允许鼠标滚轮操作
@@ -100,6 +100,9 @@ export default {
     },
     showFestival: {
       type: Boolean
+    },
+    marker: {
+      type: Function
     }
   },
   provide() {

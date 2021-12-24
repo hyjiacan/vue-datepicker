@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import cloneDeep from 'lodash.clonedeep'
 
 export default {
   name: 'BasePanel',
@@ -170,6 +171,14 @@ export default {
         }
         result.push(`<span class="date-picker--panel-value--lunar${isFestival ? ' is-festival' : ''}">${content}</span>`)
       }
+
+      if (this.picker.marker) {
+        const markResult = this.picker.marker(cloneDeep(cell))
+        if (typeof markResult === 'string') {
+          result.push(`<span class="date-picker--panel-value--marker">${markResult}</span>`)
+        }
+      }
+
       return result.join('')
     }
   }

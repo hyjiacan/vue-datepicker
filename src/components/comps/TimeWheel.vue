@@ -3,7 +3,7 @@
     <div class="date-picker--panel-time-wheel-prev-button datepicker-iconfont datepicker--icon-top"
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
     <div class="date-picker--panel-time-wheel-prev">
-      <span :class="getCellClass(getPrevValue(prevValue))">{{ getPrevValue(prevValue) | pad }}</span>
+      <span :class="getCellClass(getPrevValue(prevValue))" @click="goPrev(1)">{{ getPrevValue(prevValue) | pad }}</span>
       <span :class="getCellClass(prevValue)" @click="goPrev">{{ prevValue | pad }}</span>
     </div>
     <div class="date-picker--panel-time-wheel-value">
@@ -11,7 +11,7 @@
     </div>
     <div class="date-picker--panel-time-wheel-next">
       <span :class="getCellClass(nextValue)" @click="goNext">{{ nextValue| pad }}</span>
-      <span :class="getCellClass(getNextValue(nextValue))">{{ getNextValue(nextValue)| pad }}</span>
+      <span :class="getCellClass(getNextValue(nextValue))" @click="goNext(1)">{{ getNextValue(nextValue)| pad }}</span>
     </div>
     <div class="date-picker--panel-time-wheel-next-button datepicker-iconfont datepicker--icon-bottom"
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
@@ -109,8 +109,9 @@ export default {
         this.goNext()
       }
     },
-    goPrev() {
-      this.viewValue = this.prevValue
+    goPrev(offset) {
+      this.viewValue = offset ? this.getPrevValue(this.prevValue) : this.prevValue
+
       if (this.isDisabled(this.viewValue)) {
         this.$emit('update:disabled', true)
         return
@@ -118,8 +119,8 @@ export default {
       this.$emit('update:value', this.viewValue)
       this.$emit('update:disabled', false)
     },
-    goNext() {
-      this.viewValue = this.nextValue
+    goNext(offset) {
+      this.viewValue = offset ? this.getNextValue(this.nextValue) : this.nextValue
       if (this.isDisabled(this.viewValue)) {
         this.$emit('update:disabled', true)
         return

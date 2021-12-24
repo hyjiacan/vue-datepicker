@@ -5,7 +5,7 @@ export default {
   quarter: '选择季度',
   date: '选择日期',
   time: '选择时间',
-  datetime: '选择时间',
+  datetime: '选择日期时间',
 
   yearRange: ['起始年份', '结束年份'],
   monthRange: ['起始月份', '结束月份'],

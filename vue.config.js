@@ -5,12 +5,13 @@ const config = {
 }
 
 if (process.argv.indexOf('--target') === -1 || process.argv.indexOf('lib') === -1) {
-    console.log('Build non-library')
+  console.log('Build non-library')
 } else {
-    console.log('Build library')
+  console.log('Build library')
   config.configureWebpack = {
     externals: [
-      // '@popperjs/core'
+      '@popperjs/core',
+      'lodash.clonedeep'
     ],
     output: {
       library: 'DatePicker',

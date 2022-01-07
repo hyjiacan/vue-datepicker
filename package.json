@@ -39,7 +39,10 @@
     "README.md"
   ],
   "types": "types/index.d.ts",
-  "dependencies": {},
+  "dependencies": {
+    "@popperjs/core": "^2.6.0",
+    "lodash.clonedeep": "^4.5.0"
+  },
   "peerDependencies": {
     "@popperjs/core": "^2.6.0",
     "lodash.clonedeep": "^4.5.0"

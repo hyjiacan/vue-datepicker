@@ -1,6 +1,6 @@
 {
   "name": "@hyjiacan/vue-datepicker",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "main": "dist/datepicker.common.js",
   "unpkg": "dist/datepicker.umd.js",
   "jsdelivr": "dist/datepicker.umd.js",
@@ -39,19 +39,12 @@
     "README.md"
   ],
   "types": "types/index.d.ts",
-  "dependencies": {
-    "@popperjs/core": "^2.6.0",
-    "lodash.clonedeep": "^4.5.0"
-  },
-  "peerDependencies": {
-    "@popperjs/core": "^2.6.0",
-    "lodash.clonedeep": "^4.5.0"
-  },
   "devDependencies": {
     "@popperjs/core": "^2.6.0",
     "@vue/cli-plugin-babel": "^4.2.0",
     "@vue/cli-plugin-eslint": "^4.2.0",
     "@vue/cli-service": "^4.2.0",
+    "lodash.clonedeep": "^4.5.0",
     "babel-eslint": "^10.0.3",
     "core-js": "^3.6.4",
     "eslint": "^6.7.2",
@@ -60,8 +53,8 @@
     "less-loader": "^5.0.0",
     "stylelint": "^13.13.1",
     "stylelint-no-unsupported-browser-features": "^5.0.2",
-    "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "2.6.10",
+    "vue-template-compiler": "2.6.10"
   },
   "eslintConfig": {
     "root": true,

@@ -27,50 +27,32 @@
 }
 
 .date-picker--panel-week, .date-picker--panel-quarter {
-  tr.date-picker--row {
-    td {
+  .date-picker--table-body {
+    .date-picker--table-row {
       color: unset;
       transition: color 312ms, background-color 312ms;
-      background-clip: content-box;
-      box-sizing: content-box;
+      border-radius: 20px;
 
-      @radius: 20px;
-
-      &:first-child {
-        border-radius: @radius 0 0 @radius;
+      .date-picker--panel-value:not(.date-picker--panel-value-disabled) {
+        background-color: transparent;
       }
 
-      &:last-child {
-        border-radius: 0 @radius @radius 0;
-      }
-
-      .date-picker--panel-value {
-        &:hover, &-active {
-          color: unset;
-          background-color: unset;
-        }
-
-        &:hover {
-          border-color: transparent;
-        }
-      }
-    }
-
-    &-active {
-      td {
+      &-active {
         .value-active();
-      }
-    }
 
-    &:hover {
-      td {
+        .date-picker--panel-value:not(.date-picker--panel-value-disabled) {
+          color: inherit;
+        }
+      }
+
+      &:hover {
         .value-hover();
       }
     }
   }
 }
 
-table + .date-picker--panel-time {
+.date-picker--table + .date-picker--panel-time {
   border-top: 1px solid #ededed;
   padding-top: 5px;
 
@@ -179,29 +161,53 @@ table + .date-picker--panel-time {
 
 .date-picker--panel-body {
   box-sizing: border-box;
+}
 
-  table {
-    border-collapse: collapse;
-    width: 280px;
-    height: 280px;
-  }
 
-  th {
+.date-picker--table {
+  border-collapse: collapse;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.date-picker--table-body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.date-picker--table-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+
+.date-picker--table-cell {
+  cursor: default;
+  border: none;
+  padding: 0;
+}
+
+.date-picker--table-header {
+  width: 100%;
+
+  .date-picker--table-cell {
     font-weight: normal;
     padding: 10px 0;
     border: none;
-  }
-
-  td {
-    cursor: default;
-    border: none;
-    padding: 0;
   }
 }
 
 .date-picker--panel-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   font-size: larger;
   color: #555555;
@@ -234,9 +240,8 @@ table + .date-picker--panel-time {
 }
 
 .date-picker--panel-value {
-  @size: 40px;
-  width: @size;
-  height: @size;
+  width: 40px;
+  height: 40px;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -245,9 +250,11 @@ table + .date-picker--panel-time {
   font-size: 14px;
   border: 1px solid transparent;
   margin: 0 auto;
+  background-clip: padding-box;
   box-sizing: border-box;
   border-radius: 8px;
   transition: border-color 618ms, background-color 618ms, color 618ms;
+  cursor: default;
 
   &:not(&-disabled):hover {
     .value-hover();
@@ -320,7 +327,7 @@ table + .date-picker--panel-time {
   }
 }
 
-.date-picker--panel-value--markFunction {
+.date-picker--panel-value--marker {
   position: absolute;
   text-align: left;
   left: 0;

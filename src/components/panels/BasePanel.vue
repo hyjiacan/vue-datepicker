@@ -17,20 +17,21 @@
       </div>
     </div>
     <div class="date-picker--panel-body">
-      <table @wheel="onWheel">
-        <thead>
-        <slot name="title"/>
-        </thead>
-        <tbody>
-        <tr v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker--row" :title="getRowTip(row)"
-            :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
-          <td v-for="(cell, cellIndex) in row" :key="cellIndex" @click="onCellClick(cell)"
-              :title="getCellTitle(cell)" :class="{'date-picker--panel-value-highlight': cell.highlight}">
-            <span class="date-picker--panel-value" :class="getCellClass(cell)" v-html="renderCell(cell)"></span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="date-picker--table" @wheel="onWheel">
+        <div class="date-picker--table-header">
+          <slot name="title"/>
+        </div>
+        <div class="date-picker--table-body">
+          <div v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker--table-row" :title="getRowTip(row)"
+               :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
+            <div class="date-picker--table-cell" v-for="(cell, cellIndex) in row" :key="cellIndex"
+                 @click="onCellClick(cell)"
+                 :title="getCellTitle(cell)" :class="{'date-picker--panel-value-highlight': cell.highlight}">
+              <span class="date-picker--panel-value" :class="getCellClass(cell)" v-html="renderCell(cell)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
       <slot name="append"/>
     </div>
   </div>
@@ -175,7 +176,7 @@ export default {
       if (this.picker.markFunction) {
         const markResult = this.picker.markFunction(cloneDeep(cell))
         if (typeof markResult === 'string') {
-          result.push(`<span class="date-picker--panel-value--markFunction">${markResult}</span>`)
+          result.push(`<span class="date-picker--panel-value--marker">${markResult}</span>`)
         }
       }
 

@@ -101,8 +101,8 @@ export default {
         return ''
       }
       return {
-        'date-picker--row-active': !row.every(cell => !cell.rowActive),
-        'date-picker--row-disabled': !row.every(cell => !cell.disabled)
+        'date-picker--table-row-active': !row.every(cell => !cell.rowActive),
+        'date-picker--table-row-disabled': !row.every(cell => !cell.disabled)
       }
     }
   }

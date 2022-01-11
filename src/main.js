@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import DatePicker, {Picker} from './components/index'
+import DatePicker from './components/index'
 
-Vue.component(DatePicker.name, DatePicker)
-Vue.component(Picker.name, Picker)
+Vue.use(DatePicker)
 
 Vue.config.productionTip = false
 

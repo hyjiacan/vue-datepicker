@@ -21,9 +21,6 @@
         <a href="https://github.com/hyjiacan/vue-datepicker/blob/master/src/Demo.vue">https://github.com/hyjiacan/vue-datepicker/blob/master/src/Demo.vue</a>
       </li>
     </ul>
-    <blockquote>
-      可以通过 <code>const t = new Date('2012-12-12').getTime();DatePicker.$util.set(t)</code> 来修正日期
-    </blockquote>
   </div>
 </template>
 

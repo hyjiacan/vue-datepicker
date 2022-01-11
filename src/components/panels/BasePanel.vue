@@ -172,10 +172,10 @@ export default {
         result.push(`<span class="date-picker--panel-value--lunar${isFestival ? ' is-festival' : ''}">${content}</span>`)
       }
 
-      if (this.picker.marker) {
-        const markResult = this.picker.marker(cloneDeep(cell))
+      if (this.picker.markFunction) {
+        const markResult = this.picker.markFunction(cloneDeep(cell))
         if (typeof markResult === 'string') {
-          result.push(`<span class="date-picker--panel-value--marker">${markResult}</span>`)
+          result.push(`<span class="date-picker--panel-value--markFunction">${markResult}</span>`)
         }
       }
 

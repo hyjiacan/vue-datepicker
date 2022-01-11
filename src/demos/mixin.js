@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     getFixedDate() {
-      return DatePicker.$util.getDate()
+      return DatePicker.util.getDate()
     }
   }
 }

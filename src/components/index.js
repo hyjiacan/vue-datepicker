@@ -6,7 +6,7 @@ import '../assets/style/style.less'
 import util from '../assets/script/util'
 import fixedDate from "@/assets/script/fixedDate";
 
-const DateUtil = DatePicker.$util = {
+DatePicker.util = {
   format: util.format.bind(util),
   parse: util.parse.bind(util),
   getWeekRange: util.getWeekRange.bind(util),
@@ -20,9 +20,16 @@ const DateUtil = DatePicker.$util = {
   setDate: fixedDate.setDate.bind(fixedDate)
 }
 
-export default DatePicker
+/**
+ * @deprecated 请使用 util 代替
+ */
+DatePicker.$util = DatePicker.util
 
-export {
-  DateUtil,
-  Picker
+DatePicker.Picker = Picker
+
+DatePicker.install = function (Vue) {
+  Vue.component(DatePicker.name, DatePicker)
+  Vue.component(Picker.name, Picker)
 }
+
+export default DatePicker

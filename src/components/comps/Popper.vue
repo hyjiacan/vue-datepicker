@@ -87,6 +87,14 @@ export default {
     }
   },
   methods: {
+    async loadPopperJS() {
+      const isBrowser = typeof window === 'object' && Object.prototype.toString.call(window) === '[object Window]'
+
+      if (isBrowser && window.Popper) {
+        return window.Popper
+      }
+      return import(/* webpackChunkName: "popperjs" */ '@popperjs/core')
+    },
     async createPopper() {
       this.popperVisible = true
       await this.$nextTick()
@@ -94,7 +102,7 @@ export default {
       if (this.toBody) {
         document.body.appendChild(body)
       }
-      const {createPopper} = await import(/* webpackChunkName: "popperjs" */ '@popperjs/core')
+      const {createPopper} = await this.loadPopperJS()
       this.popperInstance = createPopper(this.$refs.reference, body, this.computedOptions)
       await this.$nextTick()
       body.focus()

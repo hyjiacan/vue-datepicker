@@ -175,7 +175,7 @@ export default {
         weekStart: this.weekStart,
         showLunar: this.showLunar,
         showFestival: this.showFestival,
-        marker: this.marker
+        markFunction: this.markFunction
       }
       if (this.highlightRange && this.isRange) {
         props.highlightRange = [this.beginValue, this.endValue]

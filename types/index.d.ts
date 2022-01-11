@@ -1,3 +1,8 @@
+/**
+ * 周范围选项
+ */
+import Vue from "vue";
+
 export interface WeekRangeOption {
   /**
    * 周起始量，0-6分别表示星期天到星期六
@@ -17,6 +22,9 @@ export interface WeekRangeOption {
   format: String;
 }
 
+/**
+ * 月范围选项
+ */
 export interface MonthRangeOption {
   /**
    * 月偏移量，可以是任意整数
@@ -32,6 +40,9 @@ export interface MonthRangeOption {
   format: String;
 }
 
+/**
+ * 季度范围选项
+ */
 export interface QuarterRangeOption {
   /**
    * 季度偏移量，可以是任意整数
@@ -54,6 +65,9 @@ export interface WeekOfOption {
   start: Number;
 }
 
+/**
+ * 日期范围选项
+ */
 export interface DateRangeOption {
   /**
    * 是否格式化
@@ -65,13 +79,35 @@ export interface DateRangeOption {
   time: Boolean;
 }
 
+/**
+ * 日期偏移选项
+ */
 export interface DateOffset {
+  /**
+   * 年偏移量
+   */
   year: number;
+  /**
+   * 月偏移量
+   */
   month: number;
+  /**
+   * 天偏移量
+   */
   date: number;
 }
 
-export interface $util {
+/**
+ * 日历展示组件
+ */
+export class Picker extends Vue {
+
+}
+
+/**
+ * 工具函数
+ */
+export interface Util {
   /**
    * 将任意格式的日期格式化成指定的格式
    * @param {Date|String|Number} date
@@ -139,7 +175,7 @@ export interface $util {
    * @param {number} [option.start=0] 周的偏移值
    * @return {{year: Number, month: Number, week: Number}}
    */
-  getWeekOfYear(date: Date | Date[], option?: WeekOfOption): { year: Number, month: Number, week: Number };
+  getWeekOfMonth(date: Date | Date[], option?: WeekOfOption): { year: Number, month: Number, week: Number };
 
   /**
    * 根据一个日期以及偏移参数获取日期范围
@@ -171,8 +207,21 @@ export interface $util {
 
   /**
    * 设置当前日期（用于修正当前的错误日期，比如使用服务器时间的情况）
-   * @param timestamp 当前的时间戳，其什可以是 秒 或者 毫秒
+   * @param timestamp 当前的时间戳，其什可以是 秒 或者 毫秒，传入 0 表示使用系统时间
    * @return {Date} 新的日期对象
    */
   setDate(timestamp: Number): Date;
 }
+
+declare class DatePicker extends Vue {
+  /**
+   * @deprecated 请使用 util 代替
+   */
+  static $util: Util;
+  static util: Util;
+  static Picker: Picker;
+
+  static install(Vue): void;
+}
+
+export default DatePicker

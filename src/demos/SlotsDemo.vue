@@ -168,14 +168,14 @@ export default {
     },
     onShortcutClick(dateName, offset) {
       const value = this[dateName]
-      const now = DatePicker.$util.getDate()
+      const now = DatePicker.util.getDate()
       if (Array.isArray(value)) {
         this[dateName] = [
-          DatePicker.$util.offsetDate(now, offset),
+          DatePicker.util.offsetDate(now, offset),
           now
         ]
       } else {
-        this[dateName] = DatePicker.$util.offsetDate(now, offset)
+        this[dateName] = DatePicker.util.offsetDate(now, offset)
       }
     }
   }

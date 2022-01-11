@@ -101,7 +101,7 @@ export default {
     showFestival: {
       type: Boolean
     },
-    marker: {
+    markFunction: {
       type: Function
     }
   },

@@ -70,13 +70,7 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 ```html
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper.min.js"></script>
-<script>
-  // 必须执行此设置
-  window['@popperjs/core'] = Popper
-</script>
 ```
-
-必须在 `datepicker` 前引入。
 
 ## 使用
 
@@ -399,7 +393,7 @@ const placeholders = {
 
 是否显示节日信息。
 
-#### marker
+#### markFunction
 
 > Since 2.3.0
 
@@ -473,10 +467,7 @@ const placeholders = {
 
 ```javascript
 import DatePicker from '@hyjiacan/vue-datepicker'
-// DatePicker.$util.format
-// 或者
-import {DateUtil} from '@hyjiacan/vue-datepicker'
-// DateUtil.format
+// DatePicker.util.format
 ```
 
 > 所有的格式化串，请参照 [内置格式定义](#内置格式定义) 的写法。
@@ -563,7 +554,7 @@ export interface DateOffset {
   date: number;
 }
 
-export interface $util {
+export interface Util {
   /**
    * 将任意格式的日期格式化成指定的格式
    * @param {Date|String|Number} date
@@ -631,7 +622,7 @@ export interface $util {
    * @param {number} [option.start=0] 周的偏移值
    * @return {{year: Number, month: Number, week: Number}}
    */
-  getWeekOfYear(date: Date | Date[], option?: WeekOfOption): { year: Number, month: Number, week: Number };
+  getWeekOfMonth(date: Date | Date[], option?: WeekOfOption): { year: Number, month: Number, week: Number };
 
   /**
    * 根据一个日期以及偏移参数获取日期范围
@@ -663,7 +654,7 @@ export interface $util {
 
   /**
    * 设置当前日期（用于修正当前的错误日期，比如使用服务器时间的情况）
-   * @param timestamp 当前的时间戳，其什可以是 秒 或者 毫秒
+   * @param timestamp 当前的时间戳，其什可以是 秒 或者 毫秒，传入 0 表示使用系统时间
    */
   setDate(timestamp: Number): void;
 }
@@ -695,6 +686,26 @@ date.setDate(date.getDate() + 3)
 - 感谢 [LunarCalendar](https://github.com/zzyss86/LunarCalendar) 开源的农历算法
 
 ## 更新日志
+
+### 2.2.4
+
+- 添加属性 `Datepicker.util` 代替 `DatePicker.$util`
+- 修复 无法使用 `Picker` 组件的问题
+- 调整 属性 `marker` 为 `mark-function`
+
+### 2.2.3
+
+- 修复 新版本的 Vue 导致的插件展示错误
+
+### 2.2.1
+
+- 调整一些示例
+- 优化 时间选择器使用 添加 `marker` 属性支持
+- 修复 IE10下打不开选择框的问题
+- 修复 不同浏览器的样式混乱
+- 修复 插槽内的自定义内容不显示的问题
+- 优化 时间选择样式
+- 添加 时间修正支持
 
 ### 2.2.0
 

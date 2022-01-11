@@ -1,39 +1,49 @@
 <template>
   <div>
     <div class="date-label">时间修正</div>
-    <date-picker type="datetime" v-model="fixedTime"/>
+    <date-picker type="datetime" v-model="fixedTime" clearable/>
     <div class="tips">
-      <div><code>DateUtil.setDate(timestamp)</code></div>
-      <div>提供时间修正功能，支持在终端界面上使用服务器时间</div>
+      <div>
+        可以通过以下代码来修正日期
+        <pre><code>
+const t = new Date('2012-12-12').getTime();
+DatePicker.util.setDate(t)
+</code></pre>
+      </div>
+      <div>函数签名: <code>DatePicker.util.setDate(timestamp)</code></div>
+      <div>此函数提供时间修正功能，支持在终端界面上使用服务器时间</div>
       <div>修改此值会影响所有的当前日期</div>
     </div>
     <div class="date-label">显示农历</div>
     <date-picker type="datetime" v-model="date" show-lunar show-festival/>
     <div class="date-label">日历标记</div>
-    <picker class="calendar" v-model="date" :week-start="1" :marker="marker"/>
+    <picker class="calendar" v-model="date" :week-start="1" :mark-function="markFunction"/>
     <div class="tips">可以尝试点一下M<b>月</b>和<b>年</b>，也有标记</div>
   </div>
 </template>
 
 <script>
-import {DateUtil} from "@/components";
+import DatePicker from "@/components";
 
 export default {
   name: "ADemo",
   data() {
     return {
       date: '',
-      fixedTime: ''
+      fixedTime: '2012-12-12'
     }
+  },
+  created() {
+    DatePicker.util.setDate(new Date(this.fixedTime).getTime())
   },
   watch: {
     fixedTime(v) {
-      const d = DateUtil.parse(v)
-      DateUtil.setDate(d.getTime())
+      const d = DatePicker.util.parse(v)
+      DatePicker.util.setDate(d.getTime())
     }
   },
   methods: {
-    marker(e) {
+    markFunction(e) {
       if (e.type === 'date') {
         if (e.day === 6 || e.day === 0) {
           return '<span class="flag" title="周末标记">*</span>';

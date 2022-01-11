@@ -692,6 +692,7 @@ date.setDate(date.getDate() + 3)
 - 添加属性 `Datepicker.util` 代替 `DatePicker.$util`
 - 修复 无法使用 `Picker` 组件的问题
 - 调整 属性 `marker` 为 `mark-function`
+- 使用 `div+flex` 代替 `table` 布局
 
 ### 2.2.3
 

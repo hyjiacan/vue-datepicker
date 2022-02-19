@@ -5,20 +5,20 @@
       <small>Date picker for Vue.js</small>
     </h1>
     <p>
-      npm i @hyjiacan/vue-datepicker
+      npm i @wangankeji/vue-datepicker
     </p>
     或
     <p>
-      yarn add @hyjiacan/vue-datepicker
+      yarn add @wangankeji/vue-datepicker
     </p>
     <ul>
       <li>
-        <span>Github:</span>
-        <a href="https://github.com/hyjiacan/vue-datepicker">https://github.com/hyjiacan/vue-datepicker</a>
+        <span>gitee:</span>
+        <a href="https://gitee.com/wangankeji/vue-datepicker">https://gitee.com/wangankeji/vue-datepicker</a>
       </li>
       <li>
         <span>Demo:</span>
-        <a href="https://github.com/hyjiacan/vue-datepicker/blob/master/src/Demo.vue">https://github.com/hyjiacan/vue-datepicker/blob/master/src/Demo.vue</a>
+        <a href="https://gitee.com/wangankeji/vue-datepicker/blob/master/src/Demo.vue">https://gitee.com/wangankeji/vue-datepicker/blob/master/src/Demo.vue</a>
       </li>
     </ul>
   </div>

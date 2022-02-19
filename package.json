@@ -1,5 +1,5 @@
 {
-  "name": "@hyjiacan/vue-datepicker",
+  "name": "@wangankeji/vue-datepicker",
   "version": "2.3.4",
   "main": "dist/datepicker.common.js",
   "unpkg": "dist/datepicker.umd.js",
@@ -14,21 +14,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hyjiacan/vue-datepicker.git"
+    "url": "git+https://gitee.com/wangankeji/vue-datepicker.git"
   },
   "bugs": {
-    "url": "https://github.com/hyjiacan/vue-datepicker/issues"
+    "url": "https://gitee.com/wangankeji/vue-datepicker/issues"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "homepage": "https://hyjiacan.github.io/vue-datepicker/",
+  "homepage": "https://wangankeji.gitee.io/vue-datepicker/",
   "keywords": [
     "vue",
     "datepicker"
   ],
-  "author": "hyjiacan",
+  "author": "wangankeji",
   "license": "MIT",
   "files": [
     "dist",
@@ -44,7 +44,6 @@
     "@vue/cli-plugin-babel": "^4.2.0",
     "@vue/cli-plugin-eslint": "^4.2.0",
     "@vue/cli-service": "^4.2.0",
-    "lodash.clonedeep": "^4.5.0",
     "babel-eslint": "^10.0.3",
     "core-js": "^3.6.4",
     "eslint": "^6.7.2",

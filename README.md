@@ -2,13 +2,13 @@
 
 适用于 Vue2 的日期/时间选择组件。
 
-[![NPM](https://img.shields.io/npm/l/@hyjiacan/vue-datepicker?style=flat-square)](https://github.com/hyjiacan/vue-datepicker/blob/master/LICENSE)
-[![Travis (.org)](https://img.shields.io/travis/hyjiacan/vue-datepicker?style=flat-square)](https://www.travis-ci.org/hyjiacan/vue-datepicker)
-[![npm (scoped)](https://img.shields.io/npm/v/@hyjiacan/vue-datepicker?style=flat-square)](https://www.npmjs.com/package/@hyjiacan/vue-datepicker)
-![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@hyjiacan/vue-datepicker?style=flat-square)
-[![npm](https://img.shields.io/npm/dm/@hyjiacan/vue-datepicker?style=flat-square)](https://npmcharts.com/compare/@hyjiacan/vue-datepicker?minimal=true)
-[![Coverage Status](https://coveralls.io/repos/github/hyjiacan/vue-datepicker/badge.svg?branch=master)](https://coveralls.io/github/hyjiacan/vue-datepicker?branch=master)
-[![](https://data.jsdelivr.com/v1/package/npm/@hyjiacan/vue-datepicker/badge)](https://www.jsdelivr.com/package/npm/@hyjiacan/vue-datepicker)
+[![NPM](https://img.shields.io/npm/l/@wangankeji/vue-datepicker?style=flat-square)](https://gitee.com/wangankeji/vue-datepicker/blob/master/LICENSE)
+[![Travis (.org)](https://img.shields.io/travis/wangankeji/vue-datepicker?style=flat-square)](https://www.travis-ci.org/wangankeji/vue-datepicker)
+[![npm (scoped)](https://img.shields.io/npm/v/@wangankeji/vue-datepicker?style=flat-square)](https://www.npmjs.com/package/@wangankeji/vue-datepicker)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@wangankeji/vue-datepicker?style=flat-square)
+[![npm](https://img.shields.io/npm/dm/@wangankeji/vue-datepicker?style=flat-square)](https://npmcharts.com/compare/@wangankeji/vue-datepicker?minimal=true)
+[![Coverage Status](https://coveralls.io/repos/gitee/wangankeji/vue-datepicker/badge.svg?branch=master)](https://coveralls.io/gitee/wangankeji/vue-datepicker?branch=master)
+[![](https://data.jsdelivr.com/v1/package/npm/@wangankeji/vue-datepicker/badge)](https://www.jsdelivr.com/package/npm/@wangankeji/vue-datepicker)
 
 Powered by [popper.js V2](https://popper.js.org/docs/v2/)
 
@@ -17,27 +17,27 @@ Powered by [popper.js V2](https://popper.js.org/docs/v2/)
 ### NodeJS 环境 (commonjs)
 
 ```bash
-npm i @hyjiacan/vue-datepicker
+npm i @wangankeji/vue-datepicker
 ```
 
 或者
 
 ```bash
-yarn add @hyjiacan/vue-datepicker
+yarn add @wangankeji/vue-datepicker
 ```
 
 可以通过以下方式获取最新的代码
 
 ```bash
-git clone https://github.com/hyjiacan/vue-datepicker.git
+git clone https://gitee.com/wangankeji/vue-datepicker.git
 ```
 
 源码仓库
 
-- [https://github.com/hyjiacan/vue-datepicker](https://github.com/hyjiacan/vue-datepicker)
-- [https://gitee.com/hyjiacan/vue-datepicker](https://gitee.com/hyjiacan/vue-datepicker)
+- [https://gitee.com/wangankeji/vue-datepicker](https://gitee.com/wangankeji/vue-datepicker)
+- [https://gitee.com/wangankeji/vue-datepicker](https://gitee.com/wangankeji/vue-datepicker)
 
-或者直接 [download archive](https://github.com/hyjiacan/vue-datepicker/archive/master.zip)
+或者直接 [download archive](https://gitee.com/wangankeji/vue-datepicker/archive/master.zip)
 
 ### 浏览器环境 (umd)
 
@@ -49,14 +49,14 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
 
 ```html
 
-<script src="https://cdn.jsdelivr.net/npm/@hyjiacan/vue-datepicker/dist/datepicker.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@wangankeji/vue-datepicker/dist/datepicker.umd.min.js"></script>
 ```
 
 指定版本
 
 ```html
 
-<script src="https://cdn.jsdelivr.net/npm/@hyjiacan/vue-datepicker@<VERSION>/dist/datepicker.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@wangankeji/vue-datepicker@<VERSION>/dist/datepicker.umd.min.js"></script>
 ```
 
 > **unpkg** 也是可用的: 替换 *cdn.jsdelivr.net* 为 *unpkg.com*
@@ -80,8 +80,8 @@ git clone https://github.com/hyjiacan/vue-datepicker.git
   <date-picker v-model="date" type="date" :min="min" :max="max"/>
 </template>
 <script>
-import DatePicker from '@hyjiacan/vue-datepicker'
-import '@hyjiacan/vue-datepicker/dist/datepicker.css'
+import DatePicker from '@wangankeji/vue-datepicker'
+import '@wangankeji/vue-datepicker/dist/datepicker.css'
 
 export default {
   components: {DatePicker},
@@ -104,8 +104,8 @@ export default {
   <picker v-model="date"/>
 </template>
 <script>
-import {Picker} from '@hyjiacan/vue-datepicker'
-import '@hyjiacan/vue-datepicker/dist/datepicker.css'
+import {Picker} from '@wangankeji/vue-datepicker'
+import '@wangankeji/vue-datepicker/dist/datepicker.css'
 
 export default {
   components: {Picker},
@@ -120,8 +120,8 @@ export default {
 
 更多示例参见
 
-- Github https://hyjiacan.github.io/vue-datepicker/
-- Gitee https://hyjiacan.gitee.io/vue-datepicker/
+- gitee https://wangankeji.gitee.io/vue-datepicker/
+- Gitee https://wangankeji.gitee.io/vue-datepicker/
 
 ### 类型定义
 
@@ -466,7 +466,7 @@ const placeholders = {
 引用:
 
 ```javascript
-import DatePicker from '@hyjiacan/vue-datepicker'
+import DatePicker from '@wangankeji/vue-datepicker'
 // DatePicker.util.format
 ```
 
@@ -683,7 +683,7 @@ date.setDate(date.getDate() + 3)
 ## 支持
 
 - 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
-- 感谢 [LunarCalendar](https://github.com/zzyss86/LunarCalendar) 开源的农历算法
+- 感谢 [LunarCalendar](https://gitee.com/zzyss86/LunarCalendar) 开源的农历算法
 
 ## 更新日志
 

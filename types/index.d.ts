@@ -1,8 +1,8 @@
+import Vue from "vue";
+
 /**
  * 周范围选项
  */
-import Vue from "vue";
-
 export interface WeekRangeOption {
   /**
    * 周起始量，0-6分别表示星期天到星期六

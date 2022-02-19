@@ -3,11 +3,8 @@
 适用于 Vue2 的日期/时间选择组件。
 
 [![NPM](https://img.shields.io/npm/l/@wangankeji/vue-datepicker?style=flat-square)](https://gitee.com/wangankeji/vue-datepicker/blob/master/LICENSE)
-[![Travis (.org)](https://img.shields.io/travis/wangankeji/vue-datepicker?style=flat-square)](https://www.travis-ci.org/wangankeji/vue-datepicker)
 [![npm (scoped)](https://img.shields.io/npm/v/@wangankeji/vue-datepicker?style=flat-square)](https://www.npmjs.com/package/@wangankeji/vue-datepicker)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@wangankeji/vue-datepicker?style=flat-square)
-[![npm](https://img.shields.io/npm/dm/@wangankeji/vue-datepicker?style=flat-square)](https://npmcharts.com/compare/@wangankeji/vue-datepicker?minimal=true)
-[![Coverage Status](https://coveralls.io/repos/gitee/wangankeji/vue-datepicker/badge.svg?branch=master)](https://coveralls.io/gitee/wangankeji/vue-datepicker?branch=master)
 [![](https://data.jsdelivr.com/v1/package/npm/@wangankeji/vue-datepicker/badge)](https://www.jsdelivr.com/package/npm/@wangankeji/vue-datepicker)
 
 Powered by [popper.js V2](https://popper.js.org/docs/v2/)
@@ -32,10 +29,7 @@ yarn add @wangankeji/vue-datepicker
 git clone https://gitee.com/wangankeji/vue-datepicker.git
 ```
 
-源码仓库
-
-- [https://gitee.com/wangankeji/vue-datepicker](https://gitee.com/wangankeji/vue-datepicker)
-- [https://gitee.com/wangankeji/vue-datepicker](https://gitee.com/wangankeji/vue-datepicker)
+源码仓库 https://gitee.com/wangankeji/vue-datepicker
 
 或者直接 [download archive](https://gitee.com/wangankeji/vue-datepicker/archive/master.zip)
 
@@ -118,10 +112,7 @@ export default {
 </script>
 ```
 
-更多示例参见
-
-- gitee https://wangankeji.gitee.io/vue-datepicker/
-- Gitee https://wangankeji.gitee.io/vue-datepicker/
+更多示例参见 https://wangankeji.gitee.io/vue-datepicker/
 
 ### 类型定义
 
@@ -683,7 +674,7 @@ date.setDate(date.getDate() + 3)
 ## 支持
 
 - 感谢 [iconfont](https://www.iconfont.cn/) 提供的图标平台，以及开源图标的设计者们
-- 感谢 [LunarCalendar](https://gitee.com/zzyss86/LunarCalendar) 开源的农历算法
+- 感谢 [LunarCalendar](https://github.com/zzyss86/LunarCalendar) 开源的农历算法
 
 ## 更新日志
 

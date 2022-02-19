@@ -1,8 +1,8 @@
 <template>
   <div class="info">
     <h1>
-      VUE-DatePicker
-      <small>Date picker for Vue.js</small>
+      Vue-DatePicker
+      <small>基于 Vue2 的日期选择器</small>
     </h1>
     <p>
       npm i @wangankeji/vue-datepicker
@@ -13,11 +13,11 @@
     </p>
     <ul>
       <li>
-        <span>gitee:</span>
+        <span>仓库</span>
         <a href="https://gitee.com/wangankeji/vue-datepicker">https://gitee.com/wangankeji/vue-datepicker</a>
       </li>
       <li>
-        <span>Demo:</span>
+        <span>示例目录</span>
         <a href="https://gitee.com/wangankeji/vue-datepicker/blob/master/src/Demo.vue">https://gitee.com/wangankeji/vue-datepicker/blob/master/src/Demo.vue</a>
       </li>
     </ul>

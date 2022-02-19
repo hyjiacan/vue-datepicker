@@ -2,7 +2,7 @@
  * 农历（阴历）万年历
  * LunarCalendar
  * vervison : v0.1.4
- * gitee : https://gitee.com/zzyss86/LunarCalendar
+ * Github : https://github.com/zzyss86/LunarCalendar
  * HomePage : http://www.tuijs.com/
  * Author : JasonZhou
  * Email : zzyss86@qq.com
@@ -13,7 +13,7 @@ import fixedDate from "@/assets/script/fixedDate";
 // ---------------------------------------------
 // 于 2021.01.25 添加
 // 以上为原代码注释
-// 原代码地址: https://gitee.com/zzyss86/LunarCalendar/blob/master/lib/LunarCalendar.js
+// 原代码地址: https://github.com/zzyss86/LunarCalendar/blob/master/lib/LunarCalendar.js
 // 感谢此库作者的代码贡献
 // 此项目中，对原代码进行了一些改动，以适应此项目的编码规范
 // ---------------------------------------------

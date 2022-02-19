@@ -1,4 +1,4 @@
-/* Modified from https://gitee.com/taylorhakes/fecha
+/* Modified from https://github.com/taylorhakes/fecha
  *
  * The MIT License (MIT)
  *

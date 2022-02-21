@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h4>选择指定日期</h4>
+    <h3>
+      <span>选择指定日期</span>
+      <small>
+        <code-block/>
+      </small>
+    </h3>
     <div class="date-label">年</div>
     <date-picker v-model="year" type="year" min="2016" max="2022"
                  :mousewheel="false" :popper-options="{placement: 'right'}"/>
@@ -32,9 +37,11 @@
 
 <script>
 import mixin from './mixin'
+import CodeBlock from "@/CodeBlock";
 
 export default {
   name: 'SingleDemo',
+  components: {CodeBlock},
   mixins: [mixin]
 }
 </script>

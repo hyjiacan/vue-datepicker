@@ -1,50 +1,59 @@
 <template>
   <div class="demo">
-    <h3>日期偏移示例</h3>
+    <h3>
+      <span>日期偏移示例</span>
+      <small>
+        <code-block/>
+      </small>
+    </h3>
     <div>
-      <h4>使用对象</h4>
-      <p>当前日期: {{date | format}}</p>
-      <p>偏移后日期: {{objOffset | format}}</p>
+      <div class="date-label">使用对象</div>
+      <p>当前日期: {{ date | format }}</p>
+      <p>偏移后日期: {{ objOffset | format }}</p>
       <div>
         <p>
-          <span>偏移对象:</span>
-          <span class="bold">{{JSON.stringify(formattedObj)}}</span>
+          <span>偏移对象: </span>
+          <span class="bold">{{ JSON.stringify(formattedObj) }}</span>
         </p>
-        <div>
-          <span>年</span>
-          <span><input type="number" v-model="obj.year" maxlength="3" @mouseenter="setFocus"/></span>
-        </div>
-        <div>
-          <span>月</span>
-          <span><input type="number" v-model="obj.month" maxlength="3" @mouseenter="setFocus"/></span>
-        </div>
-        <div>
-          <span>日</span>
-          <span><input type="number" v-model="obj.date" maxlength="3" @mouseenter="setFocus"/></span>
+        <div class="offset-inputs">
+          <div>
+            <span>year=</span>
+            <span><input type="number" v-model="obj.year" maxlength="3" @mouseenter="setFocus"/></span>
+          </div>
+          <div>
+            <span>month=</span>
+            <span><input type="number" v-model="obj.month" maxlength="3" @mouseenter="setFocus"/></span>
+          </div>
+          <div>
+            <span>date=</span>
+            <span><input type="number" v-model="obj.date" maxlength="3" @mouseenter="setFocus"/></span>
+          </div>
         </div>
       </div>
-      <h4>使用字符串</h4>
-      <p>当前日期: {{date | format}}</p>
-      <p>偏移后日期: {{strOffset | format}}</p>
+      <div class="date-label">使用字符串</div>
+      <p>当前日期: {{ date | format }}</p>
+      <p>偏移后日期: {{ strOffset | format }}</p>
       <div>
-        <div>
-          <span>偏移串:</span>
-          <span class="bold">{{formattedStr}}</span>
-        </div>
-        <div>
-          <span>y</span>
-          <span><input type="number" v-model="str.y" maxlength="3" @mouseenter="setFocus"/></span>
-        </div>
-        <div>
-          <span>m</span>
-          <span><input type="number" v-model="str.m" maxlength="3" @mouseenter="setFocus"/></span>
-        </div>
-        <div>
-          <span>d</span>
-          <span><input type="number" v-model="str.d" maxlength="3" @mouseenter="setFocus"/></span>
+        <p>
+          <span>偏移串: </span>
+          <span class="bold">{{ formattedStr }}</span>
+        </p>
+        <div class="offset-inputs">
+          <div>
+            <span>y=</span>
+            <span><input type="number" v-model="str.y" maxlength="3" @mouseenter="setFocus"/></span>
+          </div>
+          <div>
+            <span>m=</span>
+            <span><input type="number" v-model="str.m" maxlength="3" @mouseenter="setFocus"/></span>
+          </div>
+          <div>
+            <span>d=</span>
+            <span><input type="number" v-model="str.d" maxlength="3" @mouseenter="setFocus"/></span>
+          </div>
         </div>
       </div>
-      <p class="tip">可以试试清空输入框的值</p>
+      <div class="tips">可以试试清空输入框的值(留空)</div>
     </div>
   </div>
 </template>
@@ -52,9 +61,11 @@
 <script>
 import util from '../assets/script/util'
 import mixin from "@/demos/mixin";
+import CodeBlock from "@/CodeBlock";
 
 export default {
   name: 'OffsetDemo',
+  components: {CodeBlock},
   mixins: [mixin],
   filters: {
     format(val) {
@@ -105,18 +116,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 input {
   padding: 5px 10px;
   margin: 5px 0;
   font-size: 20px;
+  width: 40px;
+  border: 1px solid #cccccc;
+  color: #666666;
+  border-radius: 2px;
+
+  &:active, &:focus {
+    outline: 1px solid #8dc3ee;
+  }
 }
 
-.tip {
-  color: #404040;
-  border-left: 2px solid #666666;
-  padding: 10px;
-  background-color: #f0f6ef;
+.offset-inputs {
+  display: flex;
+  justify-content: space-between;
 }
 
 .bold {

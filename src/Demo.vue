@@ -1,5 +1,6 @@
 <template>
   <div class="demo">
+    <h2>示例</h2>
     <div class="demo-grid">
       <a-demo/>
       <offset-demo/>
@@ -10,11 +11,11 @@
     </div>
     <div class="demo-grid">
       <size-demo/>
-      <clear-demo/>
+      <dynamic-type-demo/>
     </div>
     <div class="demo-grid">
       <slots-demo/>
-      <dynamic-type-demo/>
+      <clear-demo/>
     </div>
   </div>
 </template>
@@ -51,7 +52,8 @@ export default {
 .demo-grid {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin-bottom: 40px;
 
   > div {
     width: 400px;
@@ -59,8 +61,9 @@ export default {
 }
 
 .date-label {
+  padding: 10px 0;
+  margin-top: 20px;
   font-weight: bold;
-  padding: 10px;
 }
 
 .date-value {
@@ -80,7 +83,7 @@ export default {
 
 div.tips {
   margin: 5px 0 0 0;
-  border-left: 3px solid #333333;
+  border-left: 3px solid #899fb5;
   padding: 10px 5px;
 }
 </style>

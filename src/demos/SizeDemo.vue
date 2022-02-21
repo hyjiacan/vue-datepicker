@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h3>不同的尺寸</h3>
+    <h3>
+      <span>不同的尺寸</span>
+      <small>
+        <code-block/>
+      </small>
+    </h3>
     <div class="demo-label">mini:</div>
     <div>
       <date-picker :value="getFixedDate()" size="mini"/>
@@ -46,9 +51,11 @@
 
 <script>
 import mixin from './mixin'
+import CodeBlock from "@/CodeBlock";
 
 export default {
   name: 'SizeDemo',
+  components: {CodeBlock},
   mixins: [mixin]
 }
 </script>

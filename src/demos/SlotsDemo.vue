@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h3>Slots</h3>
+    <h3>
+      <span>Slots</span>
+      <small>
+        <code-block/>
+      </small>
+    </h3>
 
     <h4>shortcut</h4>
 
@@ -79,6 +84,8 @@
       </template>
     </date-picker>
 
+    <h4>title</h4>
+
     <div class="date-label">自定义提示文本 - 单个</div>
     <date-picker type="date" v-model="date">
       <template v-slot:title>
@@ -93,6 +100,8 @@
         <div>结束日期</div>
       </template>
     </date-picker>
+
+    <h4>footer</h4>
 
     <div class="date-label">自定义底部内容 - 单个</div>
     <date-picker type="date" v-model="date">
@@ -118,9 +127,11 @@
 import mixin from './mixin'
 import util from '../assets/script/util'
 import DatePicker from "@/components";
+import CodeBlock from "@/CodeBlock";
 
 export default {
   name: 'SlotsDemo',
+  components: {CodeBlock},
   mixins: [mixin],
   data() {
     const date = this.getFixedDate()

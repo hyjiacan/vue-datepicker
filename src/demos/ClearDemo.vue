@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h3>清除值</h3>
+    <h3>
+      <span>清除值</span>
+      <small>
+        <code-block/>
+      </small>
+    </h3>
     <div class="date-label">日期</div>
     <date-picker type="date" v-model="date" size="mini" hide-icon clearable/>
     <div class="date-value">{{date}}</div>
@@ -57,9 +62,11 @@
 
 <script>
 import mixin from './mixin'
+import CodeBlock from "@/CodeBlock";
 
 export default {
   name: 'ClearDemo',
+  components: {CodeBlock},
   mixins: [mixin]
 }
 </script>

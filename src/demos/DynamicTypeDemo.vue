@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h3>动态设置 type</h3>
+    <h3>
+      <span>动态设置 type</span>
+      <small>
+        <code-block/>
+      </small>
+    </h3>
     <div style="padding: 20px 0;">
       <button v-for="t in types" :key="t" @click="currentType = t"
               :class="{active: currentType === t}">{{t}}
@@ -8,7 +13,9 @@
     </div>
     <div>
       <date-picker v-model="date" :type="currentType"/>
-      <code>`v-model` 不是数组，所以不支持 `week` 和 `quarter`</code>
+      <div>
+        <code>`v-model` 不是数组，所以不支持 `week` 和 `quarter`</code>
+      </div>
       <p>{{date}}</p>
     </div>
     <div>
@@ -20,9 +27,11 @@
 
 <script>
 import mixin from "@/demos/mixin";
+import CodeBlock from "@/CodeBlock";
 
 export default {
   name: 'DynamicTypeDemo',
+  components: {CodeBlock},
   mixins: [mixin],
   data () {
     return {

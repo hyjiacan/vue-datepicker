@@ -9,6 +9,8 @@
 
 Powered by [popper.js V2](https://popper.js.org/docs/v2/)
 
+> 原 `@hyjiacan/vue-datepicker`
+
 ## 安装
 
 ### NodeJS 环境 (commonjs)

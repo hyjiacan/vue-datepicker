@@ -70,6 +70,8 @@ git clone https://gitee.com/wangankeji/vue-datepicker.git
 
 ## 使用
 
+[在线示例(CodePen)](https://codepen.io/hyjiacan/pen/WNOMYdo)
+
 ```vue
 
 <template>

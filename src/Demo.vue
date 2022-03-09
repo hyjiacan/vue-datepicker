@@ -1,6 +1,10 @@
 <template>
   <div class="demo">
-    <h2>示例</h2>
+    <h2>
+      <span>示例</span>
+      <a href="https://codepen.io/hyjiacan/pen/WNOMYdo" style="margin-left: 20px;" target="_blank"> 在线示例 (CodePen)</a>
+    </h2>
+
     <div class="demo-grid">
       <a-demo/>
       <offset-demo/>

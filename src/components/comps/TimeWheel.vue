@@ -1,20 +1,20 @@
 <template>
   <div class="date-picker--panel-time-wheel" @wheel="onWheel">
-    <div class="date-picker--panel-time-wheel-prev-button datepicker-iconfont datepicker--icon-top"
+      <div class="date-picker--panel-time-wheel-prev-button datepicker-iconfont datepicker--icon-top"
          @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
     <div class="date-picker--panel-time-wheel-prev">
       <span :class="getCellClass(getPrevValue(prevValue))" @click="goPrev(1)">{{ getPrevValue(prevValue) | pad }}</span>
-      <span :class="getCellClass(prevValue)" @click="goPrev">{{ prevValue | pad }}</span>
+      <span :class="getCellClass(prevValue)" @click="goPrev(0)">{{ prevValue | pad }}</span>
     </div>
-    <div class="date-picker--panel-time-wheel-value">
+    <div class="date-picker--panel-time-wheel-value" style="border-top:1px solid;border-bottom:1px solid;background: rgb(19 125 226 / 15%)">
       <span :class="getCellClass(viewValue)">{{ viewValue| pad }}</span>
     </div>
     <div class="date-picker--panel-time-wheel-next">
-      <span :class="getCellClass(nextValue)" @click="goNext">{{ nextValue| pad }}</span>
+      <span :class="getCellClass(nextValue)" @click="goNext(0)">{{ nextValue| pad }}</span>
       <span :class="getCellClass(getNextValue(nextValue))" @click="goNext(1)">{{ getNextValue(nextValue)| pad }}</span>
     </div>
-    <div class="date-picker--panel-time-wheel-next-button datepicker-iconfont datepicker--icon-bottom"
-         @mousedown="onButtonDown('prev')" @mouseup="onButtonUp('prev')"></div>
+      <div class="date-picker--panel-time-wheel-next-button datepicker-iconfont datepicker--icon-bottom"
+         @mousedown="onButtonDown('next')" @mouseup="onButtonUp('next')"></div>
   </div>
 </template>
 
@@ -110,7 +110,7 @@ export default {
       }
     },
     goPrev(offset) {
-      this.viewValue = offset ? this.getPrevValue(this.prevValue) : this.prevValue
+       this.viewValue = offset ? this.getPrevValue(this.prevValue) : this.prevValue
 
       if (this.isDisabled(this.viewValue)) {
         this.$emit('update:disabled', true)
@@ -121,7 +121,7 @@ export default {
     },
     goNext(offset) {
       this.viewValue = offset ? this.getNextValue(this.nextValue) : this.nextValue
-      if (this.isDisabled(this.viewValue)) {
+     if (this.isDisabled(this.viewValue)) {
         this.$emit('update:disabled', true)
         return
       }

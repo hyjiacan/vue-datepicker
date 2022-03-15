@@ -6,7 +6,7 @@
     <div class="date-picker--panel-body">
       <div class="date-picker--panel-time--body">
           <div class="date-picker--panel-time--value">
-            <span>{{ this.time.hour | pad }}</span>
+            <span>{{ this.time.hour | pad }}</span> 
             <time-wheel class="date-picker--panel-time-h" :value.sync="time.hour" :disabled.sync="disabled.hour"
                         :data="hours"/>
           </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import mixin from '../mixins/panel'
+import mixin from '../mixins/panel' 
 import TimeWheel from '../comps/TimeWheel'
 import util from '../../assets/script/util'
 
@@ -67,11 +67,11 @@ export default {
           v.second === this.viewValue.getSeconds()) {
           return
         }
-        if (!this.initialized) {
-          this.initialized = true
-          return
-        }
-
+        //该行代码导致选中时间后第一次更改不刷新数据，不知道原作者为何设置改代码，暂时保留
+        // if (!this.initialized) {
+        //   this.initialized = true
+        //   return
+        // }
         this.viewValue = util.setDate(this.viewValue, v)
         this.onPick()
       }
@@ -100,11 +100,12 @@ export default {
       const data = {
         max
       }
-
+     const currentDay=this.picker.value   //当前时间
+     let currentMin=currentDay?Number(currentDay.substr(14,2)):0     //当前时间的分钟数
+     let currentSec=currentDay?Number(currentDay.substr(17,2)):0   //当前时间的秒
       for (let i = 0; i <= max; i++) {
-        data[i] = this.validate({hour: i, minute: 0, second: 0})
+        data[i] = this.validate({hour: i, minute: currentMin, second: currentSec})
       }
-
       return data
     },
     minutes() {
@@ -112,12 +113,13 @@ export default {
       const data = {
         max
       }
-
+      const currentDay=this.picker.value   //当前时间
+     let currentSec=currentDay?Number(currentDay.substr(17,2)):0   //当前时间的秒
       for (let i = 0; i <= max; i++) {
         data[i] = this.disabled.hour ? false : this.validate({
           hour: this.time.hour,
           minute: i,
-          second: 0
+          second: currentSec
         })
       }
 

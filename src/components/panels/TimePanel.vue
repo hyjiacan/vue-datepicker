@@ -5,29 +5,29 @@
     </div>
     <div class="date-picker--panel-body">
       <div class="date-picker--panel-time--body">
-          <div class="date-picker--panel-time--value">
-            <span>{{ this.time.hour | pad }}</span> 
-            <time-wheel class="date-picker--panel-time-h" :value.sync="time.hour" :disabled.sync="disabled.hour"
-                        :data="hours"/>
-          </div>
-          <div class="date-picker--panel-time--sep">:</div>
-          <div class="date-picker--panel-time--value">
-            <span>{{ this.time.minute | pad }}</span>
-            <time-wheel class="date-picker--panel-time-m" :value.sync="time.minute" :disabled.sync="disabled.minute"
-                        :data="minutes"/>
-          </div>
-          <div class="date-picker--panel-time--sep">:</div>
-          <div class="date-picker--panel-time--value">
-            <span>{{ this.time.second | pad }}</span>
-            <time-wheel class="date-picker--panel-time-s" :value.sync="time.second" :data="seconds"/>
-          </div>
+        <div class="date-picker--panel-time--value">
+          <span>{{ this.time.hour | pad }}</span>
+          <time-wheel class="date-picker--panel-time-h" :value.sync="time.hour" :disabled.sync="disabled.hour"
+                      :data="hours"/>
+        </div>
+        <div class="date-picker--panel-time--sep">:</div>
+        <div class="date-picker--panel-time--value">
+          <span>{{ this.time.minute | pad }}</span>
+          <time-wheel class="date-picker--panel-time-m" :value.sync="time.minute" :disabled.sync="disabled.minute"
+                      :data="minutes"/>
+        </div>
+        <div class="date-picker--panel-time--sep">:</div>
+        <div class="date-picker--panel-time--value">
+          <span>{{ this.time.second | pad }}</span>
+          <time-wheel class="date-picker--panel-time-s" :value.sync="time.second" :data="seconds"/>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import mixin from '../mixins/panel' 
+import mixin from '../mixins/panel'
 import TimeWheel from '../comps/TimeWheel'
 import util from '../../assets/script/util'
 
@@ -100,9 +100,9 @@ export default {
       const data = {
         max
       }
-     const currentDay=this.picker.value   //当前时间
-     let currentMin=currentDay?Number(currentDay.substr(14,2)):0     //当前时间的分钟数
-     let currentSec=currentDay?Number(currentDay.substr(17,2)):0   //当前时间的秒
+      const currentDay = this.picker.value   //当前时间
+      let currentMin = currentDay ? Number(currentDay.substr(14, 2)) : 0     //当前时间的分钟数
+      let currentSec = currentDay ? Number(currentDay.substr(17, 2)) : 0   //当前时间的秒
       for (let i = 0; i <= max; i++) {
         data[i] = this.validate({hour: i, minute: currentMin, second: currentSec})
       }
@@ -113,8 +113,8 @@ export default {
       const data = {
         max
       }
-      const currentDay=this.picker.value   //当前时间
-     let currentSec=currentDay?Number(currentDay.substr(17,2)):0   //当前时间的秒
+      const currentDay = this.picker.value   //当前时间
+      let currentSec = currentDay ? Number(currentDay.substr(17, 2)) : 0   //当前时间的秒
       for (let i = 0; i <= max; i++) {
         data[i] = this.disabled.hour ? false : this.validate({
           hour: this.time.hour,

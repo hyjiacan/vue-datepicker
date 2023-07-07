@@ -316,7 +316,7 @@ function getLunarByBetween(year, month, day) {
 function getDaysBetweenSolar(year, month, day, year1, month1, day1) {
   const date = new Date(year, month, day).getTime()
   const date1 = new Date(year1, month1, day1).getTime()
-  return (date1 - date) / 86400000
+  return Math.round((date1 - date) / 86400000);
 }
 
 /**

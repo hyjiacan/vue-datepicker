@@ -55,9 +55,9 @@ export default {
             item.tip = '本月'
           }
 
-          if (this.showLunar) {
-            item.lunar = calendarCN.solarToLunar(item.year, item.month, 1)
-          }
+          // if (this.showLunar) {
+          item.lunar = calendarCN.solarToLunar(item.year, item.month, 1)
+          // }
 
           row.push(item)
           month++

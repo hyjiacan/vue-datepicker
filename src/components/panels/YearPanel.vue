@@ -69,10 +69,10 @@ export default {
             disabled: this.isDisabled(year),
             highlight: this.isHighlight(year)
           }
-          if (this.showLunar) {
-            // 设置6每年的7月，此时得到的甲子肯定是当年的，不会因为年首产生错误
-            item.lunar = calendarCN.solarToLunar(year, 6)
-          }
+          // if (this.showLunar) {
+          // 设置6每年的7月，此时得到的甲子肯定是当年的，不会因为年首产生错误
+          item.lunar = calendarCN.solarToLunar(year, 6)
+          // }
           row.push(item)
 
           year++

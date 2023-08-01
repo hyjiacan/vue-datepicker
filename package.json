@@ -28,7 +28,10 @@
     "vue",
     "datepicker"
   ],
-  "author": "wangankeji",
+  "author": {
+    "name": "hyjiacan",
+    "email": "hyjiacan@163.com"
+  },
   "license": "MIT",
   "files": [
     "dist",

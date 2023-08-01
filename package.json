@@ -48,6 +48,8 @@
     "@vue/cli-plugin-eslint": "^4.2.0",
     "@vue/cli-service": "^4.2.0",
     "babel-eslint": "^10.0.3",
+    "chalk": "^4.1.0",
+    "cross-spawn": "^7.0.3",
     "core-js": "^3.6.4",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",

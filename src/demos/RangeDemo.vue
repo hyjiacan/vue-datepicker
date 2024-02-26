@@ -43,7 +43,7 @@ import mixin from './mixin'
 import CodeBlock from "@/CodeBlock";
 
 export default {
-  name: 'MergedRangeDemo',
+  name: 'RangeDemo',
   components: {CodeBlock},
   mixins: [mixin]
 }

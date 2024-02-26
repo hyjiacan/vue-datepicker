@@ -63,7 +63,7 @@ h3 {
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 9999;
+  z-index: 1;
 }
 
 h3, h4 {

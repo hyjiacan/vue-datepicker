@@ -6,16 +6,13 @@
         <code-block/>
       </small>
     </h3>
-    <div style="padding: 20px 0;">
+    <div style="display: flex; padding: 20px 0;">
       <button v-for="t in types" :key="t" @click="currentType = t"
               :class="{active: currentType === t}">{{t}}
       </button>
     </div>
-    <div>
+    <div v-if="currentType !== 'week' && currentType !== 'quarter'">
       <date-picker v-model="date" :type="currentType"/>
-      <div>
-        <code>`v-model` 不是数组，所以不支持 `week` 和 `quarter`</code>
-      </div>
       <p>{{date}}</p>
     </div>
     <div>

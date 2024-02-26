@@ -6,10 +6,10 @@
         <small>Vue2 的日期选择组件</small>
       </div>
       <div class="toolbar">
-        <a href='https://gitee.com/wangankeji/vue-datepicker'>
+        <!-- <a href='https://gitee.com/wangankeji/vue-datepicker'>
           <img src='https://gitee.com/wangankeji/vue-datepicker/widgets/widget_3.svg?color=17233d'
                alt='Fork me on Gitee'/>
-        </a>
+        </a> -->
       </div>
     </header>
     <h2>特性</h2>

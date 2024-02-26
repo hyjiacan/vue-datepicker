@@ -5,7 +5,7 @@
     </div>
     <div class="date-picker--popper-dialog"
          @focus.stop="$emit('focus', $event)" @blur="$emit('blur', $event)"
-         :class="popperClass" tabindex="0" ref="body" v-if="popperVisible">
+         :class="popperClass" tabindex="0" ref="body" v-show="popperVisible">
       <div class="date-picker--popper-body">
         <slot/>
       </div>
@@ -97,19 +97,21 @@ export default {
     },
     async createPopper() {
       this.popperVisible = true
+
       await this.$nextTick()
       const body = this.dialogElement = this.$refs.body
       if (this.toBody) {
         document.body.appendChild(body)
       }
-      const {createPopper} = await this.loadPopperJS()
+      const { createPopper } = await this.loadPopperJS()
       this.popperInstance = createPopper(this.$refs.reference, body, this.computedOptions)
+
       await this.$nextTick()
       body.focus()
 
       this.footerStyle = {
         display: 'block',
-        width: this.$refs.body.getClientRects()[0].width + 'px'
+        width: body.getClientRects()[0].width + 'px'
       }
     },
     async destroyPopper() {
@@ -130,6 +132,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

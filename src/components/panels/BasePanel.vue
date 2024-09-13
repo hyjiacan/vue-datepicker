@@ -21,16 +21,17 @@
         <div class="date-picker--table-header">
           <slot name="title"/>
         </div>
-        <div class="date-picker--table-body">
-          <div v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker--table-row" :title="getRowTip(row)"
-               :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
-            <div class="date-picker--table-cell" v-for="(cell, cellIndex) in row" :key="cellIndex"
-                 @click="onCellClick(cell)"
-                 :title="getCellTitle(cell)" :class="{'date-picker--panel-value-highlight': cell.highlight}">
-              <span class="date-picker--panel-value" :class="getCellClass(cell)" v-html="renderCell(cell)"></span>
-            </div>
-          </div>
-        </div>
+        <table class="date-picker--table-body">
+          <tr v-for="(row, rowIndex) in view" :key="rowIndex" class="date-picker--table-row" :title="getRowTip(row)"
+              :class="getRowClass(row, rowIndex)" @click="onRowClick(row, rowIndex)">
+            <td class="date-picker--table-cell" v-for="(cell, cellIndex) in row" :key="cellIndex"
+                @click="onCellClick(cell)" :class="getCellClass(cell)" :title="getCellTitle(cell)">
+              <slot :data="cell" :row="rowIndex" :col="cellIndex" :html="renderCell(cell)">
+                <span class="date-picker--panel-value" v-html="renderCell(cell)"></span>
+              </slot>
+            </td>
+          </tr>
+        </table>
       </div>
       <slot name="append"/>
     </div>
@@ -58,7 +59,8 @@ export default {
         'date-picker--panel-value-active': cell.active,
         'date-picker--panel-value-current': cell.current,
         'date-picker--panel-value-overflow': cell.overflow,
-        'date-picker--panel-value-disabled': cell.disabled
+        'date-picker--panel-value-disabled': cell.disabled,
+        'date-picker--panel-value-highlight': cell.highlight
       }
     },
     onRowClick(row, index) {

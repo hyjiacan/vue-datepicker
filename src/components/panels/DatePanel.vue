@@ -8,7 +8,9 @@
       <div class="date-picker--panel-header-container">
         <span @click="onPrevMonth" class="datepicker-iconfont datepicker--icon-left"></span>
         <span>
-          <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{ viewValue.getFullYear() }}年</span>
+          <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{
+              viewValue.getFullYear()
+            }}年</span>
           <span class="date-picker--panel-header-month"
                 @click="$emit('pick-month')">{{ viewValue.getMonth() + 1 }}月</span>
         </span>
@@ -23,6 +25,9 @@
     <template v-slot:append>
       <slot name="append"/>
     </template>
+    <template #default="{data, row, col, html}">
+      <slot :data="data" :row="row" :col="col" :html="html"></slot>
+    </template>
   </base-panel>
 </template>
 
@@ -31,7 +36,7 @@ import BasePanel from './BasePanel'
 import mixin from '../mixins/panel'
 import util from '../../assets/script/util'
 import calendarCN from '@/assets/script/calendarCN'
-import fixedDate from "@/assets/script/fixedDate";
+import fixedDate from '@/assets/script/fixedDate'
 
 export default {
   name: 'DatePanel',

@@ -7,6 +7,9 @@
     <template v-slot:header>
       <span>{{startYear}}年 - {{stopYear}}年</span>
     </template>
+    <template #default="{data, row, col, html}">
+      <slot :data="data" :row="row" :col="col" :html="html"></slot>
+    </template>
   </base-panel>
 </template>
 

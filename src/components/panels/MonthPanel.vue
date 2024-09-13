@@ -7,6 +7,9 @@
     <template v-slot:header>
       <span class="date-picker--panel-header-year" @click="$emit('pick-year')">{{viewValue.getFullYear()}}年</span>
     </template>
+    <template #default="{data, row, col, html}">
+      <slot :data="data" :row="row" :col="col" :html="html"></slot>
+    </template>
   </base-panel>
 </template>
 

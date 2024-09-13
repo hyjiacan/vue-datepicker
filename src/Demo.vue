@@ -2,9 +2,13 @@
   <div class="demo">
     <h2>
       <span>示例</span>
-      <a href="https://codepen.io/hyjiacan/pen/WNOMYdo" style="margin-left: 20px;" target="_blank"> 在线示例 (CodePen)</a>
+      <a href="https://codepen.io/hyjiacan/pen/WNOMYdo" style="margin-left: 20px;" target="_blank"> 在线示例
+        (CodePen)</a>
     </h2>
 
+    <div>
+      <mark-demo/>
+    </div>
     <div class="demo-grid">
       <a-demo/>
       <offset-demo/>
@@ -32,12 +36,13 @@ import ClearDemo from './demos/ClearDemo'
 import SlotsDemo from './demos/SlotsDemo'
 import DynamicTypeDemo from './demos/DynamicTypeDemo'
 import OffsetDemo from './demos/OffsetDemo'
-import ADemo from "./demos/ADemo";
+import ADemo from './demos/ADemo'
+import MarkDemo from '@/demos/MarkDemo.vue'
 
 export default {
   name: 'Demo',
   // eslint-disable-next-line vue/no-unused-components
-  components: {ADemo, OffsetDemo, DynamicTypeDemo, SlotsDemo, ClearDemo, SizeDemo, RangeDemo, SingleDemo},
+  components: {MarkDemo, ADemo, OffsetDemo, DynamicTypeDemo, SlotsDemo, ClearDemo, SizeDemo, RangeDemo, SingleDemo},
   data() {
     return {
       date: ''

@@ -24,18 +24,15 @@ DatePicker.util.setDate(t)
     </div>
     <div class="date-label">显示农历</div>
     <date-picker type="datetime" v-model="date" show-lunar show-festival/>
-    <div class="date-label">日历标记</div>
-    <picker class="calendar" v-model="date" :week-start="1" :mark-function="markFunction"/>
-    <div class="tips">将时间选择到 <code>2012年</code>，可以点击看看 <b>月</b>和<b>年</b>，也有标记</div>
   </div>
 </template>
 
 <script>
-import DatePicker from "@/components";
-import CodeBlock from "@/CodeBlock";
+import DatePicker from '@/components'
+import CodeBlock from '@/CodeBlock'
 
 export default {
-  name: "ADemo",
+  name: 'ADemo',
   components: {CodeBlock},
   data() {
     return {
@@ -47,21 +44,6 @@ export default {
     this.doFix()
   },
   methods: {
-    markFunction(e) {
-      if (e.type === 'date') {
-        if (e.day === 6 || e.day === 0) {
-          return '<span class="flag" title="周末标记">*</span>';
-        }
-      } else if (e.type === 'month') {
-        if (e.month === 10) {
-          return '<span class="flag" title="国庆标记">*</span>';
-        }
-      } else if (e.type === 'year') {
-        if (e.year === 2012) {
-          return '<span class="flag" title="世界末日标记">*</span>';
-        }
-      }
-    },
     doFix() {
       if (!this.fixedTime) {
         DatePicker.util.setDate(0)
@@ -75,26 +57,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.flag {
-  float: right;
-  text-align: center;
-  color: #0dc50d;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-
-
-  &:hover {
-    color: #ffffff;
-    background-color: rgba(20, 189, 20, 0.85);
-  }
-}
-
-.calendar {
-  border: 1px solid #cccccc;
-}
-
 button {
   width: 60px;
   height: 32px;

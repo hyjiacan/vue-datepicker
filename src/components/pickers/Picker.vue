@@ -17,16 +17,25 @@
           </template>
         </time-panel>
       </template>
+      <template #default="{data, row, col, html}">
+        <slot type="date" :data="data" :row="row" :col="col" :html="html"></slot>
+      </template>
     </date-panel>
     <month-panel @pick-year="onPickYear" @pick="onMonthPicked" v-show="showMonthPanel"
                  v-if="renderDatePanel || renderMonthPanel">
       <template v-slot:title>
         <slot name="title"/>
       </template>
+      <template #default="{data, row, col, html}">
+        <slot type="month" :data="data" :row="row" :col="col" :html="html"></slot>
+      </template>
     </month-panel>
     <year-panel v-show="currentType === types.YEAR" @pick="onYearPicked">
       <template v-slot:title>
         <slot name="title"/>
+      </template>
+      <template #default="{data, row, col, html}">
+        <slot type="year" :data="data" :row="row" :col="col" :html="html"></slot>
       </template>
     </year-panel>
   </div>

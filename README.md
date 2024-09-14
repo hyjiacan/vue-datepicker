@@ -3,7 +3,6 @@
 适用于 Vue2 的日期/时间选择组件。
 
 [![NPM](https://img.shields.io/npm/l/@wangankeji/vue-datepicker?style=flat-square)](https://gitee.com/wangankeji-fe/vue-datepicker/blob/master/LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/%40wangankeji%2Fvue-datepicker)](https://www.npmjs.com/package/@wangankeji/vue-datepicker)
 [![npm (scoped)](https://img.shields.io/npm/v/@wangankeji/vue-datepicker?style=flat-square)](https://www.npmjs.com/package/@wangankeji/vue-datepicker)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@wangankeji/vue-datepicker?style=flat-square)
 [![](https://data.jsdelivr.com/v1/package/npm/@wangankeji/vue-datepicker/badge)](https://www.jsdelivr.com/package/npm/@wangankeji/vue-datepicker)

@@ -2,14 +2,13 @@
 
 适用于 Vue2 的日期/时间选择组件。
 
-[![NPM](https://img.shields.io/npm/l/@wangankeji/vue-datepicker?style=flat-square)](https://gitee.com/wangankeji/vue-datepicker/blob/master/LICENSE)
+[![NPM](https://img.shields.io/npm/l/@wangankeji/vue-datepicker?style=flat-square)](https://gitee.com/wangankeji-fe/vue-datepicker/blob/master/LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/%40wangankeji%2Fvue-datepicker)](https://www.npmjs.com/package/@wangankeji/vue-datepicker)
 [![npm (scoped)](https://img.shields.io/npm/v/@wangankeji/vue-datepicker?style=flat-square)](https://www.npmjs.com/package/@wangankeji/vue-datepicker)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@wangankeji/vue-datepicker?style=flat-square)
 [![](https://data.jsdelivr.com/v1/package/npm/@wangankeji/vue-datepicker/badge)](https://www.jsdelivr.com/package/npm/@wangankeji/vue-datepicker)
 
 Powered by [popper.js V2](https://popper.js.org/docs/v2/)
-
-> 原 `@hyjiacan/vue-datepicker`
 
 ## 安装
 
@@ -29,11 +28,10 @@ yarn add @wangankeji/vue-datepicker
 
 ```bash
 git clone https://gitee.com/wangankeji/vue-datepicker.git
+git clone https://github.com/hyjiacan/vue-datepicker.git
 ```
-
-源码仓库 https://gitee.com/wangankeji/vue-datepicker
-
-或者直接 [download archive](https://gitee.com/wangankeji/vue-datepicker/archive/master.zip)
+或者直接 GITEE [download archive](https://gitee.com/wangankeji/vue-datepicker/archive/master.zip)
+或者直接 GITHUB [download archive](https://github.com/hyjiacan/vue-datepicker/archive/refs/heads/master.zip)
 
 ### 浏览器环境 (umd)
 
@@ -116,7 +114,7 @@ export default {
 </script>
 ```
 
-更多示例参见 https://wangankeji.gitee.io/vue-datepicker/
+更多示例参见 https://hyjiacan.github.io/vue-datepicker/
 
 ### 类型定义
 
